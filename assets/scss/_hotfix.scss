@@ -1,0 +1,17 @@
+[disabled], .disabled {
+  cursor: not-allowed;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  transform-origin: center;
+  animation: .75s linear infinite spinner;
+}
+
+.turbo-progress-bar {
+  height: 5px;
+  background-color: #05ffbb;
+}
