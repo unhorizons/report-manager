@@ -6,6 +6,7 @@ namespace Infrastructure\Authentication\Symfony\EventSubscriber;
 
 use Application\Authentication\Command\RegisterLoginIpAddressCommand;
 use Domain\Authentication\Entity\User;
+use Domain\Authentication\Event\ResetPasswordConfirmedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -22,9 +23,6 @@ final class LoginEventSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function getSubscribedEvents(): array
     {
         return [

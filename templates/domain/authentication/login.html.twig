@@ -1,5 +1,15 @@
 {% extends 'domain/authentication/layout/base.html.twig' %}
+{% block title 'authentication.titles.login' | trans([], 'authentication') %}
 
 {% block body %}
-<h1>hello world</h1>
-{% enblock %}
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h2 class="nk-block-title fw-bolder">{{ 'authentication.pages.login.title' | trans([], 'authentication') }}</h2>
+            <div class="nk-block-des"><p>{{ 'authentication.pages.login.description' | trans([], 'authentication') }}</p></div>
+        </div>
+    </div>
+    {{ form_start(form) }}
+        {{ form_rest(form) }}
+    <button class="btn btn-primary">{{ 'global.submit' | trans([], 'messages') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

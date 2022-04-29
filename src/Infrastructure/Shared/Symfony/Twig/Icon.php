@@ -7,15 +7,15 @@ namespace Infrastructure\Shared\Symfony\Twig;
 use OutOfBoundsException;
 
 /**
- * Class Icon
- * @package Devscast\Bundle\DashboardBundle\Twig\Icon
+ * Class Icon.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 class Icon
 {
-
     /**
-     * Using a key => index to use O(1) search algorithm
+     * Using a key => index to use O(1) search algorithm.
+     *
      * @see https://stackoverflow.com/questions/2473989/list-of-big-o-for-php-functions
      */
     public const ICONS = [
@@ -1046,8 +1046,6 @@ class Icon
     ];
 
     /**
-     * @param string $name
-     * @return string
      * @author bernard-ng <bernard@devscast.tech>
      */
     public static function get(string $name): string

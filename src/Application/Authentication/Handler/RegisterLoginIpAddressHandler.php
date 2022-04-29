@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Application\Authentication\Handler;
 
 use Application\Authentication\Command\RegisterLoginIpAddressCommand;
-use Application\Authentication\Service\LoginAttemptService;
 use Domain\Authentication\Entity\User;
 use Domain\Authentication\Event\LoginWithAnotherIpAddressEvent;
 use Domain\Authentication\Repository\UserRepositoryInterface;

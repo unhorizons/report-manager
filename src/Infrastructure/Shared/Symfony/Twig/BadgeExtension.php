@@ -9,8 +9,8 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
- * Class BadgeExtension
- * @package Infrastructure\Shared\Symfony\Twig
+ * Class BadgeExtension.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 class BadgeExtension extends AbstractExtension
@@ -18,53 +18,47 @@ class BadgeExtension extends AbstractExtension
     private TranslatorInterface $translator;
     private array $badges;
 
-    /**
-     * BadgeExtension constructor.
-     * @param array $config
-     * @param TranslatorInterface $translator
-     * @author bernard-ng <bernard@devscast.tech>
-     */
-    public function __construct(array $config, TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
-        $this->badges = $config['badges'] ?: [];
-    }
-
-    /**
-     * @return array
-     * @author bernard-ng <bernard@devscast.tech>
-     */
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('badge', [$this, 'badge'], ['is_safe' => ['html']]),
-            new TwigFilter('boolean', [$this, 'boolean'], ['is_safe' => ['html']])
+        $this->badges = [
+            'draft' => [
+                'state' => 'warning',
+            ],
+            'published' => [
+                'state' => 'success',
+            ],
+            'archived' => [
+                'state' => 'danger',
+            ],
         ];
     }
 
-    /**
-     * @param int $value
-     * @return string
-     * @author bernard-ng <bernard@devscast.tech>
-     */
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('badge', [$this, 'badge'], [
+                'is_safe' => ['html'],
+            ]),
+            new TwigFilter('boolean', [$this, 'boolean'], [
+                'is_safe' => ['html'],
+            ]),
+        ];
+    }
+
     public function boolean(int $value): string
     {
-        if ($value === 1) {
+        if (1 === $value) {
             return <<< HTML
                 <em class="icon ni ni-check-circle-fill text-success" aria-label="icon check" role="img"></em>
             HTML;
-        } else {
-            return <<< HTML
+        }
+
+        return <<< HTML
                 <em class="icon ni ni-cross-circle-fill text-danger" aria-label="icon cross" role="img"></em>
             HTML;
-        }
     }
 
-    /**
-     * @param string $label
-     * @return string
-     * @author bernard-ng <bernard@devscast.tech>
-     */
     public function badge(string $label): string
     {
         if (array_key_exists($label, $this->badges)) {
@@ -73,12 +67,12 @@ class BadgeExtension extends AbstractExtension
             $label = $this->translator->trans($label);
 
             return <<< HTML
-                <span aria-label="$label" class="badge badge-$style badge-outline-$state">
-                    $label
+                <span aria-label="${label}" class="badge badge-${style} badge-outline-${state}">
+                    ${label}
                 </span>
             HTML;
         }
 
-        throw new \InvalidArgumentException(sprintf("Unknown %s badge, did you forget to configure it ?", $label));
+        throw new \InvalidArgumentException(sprintf('Unknown %s badge, did you forget to configure it ?', $label));
     }
 }

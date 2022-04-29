@@ -9,7 +9,7 @@ Encore
     .setPublicPath('/assets')
 
     .addEntry('app', './assets/app.js')
-    .enableStimulusBridge('./assets/controllers.json')
+    .enableStimulusBridge('./assets/js/controllers.json')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
 

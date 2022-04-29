@@ -18,7 +18,7 @@ class Roles implements \Stringable
         'ROLE_ADMIN' => 'ROLE_ADMIN',
         'ROLE_USER' => 'ROLE_USER',
         'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
-        'ROLE_REPORT_MANAGER' => 'ROLE_REPORT_MANAGER'
+        'ROLE_REPORT_MANAGER' => 'ROLE_REPORT_MANAGER',
     ];
 
     private readonly array $roles;

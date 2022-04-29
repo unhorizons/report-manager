@@ -13,8 +13,8 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
- * Class IconExtension
- * @package Infrastructure\Shared\Symfony\Twig
+ * Class IconExtension.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 class IconExtension extends AbstractExtension
@@ -29,26 +29,32 @@ class IconExtension extends AbstractExtension
     }
 
     /**
-     * @return array
      * @author bernard-ng <bernard@devscast.tech>
      */
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('devscast_icon', [$this, 'icon'], ['is_safe' => ['html']]),
-            new TwigFunction('devscast_flag', [$this, 'flag'], ['is_safe' => ['html']])
+            new TwigFunction('devscast_icon', [$this, 'icon'], [
+                'is_safe' => ['html'],
+            ]),
+            new TwigFunction('devscast_flag', [$this, 'flag'], [
+                'is_safe' => ['html'],
+            ]),
         ];
     }
 
     /**
-     * @return array
      * @author bernard-ng <bernard@devscast.tech>
      */
     public function getFilters(): array
     {
         return [
-            new TwigFilter('icon', [$this, 'icon'], ['is_safe' => ['html']]),
-            new TwigFilter('flag', [$this, 'flag'], ['is_safe' => ['html']])
+            new TwigFilter('icon', [$this, 'icon'], [
+                'is_safe' => ['html'],
+            ]),
+            new TwigFilter('flag', [$this, 'flag'], [
+                'is_safe' => ['html'],
+            ]),
         ];
     }
 
@@ -59,13 +65,13 @@ class IconExtension extends AbstractExtension
         }
 
         if (Countries::exists($name)) {
-            if (in_array($size, self::FLAG_SIZES)) {
+            if (in_array($size, self::FLAG_SIZES, true)) {
                 [$width, $height] = explode('x', $size);
-                $country = Countries::getName($name, $this->request->getLocale());
+                $country = Countries::getName($name, $this->request?->getLocale());
                 $url = sprintf(self::FLAG_PROVIDER_URL, $size, strtolower($name));
 
                 return <<<HTML
-                    <img src="$url" width="$width" height="$height" alt="$country" aria-label="$country">
+                    <img src="${url}" width="${width}" height="${height}" alt="${country}" aria-label="${country}">
                 HTML;
             }
             throw new InvalidArgumentException('Invalid size, try one of ' . implode(', ', self::FLAG_SIZES));
@@ -76,8 +82,9 @@ class IconExtension extends AbstractExtension
     public function icon(string $name): string
     {
         $name = Icon::get($name);
+
         return <<< HTML
-            <em class="icon ni ni-{$name}" aria-label="icon $name" role="img"></em>
+            <em class="icon ni ni-{$name}" aria-label="icon ${name}" role="img"></em>
         HTML;
     }
 }

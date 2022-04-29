@@ -16,8 +16,14 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            entry_point: Infrastructure\Authentication\Symfony\Authenticator\LoginFormAuthenticator
             custom_authenticator: Infrastructure\Authentication\Symfony\Authenticator\LoginFormAuthenticator
 
+            login_link:
+                check_route: auth_login_link_check
+                signature_properties: [ id, email ]
+                max_uses: 3
+                lifetime: 600
             form_login:
                 post_only: true
                 login_path: authentication_login

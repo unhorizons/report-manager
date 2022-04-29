@@ -1,8 +1,6 @@
 // dashlite theme
-import './css/theme-bluelite.css'
 import './css/dashlite.min.css'
-import './js/bundle'
-import './js/scripts'
+import './css/skins/theme-bluelite.css'
 
 // start stimulus app
 import './js/bootstrap'

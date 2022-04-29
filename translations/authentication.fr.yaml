@@ -1,0 +1,43 @@
+authentication:
+    titles:
+        reset_password_confirm: Mise à jour du mot de passe
+        reset_password_request: Mot de passe oublié ?
+        login_link: Un Problème de connexion ?
+        login: Connexion
+    pages:
+        login:
+            title: UNH Rapports
+            description: connectez-vous pour continuer
+    forms:
+        labels:
+            identifier: Identifiant
+            username: Nom d'utilisateur
+            password: Mot de passe
+            password_confirm: Confirmer le mot de passe
+            email: Adresse Email
+        placeholders:
+            identifier: "Email ou Nom d'utilisateur..."
+            password: Mot de passe 6+ caractères
+            username: "nom d'utilisateur... (ex: bob44)"
+            email: Votre adresse email...
+    flashes:
+        something_went_wrong: Désolé une erreur est survenue dans le processus d'authentification.
+        login_link_requested_successfully: Un lien de connexion vous a été envoyé par email.
+        reset_password_requested_successfully: Les instructions de récupération de mot de passe vous ont été envoyées par email.
+        reset_password_confirmed_successfully: Votre mot de passe à bien été mise à jour.
+    validations:
+        password_must_match: Les deux mots de passe ne sont pas identiques !
+        empty_role: Veuillez définir au moins un rôle
+        invalid_role: Désolé ce role n'est pas reconnu
+        empty_username: Le nom d'utilisateur ne doit pas être vide
+    exceptions:
+        user_not_found: Désolé cet adresse email, ne correspond à aucun de nos enregistrements.
+        reset_password_ongoing_request: |
+            Désolé une demande de réinitialisation de mot de passe est déjà en cours,
+            Veuillez poursuivre avec les intructions qui vous ont été envoyées par email.
+        reset_password_token_expired: Désolé le lien que vous avez utilisé n'est plus valide.
+    mails:
+        subjects:
+            login_link_requested: "%name%, voici le lien d'accès à votre compte Devscast"
+            reset_password_requested: Instruction de réinitialisation de mot de passe Devscast
+            reset_password_confirmed: "%name%, votre mot de passe sur Devscast a été mise à jour"

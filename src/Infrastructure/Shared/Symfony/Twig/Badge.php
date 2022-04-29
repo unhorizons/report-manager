@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Infrastructure\Shared\Symfony\Twig;
 
 /**
- * Class Badge
- * @package Infrastructure\Shared\Symfony\Twig
+ * Class Badge.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 class Badge
@@ -25,6 +25,6 @@ class Badge
         'info' => 'info',
         'dark' => 'dark',
         'grey' => 'grey',
-        'light' => 'light'
+        'light' => 'light',
     ];
 }
