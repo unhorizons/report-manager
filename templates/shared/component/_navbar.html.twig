@@ -8,8 +8,8 @@
             </div>
             <div class="nk-header-brand d-xl-none">
                 <a href="/" class="logo-link">
-                    <img class="logo-light logo-img" src="{{ meta.logo }}" alt="logo">
-                    <img class="logo-dark logo-img" src="{{ meta.logo }}" alt="logo-dark">
+                    <img class="logo-light logo-img" src="{{ asset('images/logo_icon.png') }}" alt="logo">
+                    <img class="logo-dark logo-img" src="{{ asset('images/logo_icon.png') }}" alt="logo-dark">
                 </a>
             </div>
             {% block navbar_content %}{% endblock %}
@@ -22,7 +22,7 @@
                                 <div class="user-toggle">
                                     <div class="user-avatar sm">{{ 'user-alt' | icon }}</div>
                                     <div class="user-info d-none d-xl-block">
-                                        <div class="user-status user-status-verified">{{ app.user.roles.toArray | last | trans }}</div>
+                                        <div class="user-status user-status-verified">{{ app.user.roles | last | trans([], 'messages') }}</div>
                                         <div class="user-name dropdown-indicator">{{ app.user.username }}</div>
                                     </div>
                                 </div>

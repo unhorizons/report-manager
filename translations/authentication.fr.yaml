@@ -8,6 +8,12 @@ authentication:
         login:
             title: UNH Rapports
             description: connectez-vous pour continuer
+        reset_password_request:
+            title: Mot de passe oublié ?
+            description: Entrez votre adresse email et nous vous enverrons les instructions pour récupérer votre mot de passe.
+        reset_password_confirm:
+            title: Mise à jour du mot de passe
+            description: Entrez votre nouveau mot de passe, pour plus de sécurité il doit avoir au moins 6 caractères
     forms:
         labels:
             identifier: Identifiant
@@ -34,7 +40,7 @@ authentication:
         user_not_found: Désolé cet adresse email, ne correspond à aucun de nos enregistrements.
         reset_password_ongoing_request: |
             Désolé une demande de réinitialisation de mot de passe est déjà en cours,
-            Veuillez poursuivre avec les intructions qui vous ont été envoyées par email.
+            Veuillez poursuivre avec les instructions qui vous ont été envoyées par email.
         reset_password_token_expired: Désolé le lien que vous avez utilisé n'est plus valide.
     mails:
         subjects:

@@ -22,7 +22,7 @@ use function Symfony\Component\String\u;
  * @author bernard-ng <bernard@devscast.tech>
  */
 #[AsCommand(
-    name: 'devscast:authentication:create-user',
+    name: 'unh:auth:create-user',
     description: 'Creates users and stores them in the database',
 )]
 final class CreateUserCommand extends Command

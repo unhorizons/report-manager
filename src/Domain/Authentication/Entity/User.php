@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             ->setUsername($username)
             ->setEmail($email)
             ->setPassword($password)
-            ->setRoles([$is_admin ? Roles::superAdmin() : Roles::regularUser()]);
+            ->setRoles($is_admin ? Roles::superAdmin() : Roles::regularUser());
     }
 
     public function getUsername(): ?string

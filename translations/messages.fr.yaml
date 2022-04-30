@@ -2,3 +2,7 @@ global:
     submit: Soumettre
 
 app_name: UNH Rapports
+ROLE_USER: Employé
+ROLE_ADMIN: Administrateur
+ROLE_SUPER_ADMIN: Super Admin
+ROLE_REPORT_MANAGER: Responsable
