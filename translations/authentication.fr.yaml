@@ -8,6 +8,9 @@ authentication:
         login:
             title: UNH Rapports
             description: connectez-vous pour continuer
+        login_link:
+            title: Un problème de connexion ?
+            description: Entrez votre adresse email et nous vous enverrons un lien de connexion unique et directe à votre compte
         reset_password_request:
             title: Mot de passe oublié ?
             description: Entrez votre adresse email et nous vous enverrons les instructions pour récupérer votre mot de passe.
@@ -44,6 +47,6 @@ authentication:
         reset_password_token_expired: Désolé le lien que vous avez utilisé n'est plus valide.
     mails:
         subjects:
-            login_link_requested: "%name%, voici le lien d'accès à votre compte Devscast"
-            reset_password_requested: Instruction de réinitialisation de mot de passe Devscast
-            reset_password_confirmed: "%name%, votre mot de passe sur Devscast a été mise à jour"
+            login_link_requested: "%name%, voici le lien d'accès à votre compte UNH Rapports"
+            reset_password_requested: Instruction de réinitialisation de mot de passe UNH Rapports
+            reset_password_confirmed: "%name%, votre mot de passe sur UNH Rapports a été mise à jour"

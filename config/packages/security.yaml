@@ -20,7 +20,7 @@ security:
             custom_authenticator: Infrastructure\Authentication\Symfony\Authenticator\LoginFormAuthenticator
 
             login_link:
-                check_route: auth_login_link_check
+                check_route: authentication_login_link_check
                 signature_properties: [ id, email ]
                 max_uses: 3
                 lifetime: 600
