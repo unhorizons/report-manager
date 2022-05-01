@@ -21,6 +21,17 @@ doctrine:
                 prefix: 'Domain\Authentication\Entity'
                 is_bundle: false
 
+            Domain\Report\ValueObject:
+                type: xml
+                dir: '%kernel.project_dir%/src/Infrastructure/Report/Doctrine/Mapping/ValueObject'
+                prefix: 'Domain\Report\ValueObject'
+                is_bundle: false
+            Domain\Report\Entity:
+                type: xml
+                dir: '%kernel.project_dir%/src/Infrastructure/Report/Doctrine/Mapping/Entity'
+                prefix: 'Domain\Report\Entity'
+                is_bundle: false
+
 when@test:
     doctrine:
         dbal:

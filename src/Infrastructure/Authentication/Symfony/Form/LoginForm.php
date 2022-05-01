@@ -31,14 +31,14 @@ final class LoginForm extends AbstractForm
             ->add('identifier', TextType::class, [
                 'label' => 'authentication.forms.labels.identifier',
                 'attr' => [
-                    'placeholder' => 'authentication.forms.placeholders.identifier'
-                ]
+                    'placeholder' => 'authentication.forms.placeholders.identifier',
+                ],
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'authentication.forms.labels.password',
                 'attr' => [
                     'autocomplete' => 'current-password',
-                    'placeholder' => 'authentication.forms.placeholders.password'
+                    'placeholder' => 'authentication.forms.placeholders.password',
                 ],
             ])
             ->add('_token', HiddenType::class, [

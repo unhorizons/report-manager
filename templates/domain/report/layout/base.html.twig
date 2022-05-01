@@ -1,0 +1,15 @@
+{% extends 'shared/layout/base.html.twig' %}
+
+{% block sidebar %}
+    {% embed "shared/component/_sidebar.html.twig" %}
+        {% block sidebar_menu_list %}
+            {% if (is_granted('ROLE_ADMIN', app.user)) %}
+                {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\AdminSidebar') }}
+            {% elseif(is_granted('ROLE_REPORT_MANAGER', app.user)) %}
+                {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\ReportManagerSidebar') }}
+            {% elseif(is_granted('ROLE_USER')) %}
+                {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\UserSidebar') }}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

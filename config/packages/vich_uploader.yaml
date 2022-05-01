@@ -1,7 +1,10 @@
 vich_uploader:
     db_driver: orm
 
-    #mappings:
-    #    products:
-    #        uri_prefix: /images/products
-    #        upload_destination: '%kernel.project_dir%/public/images/products'
+    mappings:
+        reports:
+            uri_prefix: /documents/reports
+            upload_destination: '%kernel.project_dir%/public/uploads/reports'
+            namer:
+                service: Vich\UploaderBundle\Naming\PropertyNamer
+                options: { property: 'id', transliterate: true }

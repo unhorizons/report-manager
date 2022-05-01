@@ -1,0 +1,5 @@
+report:
+    sidebars:
+        admin: Administration
+        user: Gestion des rapports
+        report_manager: Gestions des rapports
