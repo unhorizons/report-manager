@@ -1,5 +1,22 @@
 report:
+    actions:
+        create: Ajouter un rapport
+    titles:
+        index: Accueil
+        dashboard: Tableau de bord
+
     sidebars:
-        admin: Administration
-        user: Gestion des rapports
-        report_manager: Gestions des rapports
+        admins:
+            headers:
+                index:  Administration
+            links: ~
+        users:
+            headers:
+                index: Activités
+            links:
+                index: Mes Rapports
+                evaluation: Mes Évaluations
+        report_managers:
+            headers:
+                index: Gestions des rapports
+            links: ~

@@ -1,5 +1,12 @@
 global:
     submit: Soumettre
+    logout: Déconnexion
+    page: Page
+    of: Sur
+    items: Éléments
+    new: Ajouter
+    cancel: Annuler
+    close: Fermer
 
 app_name: UNH Rapports
 ROLE_USER: Employé

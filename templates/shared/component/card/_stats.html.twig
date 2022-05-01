@@ -1,0 +1,24 @@
+<div class="card">
+    <div class="nk-ecwg nk-ecwg6">
+        <div class="card-inner">
+            <div class="card-title-group">
+                <div class="card-title">
+                    <h6 class="title">{% block stats_card_label %}{%endblock%}</h6>
+                </div>
+            </div>
+            <div class="data">
+                <div class="data-group">
+                    <div class="amount">{% block stats_card_value %}{% endblock %}</div>
+                </div>
+                <div class="info">
+                    {% block stats_card_info %}
+                        <span class="change up text-danger">
+                            <em class="icon ni ni-arrow-long-up"></em>4.63%
+                        </span>
+                        <span> vs. last week</span>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

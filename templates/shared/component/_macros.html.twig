@@ -1,0 +1,21 @@
+{% macro user_data_item(label, value, options) %}
+    <div class="profile-ud-item">
+        <div class="profile-ud {{ options.style ?? 'wider' }}">
+            <span class="profile-ud-label">{{ label }}</span>
+            <span class="profile-ud-value">{{ value | raw }}</span>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro user_data_link(label, value, link, options) %}
+    <div class="profile-ud-item">
+        <div class="profile-ud {{ options.style ?? 'wider' }}">
+            <span class="profile-ud-label">{{ label }}</span>
+            <span class="profile-ud-value">
+                <a href="{{ link }}" title="{{ value }}" aria-label="{{ value }}">
+                    {{ value }}
+                </a>
+            </span>
+        </div>
+    </div>
+{% endmacro %}

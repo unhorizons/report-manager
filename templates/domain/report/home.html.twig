@@ -1,1 +1,35 @@
 {% extends 'domain/report/layout/base.html.twig' %}
+{% block title 'report.titles.index' | trans([], 'report') %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title  'report.titles.dashboard' | trans([], 'report') | title %}
+        {% block header_action_list %}
+            <li>
+                <a href="" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.create' | trans([], 'report') }}" title="{{ 'report.actions.create' | trans([], 'report') }}">
+                    {{ 'plus' | icon }}
+                    <span>{{ 'report.actions.create' | trans([], 'report') }}</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    <div class="row g-gs">
+        <div class="col-xxl-6 col-sm-6">
+            {% embed 'shared/component/card/_stats.html.twig' %}
+                {% block stats_card_label 'Rapports' %}
+                {% block stats_card_value '49' %}
+                {% block stats_card_info 'pour le mois en cours' %}
+            {% endembed %}
+        </div>
+        <div class="col-xxl-6 col-sm-6">
+            {% embed 'shared/component/card/_stats.html.twig' %}
+                {% block stats_card_label 'Évaluations' %}
+                {% block stats_card_value '34' %}
+                {% block stats_card_info 'pour le mois en cours' %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}

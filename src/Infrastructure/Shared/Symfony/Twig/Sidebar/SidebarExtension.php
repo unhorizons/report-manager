@@ -100,7 +100,7 @@ class SidebarExtension extends AbstractExtension
             $s = '';
             foreach ($collection as $item) {
                 if ($item instanceof SidebarLink) {
-                    $s = $this->renderItem($s, $item);
+                    $s = $this->renderItem($s, $item, $translation_domain);
                 }
 
                 if ($item instanceof SidebarHeader) {

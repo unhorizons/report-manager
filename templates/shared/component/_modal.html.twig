@@ -1,0 +1,31 @@
+<div class="modal fade" tabindex="-1" id="{{ id | default('modal') }}" role="dialog" aria-hidden="true" data-modal-form-target="modal">
+    <div class="modal-dialog modal-dialog-top modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <span role="button" class="close" aria-label="{{ 'global.close' | trans([], 'messages') }}" data-action="click->modal-form#close">
+                {{ 'cross' | icon }}
+            </span>
+            {% if title is defined %}
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title | trans([], options.translationDomain ?? 'messages') }}</h5>
+                </div>
+            {% endif %}
+            <div class="modal-body" data-modal-form-target="body">
+                {% if content is defined and content %}
+                    {{ content }}
+                {% else %}
+                    <app-loader-overlay></app-loader-overlay>
+                {% endif %}
+            </div>
+            {% if footer | default(true) %}
+                <div class="modal-footer">
+                    <button type="submit" type="submit" data-modal-form-target="submit" class="btn btn-primary">
+                        {{ 'global.submit' | trans([], 'messages') }}
+                    </button>
+                    <button class="btn btn-secondary" data-action="click->modal-form#close">
+                        {{ 'global.cancel' | trans([], 'messages') }}
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
