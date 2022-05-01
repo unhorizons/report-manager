@@ -1,0 +1,3 @@
+<vich_uploader class="Domain\Report\Entity\Report">
+    <field mapping="reports" name="document_file" filename_property="document_url" />
+</vich_uploader>

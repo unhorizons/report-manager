@@ -1,10 +1,14 @@
 vich_uploader:
     db_driver: orm
 
+    metadata:
+        type: xml
+        auto_detection: false
+        directories:
+            - { path: '%kernel.project_dir%/src/Infrastructure/Report/Symfony/Upload/Mapping', namespace_prefix: 'Domain\Report\Entity' }
+
     mappings:
         reports:
-            uri_prefix: /documents/reports
+            uri_prefix: /uploads/reports
             upload_destination: '%kernel.project_dir%/public/uploads/reports'
-            namer:
-                service: Vich\UploaderBundle\Naming\PropertyNamer
-                options: { property: 'id', transliterate: true }
+            namer: Vich\UploaderBundle\Naming\UniqidNamer

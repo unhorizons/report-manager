@@ -14,6 +14,7 @@ report:
             headers:
                 index: Activités
             links:
+                dashboard: Tableau de bord
                 index: Mes Rapports
                 evaluation: Mes Évaluations
         report_managers:

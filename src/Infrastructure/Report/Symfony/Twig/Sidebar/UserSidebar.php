@@ -21,8 +21,9 @@ final class UserSidebar extends AbstractSidebar
     {
         return $builder
             ->add(new SidebarHeader('report.sidebars.users.headers.index'))
-            ->add(new SidebarLink('app_index', 'report.sidebars.users.links.index', 'folder-list'))
-            ->add(new SidebarLink('app_index', 'report.sidebars.users.links.evaluation', 'comments'))
+            ->add(new SidebarLink('app_index', 'report.sidebars.users.links.dashboard', 'home'))
+            ->add(new SidebarLink('report_user_index', 'report.sidebars.users.links.index', 'folder-list'))
+            ->add(new SidebarLink('authentication_login', 'report.sidebars.users.links.evaluation', 'comments'))
 
             ->setTranslationDomain('report')
             ->create();

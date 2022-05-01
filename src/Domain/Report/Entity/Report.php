@@ -9,6 +9,7 @@ use Domain\Report\ValueObject\IntervalDate;
 use Domain\Report\ValueObject\Status;
 use Domain\Shared\Entity\IdentityTrait;
 use Domain\Shared\Entity\TimestampTrait;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Class Report.
@@ -27,6 +28,10 @@ class Report
     private Status $status;
 
     private IntervalDate $interval_date;
+
+    private ?File $document_file;
+
+    private ?string $document_url;
 
     private ?User $user = null;
 
