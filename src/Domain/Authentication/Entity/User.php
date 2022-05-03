@@ -40,10 +40,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->gender = Gender::male();
-        $this->roles = Roles::regularUser();
+        $this->roles = Roles::employee();
     }
 
-    public static function createBasicWithRequiredFields(
+    public static function create(
         string $username,
         string $email,
         string $password,
@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             ->setUsername($username)
             ->setEmail($email)
             ->setPassword($password)
-            ->setRoles($is_admin ? Roles::superAdmin() : Roles::regularUser());
+            ->setRoles($is_admin ? Roles::superAdmin() : Roles::employee());
     }
 
     public function getUsername(): ?string

@@ -1,0 +1,36 @@
+{% extends 'shared/layout/base.html.twig' %}
+{% block title 'employee_evaluations' | trans([], 'messages') %}
+
+{% block header %}
+    {% embed 'shared/component/_header.html.twig' %}
+        {% block header_title 'employee_evaluations' | trans([], 'messages') %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% embed "shared/component/card/_list.html.twig" %}
+        {% block list_card_table_head %}
+            <th>#</th>
+            <th>{{ "content" | trans([], 'messages') }}</th>
+            <th>{{ "created_at" | trans([], 'messages') }}</th>
+            <th>&nbsp;</th>
+        {% endblock %}
+        {% block list_card_table_body %}
+            {% for row in data %}
+                <tr>
+                    <td>{{ row.evaluation.id }}</td>
+                    <td>{{ row.evaluation.content | u.truncate(90, '...') }}</td>
+                    <td>{{ row.evaluation.createdAt | date }}</td>
+                    <td class="tb-odr-action">
+                        <div class="tb-odr-btns d-none d-md-inline">
+                            <a href="{{ path('report_employee_report_show', {uuid: row.report_uuid}) }}" class="btn btn-sm btn-primary" title="{{ 'global.show' | trans([], 'messages') }}">
+                                {{ 'folder-list' | icon }}
+                                <span>{{ 'report' | trans([], 'messages') }}</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -1,0 +1,12 @@
+<div class="bq-note-item">
+    <div class="bq-note-text">
+        <p>{{ data.content }}</p>
+    </div>
+    <div class="bq-note-meta">
+        <span class="bq-note-added">
+            Ajouté le <span class="date">{{ data.createdAt | date('d M, Y') }}</span> à <span class="time">{{ data.createdAt | date('H:i') }}</span>
+        </span>
+        <span class="bq-note-sep sep">|</span>
+        <span class="bq-note-by">par <span>{{ data.manager.username }}</span></span>
+    </div>
+</div>

@@ -28,6 +28,15 @@ class Status implements \Stringable
         return $this->status;
     }
 
+    public function equals(self|string $status): bool
+    {
+        if ($status instanceof self) {
+            return $this->status === $status->status;
+        }
+
+        return $this->status === $status;
+    }
+
     public static function seen(): self
     {
         return new self('seen');

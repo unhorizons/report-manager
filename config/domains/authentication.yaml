@@ -1,0 +1,11 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Doctrine Repositories
+    Domain\Authentication\Repository\UserRepositoryInterface: '@Infrastructure\Authentication\Doctrine\Repository\UserRepository'
+    Domain\Authentication\Repository\ResetPasswordTokenRepositoryInterface: '@Infrastructure\Authentication\Doctrine\Repository\ResetPasswordTokenRepository'
+

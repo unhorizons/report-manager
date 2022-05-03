@@ -6,7 +6,7 @@
 
     <entity name="Domain\Report\Entity\Report" repository-class="Infrastructure\Report\Doctrine\Repository\ReportRepository" table="report">
         <indexes>
-            <index columns="interval_date" />
+            <index columns="starting_at,ending_at" />
             <index columns="status" />
         </indexes>
         <lifecycle-callbacks>
@@ -18,10 +18,11 @@
             <generator strategy="IDENTITY"/>
         </id>
 
+        <field name="uuid" type="uuid" unique="true" />
         <field name="name" length="255" type="string"/>
         <field name="description" type="text" nullable="true"/>
 
-        <many-to-one field="user" target-entity="Domain\Authentication\Entity\User" />
+        <many-to-one field="employee" target-entity="Domain\Authentication\Entity\User" />
 
         <!-- Value object -->
         <embedded name="interval_date" class="Domain\Report\ValueObject\IntervalDate" use-column-prefix="false" />

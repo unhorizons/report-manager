@@ -1,0 +1,37 @@
+Domain\Authentication\Entity\User:
+    user (template):
+        username (unique): <userName()>
+        job_title: <jobTitle()>
+        gender: <randomElement(['M', 'F', 'O'])>
+
+        email: user<current()>\@user.com
+        roles: [ 'ROLE_USER' ]
+        password: \$2y\$13\$PzaAzoYYBl1VyuAU9M/3GuFQaOgO2vyHct1iN0b4vULoIXtcBICuu # 000000
+
+        # Login History
+        last_login_at: <dateTimeThisYear()>
+        last_login_ip: <ipv4()>
+
+        # Timestamp
+        created_at: <dateTimeThisYear()>
+        updated_at: ~
+
+Domain\Report\Entity\Report:
+    report (template):
+        uuid: <uuid()>
+        name: <sentence(6, true)>
+        description: <text(500)>
+        status: <randomElement(['seen', 'unseen'])>
+        document_url: /reports/default.pdf
+
+        # Timestamp
+        created_at: <dateTimeThisYear()>
+        updated_at: ~
+
+Domain\Report\Entity\Evaluation:
+    evaluation (template):
+        content: <text()>
+
+        # Timestamp
+        created_at: <dateTimeThisYear()>
+        updated_at: ~

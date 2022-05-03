@@ -54,7 +54,7 @@ class Roles implements \Stringable
         return new self(['ROLE_SUPER_ADMIN']);
     }
 
-    public static function regularUser(): self
+    public static function employee(): self
     {
         return new self();
     }

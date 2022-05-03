@@ -12,7 +12,6 @@
         {% block stylesheets %}{% endblock %}
 
         <script defer data-turbo-track="reload" src="{{ asset('/static/bundle.js') }}"></script>
-        <script defer data-turbo-track="reload" src="{{ asset('/static/scripts.js') }}"></script>
         {{ encore_entry_script_tags('app') }}
     </head>
     <body class="nk-body bg-lighter has-sidebar ui-shady" {{ stimulus_controller('turbo') }}>

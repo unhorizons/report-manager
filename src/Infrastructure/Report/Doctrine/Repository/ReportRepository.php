@@ -36,28 +36,28 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
-    public function findAllForUser(User $user): array
+    public function findAllForEmployee(User $employee): array
     {
         /** @var Report[] $result */
         $result = $this->createQueryBuilder('r')
-            ->where('r.user = :user')
-            ->setParameter('user', $user)
+            ->where('r.employee = :employee')
+            ->setParameter('employee', $employee)
             ->getQuery()
             ->getResult();
 
         return $result;
     }
 
-    public function findAllForUserInInterval(User $user, IntervalDate $interval): array
+    public function findAllForEmployeeInInterval(User $employee, IntervalDate $interval): array
     {
         /** @var Report[] $result */
         $result = $this->createQueryBuilder('r')
             ->where('r.interval_date.starting_at = :start')
             ->andWhere('r.interval_date.ending_at = :end')
-            ->andWhere('r.user = :user')
+            ->andWhere('r.employee = :employee')
             ->setParameter('start', $interval->getStartingAt())
             ->setParameter('end', $interval->getEndingAt())
-            ->set('user', $user)
+            ->set('employee', $employee)
             ->getQuery()
             ->getResult();
 

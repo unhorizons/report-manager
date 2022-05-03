@@ -5,6 +5,10 @@ report:
         index: Accueil
         dashboard: Tableau de bord
 
+    mails:
+        subjects:
+            evaluation_created: '[UNH Rapports] %username%, vous avez reçu une nouvelle évaluation'
+
     sidebars:
         admins:
             headers:
@@ -21,3 +25,9 @@ report:
             headers:
                 index: Gestions des rapports
             links: ~
+    flashes:
+        report_deleted_successfully: 'le rapport #%id% a bien été supprimé'
+        report_updated_successfully: 'le rapport #%id% a bien été modifié'
+        report_created_successfully: 'le rapport a bien été crée et soumis'
+    exceptions:
+        immutable_when_seen: "Impossible d'apporter des modifications une fois que le rapport ait été soumis et vu"

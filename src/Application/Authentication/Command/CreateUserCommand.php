@@ -9,7 +9,7 @@ namespace Application\Authentication\Command;
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-final class CreateBasicUserCommand
+final class CreateUserCommand
 {
     public function __construct(
         public readonly string $username,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Authentication\Handler;
 
-use Application\Authentication\Command\CreateBasicUserCommand;
+use Application\Authentication\Command\CreateUserCommand;
 use Domain\Authentication\Entity\User;
 use Domain\Authentication\Repository\UserRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -16,7 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  * @author bernard-ng <bernard@devscast.tech>
  */
 #[AsMessageHandler]
-final class CreateBasicUserHandler
+final class CreateUserHandler
 {
     public function __construct(
         private readonly UserRepositoryInterface $repository,
@@ -24,10 +24,10 @@ final class CreateBasicUserHandler
     ) {
     }
 
-    public function __invoke(CreateBasicUserCommand $command): void
+    public function __invoke(CreateUserCommand $command): void
     {
         $this->assertUserHasUniqueIdentifiers($command->email, $command->username);
-        $user = User::createBasicWithRequiredFields(
+        $user = User::create(
             username: $command->username,
             email: $command->email,
             password: $command->password,

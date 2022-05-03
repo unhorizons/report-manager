@@ -1,0 +1,24 @@
+include:
+    - templates.yaml
+
+Domain\Authentication\Entity\User:
+    user_admin (extends user):
+        username: admin
+        email: admin\@admin.com
+        roles: [ 'ROLE_USER', 'ROLE_ADMIN' ]
+
+    user_report_manager (extends user):
+        username: manager
+        email: manager\@manager.com
+        roles: [ 'ROLE_USER', 'ROLE_REPORT_MANAGER' ]
+
+    user{1..10} (extends user):
+
+Domain\Report\Entity\Report:
+    report{1..20} (extends report):
+        employee: '@user1'
+
+Domain\Report\Entity\Evaluation:
+    evaluation{1..50} (extends evaluation):
+        manager: '@user_report_manager'
+        report: '@report*'

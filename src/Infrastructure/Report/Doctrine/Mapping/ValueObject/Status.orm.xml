@@ -5,6 +5,10 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <embeddable name="Domain\Report\ValueObject\Status">
-        <field name="status" length="255" />
+        <field name="status" type="string" column-definition="ENUM('seen', 'unseen')" >
+            <options>
+                <option name="default">unseen</option>
+            </options>
+        </field>
     </embeddable>
 </doctrine-mapping>

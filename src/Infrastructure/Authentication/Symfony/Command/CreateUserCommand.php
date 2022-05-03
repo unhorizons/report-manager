@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Authentication\Symfony\Command;
 
-use Application\Authentication\Command\CreateBasicUserCommand;
+use Application\Authentication\Command\CreateUserCommand as CreateUserMessageCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -113,7 +113,7 @@ final class CreateUserCommand extends Command
         $email = strval($input->getArgument('email'));
         $isAdmin = boolval($input->getOption('admin'));
 
-        $this->commandBus->dispatch(new CreateBasicUserCommand($username, $email, $password));
+        $this->commandBus->dispatch(new CreateUserMessageCommand($username, $email, $password));
 
         $this->io->success(sprintf('%s was successfully created: %s (%s)', $isAdmin ? 'Administrator user' : 'User', $username, $email));
         $event = $stopwatch->stop('create-user-command');

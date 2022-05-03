@@ -1,0 +1,10 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Doctrine Repositories
+    Domain\Report\Repository\ReportRepositoryInterface: '@Infrastructure\Report\Doctrine\Repository\ReportRepository'
+    Domain\Report\Repository\EvaluationRepositoryInterface: '@Infrastructure\Report\Doctrine\Repository\EvaluationRepository'

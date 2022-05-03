@@ -1,0 +1,14 @@
+{% extends _format %}
+{% import 'shared/layout/mail/macro.html.twig' as e %}
+
+{% block body %}
+    # Bonjour {{ report.user.username }},
+
+    Vous avez reçu une nouvelle évaluation de **{{ evaluation.user.username }}**,
+
+    ```
+        {{ evaluation.content | u.truncate(100, '...') }}
+    ```
+
+    {{ e.button('lire plus', url('report_user_show', {id: report.id}), 'primary', _format) }}
+{% endblock %}

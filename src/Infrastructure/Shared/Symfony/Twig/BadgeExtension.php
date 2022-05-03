@@ -22,14 +22,25 @@ class BadgeExtension extends AbstractExtension
     {
         $this->translator = $translator;
         $this->badges = [
+            'seen' => [
+                'state' => 'success',
+                'style' => 'dim',
+            ],
+            'unseen' => [
+                'state' => 'danger',
+                'style' => 'dim',
+            ],
             'draft' => [
                 'state' => 'warning',
+                'style' => 'dim',
             ],
             'published' => [
                 'state' => 'success',
+                'style' => 'dim',
             ],
             'archived' => [
                 'state' => 'danger',
+                'style' => 'dim',
             ],
         ];
     }

@@ -18,9 +18,9 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
 {
     public function findAllForInterval(IntervalDate $interval): ?Report;
 
-    public function findAllForUser(User $user): array;
+    public function findAllForEmployee(User $employee): array;
 
-    public function findAllForUserInInterval(User $user, IntervalDate $interval): array;
+    public function findAllForEmployeeInInterval(User $employee, IntervalDate $interval): array;
 
     public function findAllSeen(): array;
 

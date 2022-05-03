@@ -7,6 +7,10 @@ global:
     new: Ajouter
     cancel: Annuler
     close: Fermer
+    show: Détails
+    back: Retour
+    edit: Modifier
+    delete: Supprimer
 
 app_name: UNH Rapports
 ROLE_USER: Employé
@@ -16,3 +20,16 @@ ROLE_REPORT_MANAGER: Responsable
 
 flashes:
     something_went_wrong: Désolé une erreur est survenue de notre côté, veuillez réessayer
+
+employee_reports: Mes rapports
+employee_evaluations: Évaluations reçues
+reports: Rapports
+report: Rapport
+evaluations: Evaluations
+employee: Employées
+manager: Gestionnaire
+user: Utilisateurs
+uuid: Identifiant
+created_at: Crée le
+content: Contenu
+
