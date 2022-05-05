@@ -8,22 +8,22 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Trait PaginationAssertionTrait
- * @package Infrastructure\Shared\Symfony\Controller
+ * Trait PaginationAssertionTrait.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 trait PaginationAssertionTrait
 {
     protected function assertIsGreaterThanZero(mixed $page): void
     {
-        if (!is_int($page) || $page <= 0) {
+        if (! is_int($page) || $page <= 0) {
             throw new BadRequestHttpException();
         }
     }
 
     protected function assertNonEmptyData(int $page, \Countable $data): void
     {
-        if ($page > 1 && $data->count() === 0) {
+        if ($page > 1 && 0 === $data->count()) {
             throw new NotFoundHttpException();
         }
     }

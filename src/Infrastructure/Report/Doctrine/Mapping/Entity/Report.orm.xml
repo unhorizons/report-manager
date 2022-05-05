@@ -23,12 +23,18 @@
         <field name="description" type="text" nullable="true"/>
 
         <many-to-one field="employee" target-entity="Domain\Authentication\Entity\User" />
+        <one-to-many field="documents" target-entity="Domain\Report\Entity\Document" mapped-by="report" >
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <order-by>
+                <order-by-field name="created_at" direction="DESC"/>
+            </order-by>
+        </one-to-many>
 
         <!-- Value object -->
         <embedded name="interval_date" class="Domain\Report\ValueObject\IntervalDate" use-column-prefix="false" />
         <embedded name="status" class="Domain\Report\ValueObject\Status" use-column-prefix="false" />
-
-        <field name="document_url" length="255" />
 
         <!-- Timestamp -->
         <field name="created_at" type="datetime_immutable"/>

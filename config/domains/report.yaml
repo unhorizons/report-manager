@@ -8,3 +8,4 @@ services:
     # Doctrine Repositories
     Domain\Report\Repository\ReportRepositoryInterface: '@Infrastructure\Report\Doctrine\Repository\ReportRepository'
     Domain\Report\Repository\EvaluationRepositoryInterface: '@Infrastructure\Report\Doctrine\Repository\EvaluationRepository'
+    Domain\Report\Repository\DocumentRepositoryInterface: '@Infrastructure\Report\Doctrine\Repository\DocumentRepository'

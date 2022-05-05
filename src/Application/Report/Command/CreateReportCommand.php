@@ -18,7 +18,7 @@ final class CreateReportCommand
         public readonly User $employee,
         public ?string $name = null,
         public ?string $description = null,
-        public ?object $document_file = null,
+        public ?array $documents = null,
         public ?IntervalDate $interval_date = null,
     ) {
         $this->interval_date = IntervalDate::createDefault();

@@ -43,6 +43,7 @@ final class EmployeeReportController extends AbstractController
         );
 
         $this->assertNonEmptyData($page, $data);
+
         return $this->render(
             view: 'domain/report/user/index.html.twig',
             parameters: [
@@ -102,7 +103,7 @@ final class EmployeeReportController extends AbstractController
     {
         $this->denyAccessUnlessGranted('REPORT_DELETE', $report);
 
-        if ($this->isDeleteCsrfTokenValid((string)$report->getId(), $request)) {
+        if ($this->isDeleteCsrfTokenValid((string) $report->getId(), $request)) {
             try {
                 $this->dispatchSync(new DeleteReportCommand($report));
                 $this->addFlash('success', $this->translator->trans(

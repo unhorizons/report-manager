@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Report\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Domain\Authentication\Entity\User;
 use Domain\Report\ValueObject\IntervalDate;
 use Domain\Report\ValueObject\Status;
 use Domain\Shared\Entity\IdentityTrait;
 use Domain\Shared\Entity\TimestampTrait;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Uid\Uuid;
 
 /**
@@ -33,10 +33,6 @@ class Report
 
     private IntervalDate $interval_date;
 
-    private ?File $document_file = null;
-
-    private ?string $document_url = null;
-
     private ?User $employee = null;
 
     /**
@@ -44,11 +40,17 @@ class Report
      */
     private array $evaluations = [];
 
+    /**
+     * @var Collection<Document>
+     */
+    private Collection $documents;
+
     public function __construct()
     {
         $this->uuid = Uuid::v4();
         $this->status = Status::unseen();
         $this->interval_date = IntervalDate::createDefault();
+        $this->documents = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -119,33 +121,6 @@ class Report
         return $this;
     }
 
-    public function getDocumentFile(): ?File
-    {
-        return $this->document_file;
-    }
-
-    public function setDocumentFile(?File $document_file): self
-    {
-        $this->document_file = $document_file;
-        if ($this->document_file instanceof UploadedFile) {
-            $this->updated_at = new \DateTimeImmutable();
-        }
-
-        return $this;
-    }
-
-    public function getDocumentUrl(): ?string
-    {
-        return $this->document_url;
-    }
-
-    public function setDocumentUrl(?string $document_url): self
-    {
-        $this->document_url = $document_url;
-
-        return $this;
-    }
-
     public function isMutable(): bool
     {
         return $this->status->equals(Status::unseen());
@@ -175,6 +150,32 @@ class Report
     public function setEvaluations(array $evaluations): self
     {
         $this->evaluations = $evaluations;
+
+        return $this;
+    }
+
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (! $this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->setReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->removeElement($document)) {
+            if ($document->getReport() === $this) {
+                $document->setReport(null);
+            }
+        }
 
         return $this;
     }

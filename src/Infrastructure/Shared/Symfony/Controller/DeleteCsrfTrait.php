@@ -7,8 +7,8 @@ namespace Infrastructure\Shared\Symfony\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Trait DeleteCsrfTrait
- * @package Infrastructure\Shared\Symfony\Controller
+ * Trait DeleteCsrfTrait.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 trait DeleteCsrfTrait
@@ -17,7 +17,7 @@ trait DeleteCsrfTrait
     {
         return $this->isCsrfTokenValid(
             "delete_{$id}",
-            (string)$request->request->get('_token')
+            (string) $request->request->get('_token')
         );
     }
 }

@@ -22,7 +22,6 @@ Domain\Report\Entity\Report:
         name: <sentence(6, true)>
         description: <text(500)>
         status: <randomElement(['seen', 'unseen'])>
-        document_url: /reports/default.pdf
 
         # Timestamp
         created_at: <dateTimeThisYear()>

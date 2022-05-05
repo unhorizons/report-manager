@@ -4,7 +4,7 @@ import 'flatpickr/dist/flatpickr.min.css'
 /**
  * @property {flatpickr} flatpickr
  */
-export class DatePicker extends HTMLInputElement {
+export default class DatePicker extends HTMLInputElement {
     connectedCallback () {
         this.flatpickr = flatpickr(this, {
             locale: {
