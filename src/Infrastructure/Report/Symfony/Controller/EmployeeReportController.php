@@ -13,6 +13,7 @@ use Domain\Report\Repository\EvaluationRepositoryInterface;
 use Domain\Report\Repository\ReportRepositoryInterface;
 use Domain\Report\ValueObject\Period;
 use Infrastructure\Report\Symfony\Form\CreateReportForm;
+use Infrastructure\Report\Symfony\Form\UpdateReportForm;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Infrastructure\Shared\Symfony\Controller\DeleteCsrfTrait;
 use Infrastructure\Shared\Symfony\Controller\PaginationAssertionTrait;
@@ -74,7 +75,7 @@ final class EmployeeReportController extends AbstractController
                     domain: 'report'
                 ));
 
-                $this->redirectSeeOther('report_employee_report_index');
+                return $this->redirectSeeOther('report_employee_report_index');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
             }
@@ -124,21 +125,19 @@ final class EmployeeReportController extends AbstractController
             }
         } else {
             $this->addSomethingWentWrongFlash();
-
-            return $this->redirectSeeOther('report_employee_report_show', [
-                'uuid' => $report->getUuid(),
-            ]);
         }
 
-        return $this->redirectSeeOther('report_employee_report_index');
+        return $this->redirectSeeOther('report_employee_report_show', [
+            'uuid' => $report->getUuid(),
+        ]);
     }
 
     #[Route('/{uuid}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Report $report): Response
     {
         $this->denyAccessUnlessGranted('REPORT_UPDATE', $report);
-        $command = new UpdateReportCommand(report: $report);
-        $form = $this->createForm('', $command)
+        $command = new UpdateReportCommand($report, $report->getPeriod());
+        $form = $this->createForm(UpdateReportForm::class, $command)
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -151,13 +150,17 @@ final class EmployeeReportController extends AbstractController
                     ],
                     domain: 'report'
                 ));
+
+                return $this->redirectSeeOther('report_employee_report_show', [
+                    'uuid' => $report->getUuid(),
+                ]);
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
             }
         }
 
         return $this->render(
-            view: 'domain/report/user/update.html.twig',
+            view: 'domain/report/user/edit.html.twig',
             parameters: [
                 'form' => $form->createView(),
             ],

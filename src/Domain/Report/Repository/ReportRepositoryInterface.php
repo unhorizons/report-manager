@@ -21,7 +21,7 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
 
     public function findAllForEmployeeForPeriod(User $employee, string $source): array;
 
-    public function hasReportMatchingHashForEmployee(User $employee, string $hash): bool;
+    public function hasReportMatchingHashForEmployee(User $employee, string $hash, ?string $excludeReportUuid = null): bool;
 
     public function findAllSeen(): array;
 

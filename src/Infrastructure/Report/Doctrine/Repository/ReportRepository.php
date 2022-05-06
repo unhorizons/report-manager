@@ -105,21 +105,25 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
-    public function hasReportMatchingHashForEmployee(User $employee, string $hash): bool
+    public function hasReportMatchingHashForEmployee(User $employee, string $hash, ?string $excludeReportUuid = null): bool
     {
         try {
-            /** @var Report|null $result */
-            $result = $this->createQueryBuilder('r')
+            $query = $this->createQueryBuilder('r')
                 ->where('r.period.hash = :hash')
                 ->andWhere('r.employee = :employee')
                 ->setParameter('hash', $hash)
-                ->setParameter('employee', $employee)
+                ->setParameter('employee', $employee);
+
+            if (null !== $excludeReportUuid) {
+                $query->andWhere('r.uuid <> :uuid')
+                    ->setParameter('uuid', $excludeReportUuid);
+            }
+
+            return null !== $query
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (NonUniqueResultException) {
             return true;
         }
-
-        return null !== $result;
     }
 }

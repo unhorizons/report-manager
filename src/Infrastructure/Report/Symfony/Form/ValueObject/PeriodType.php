@@ -13,11 +13,11 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class IntervalDateType.
+ * Class PeriodType.
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-final class IntervalDateType extends AbstractType implements DataMapperInterface
+final class PeriodType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -33,6 +33,7 @@ final class IntervalDateType extends AbstractType implements DataMapperInterface
         $resolver->setDefaults([
             'data_class' => Period::class,
             'empty_data' => null,
+            'translation_domain' => 'report',
         ]);
     }
 

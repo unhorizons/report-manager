@@ -35,3 +35,7 @@ report:
         delete_report_with_evaluation: Désolé, il est impossible de supprimer un rapport ayant déjà reçu au moins une évaluation.
         report_for_period_already_exists: Il existe déjà un rapport couvrant cette période pour votre compte.
         empty_document_report: Désolé vous ne pouvez pas supprimer l'unique document associé rapport.
+    validations:
+        ending_not_current_year: la date de fin doit être de l'année en cours
+        invalid_end_date: la date de début ne peut être plus récente que celle de fin
+        weeK_interval: le rapport est hebdomadaire il doit couvrir une période de 6 ou 7 jours

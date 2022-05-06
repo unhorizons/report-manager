@@ -20,9 +20,10 @@ class Period implements \Stringable
 
     private function __construct(\DateTimeImmutable $starting_at, \DateTimeImmutable $ending_at)
     {
-        $this->assertDateInCurrentYear($starting_at, 'report.validations.starting_not_current_year');
-        $this->assertDateInCurrentYear($ending_at, 'report.validations.ending_not_current_year');
+        $this->assertDateInCurrentYear($ending_at);
         $this->assertEndingGreaterThenStartingDate($starting_at, $ending_at);
+        $this->assertWeekPeriod($starting_at, $ending_at);
+        $this->assertStartOnMondayEndOnSaturday($starting_at, $ending_at);
 
         $this->starting_at = $starting_at;
         $this->ending_at = $ending_at;
@@ -84,11 +85,11 @@ class Period implements \Stringable
         return $this->source;
     }
 
-    private function assertDateInCurrentYear(\DateTimeImmutable $date, string $message): void
+    private function assertDateInCurrentYear(\DateTimeImmutable $date): void
     {
         $currentYear = (new \DateTimeImmutable())->format('Y');
         if ($date->format('Y') !== $currentYear) {
-            throw new \InvalidArgumentException($message);
+            throw new \InvalidArgumentException('report.validations.ending_not_current_year');
         }
     }
 
@@ -98,6 +99,21 @@ class Period implements \Stringable
     ): void {
         if ($ending_at < $starting_at) {
             throw new \InvalidArgumentException('report.validations.invalid_end_date');
+        }
+    }
+
+    private function assertWeekPeriod(\DateTimeImmutable $starting_at, \DateTimeImmutable $ending_at): void
+    {
+        $days = $ending_at->diff($starting_at)->days;
+        if (6 === $days) {
+            throw new \InvalidArgumentException('report.validations.weeK_interval');
+        }
+    }
+
+    private function assertStartOnMondayEndOnSaturday(\DateTimeImmutable $starting_at, \DateTimeImmutable $ending_at): void
+    {
+        if (1 !== intval($starting_at->format('w')) || 6 !== intval($ending_at->format('w'))) {
+            throw new \InvalidArgumentException('report.validations.week_days');
         }
     }
 }

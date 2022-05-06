@@ -21,7 +21,7 @@
             </li>
             {% if data.mutable %}
                 <li>
-                    <a href="" class="btn btn-primary" aria-label="{{ 'global.edit' | trans([], 'messages') }}" title="{{ 'global.edit' | trans([], 'messages') }}">
+                    <a href="{{ path('report_employee_report_edit', {uuid: data.uuid}) }}" class="btn btn-primary" aria-label="{{ 'global.edit' | trans([], 'messages') }}" title="{{ 'global.edit' | trans([], 'messages') }}">
                         {{ 'edit-alt-fill' | icon }}
                         <span>{{ 'global.edit' | trans([], 'messages') }}</span>
                     </a>

@@ -11,10 +11,13 @@ final class UpdateReportCommand
 {
     public function __construct(
         public readonly Report $report,
+        public Period $period,
         public ?string $name = null,
         public ?string $description = null,
         public array $documents = [],
-        public ?Period $period = null,
     ) {
+        $this->name = $this->report->getName();
+        $this->description = $this->report->getDescription();
+        $this->period = $this->report->getPeriod();
     }
 }
