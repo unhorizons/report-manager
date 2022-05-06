@@ -27,6 +27,17 @@ Domain\Report\Entity\Report:
         created_at: <dateTimeThisYear()>
         updated_at: ~
 
+Domain\Report\Entity\Document:
+    document (template):
+        uuid: <uuid()>
+        file_url: default
+        file_type: application/pdf
+        file_size: 1024
+
+        # Timestamp
+        created_at: <dateTimeThisYear()>
+        updated_at: ~
+
 Domain\Report\Entity\Evaluation:
     evaluation (template):
         content: <text()>

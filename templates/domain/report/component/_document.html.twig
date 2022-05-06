@@ -2,7 +2,7 @@
     <div class="nk-file-info">
         <div class="nk-file-title">
             <div class="nk-file-icon">
-                <a class="nk-file-icon-link" href="#">
+                <a class="nk-file-icon-link" href="{{ vich_uploader_asset(data, 'file') }}">
                     <span class="nk-file-icon-type">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
                             <path d="M49,61H23a5.0147,5.0147,0,0,1-5-5V16a5.0147,5.0147,0,0,1,5-5H40.9091L54,22.1111V56A5.0147,5.0147,0,0,1,49,61Z" style="fill:#e3edfc"></path>
@@ -15,24 +15,24 @@
             </div>
             <div class="nk-file-name">
                 <div class="nk-file-name-text">
-                    <a href="#" class="title">document</a>
+                    <a href="{{ vich_uploader_asset(data, 'file') }}" class="title">
+                        Document #{{ data.id }}
+                    </a>
                 </div>
             </div>
         </div>
         <ul class="nk-file-desc">
             <li class="date">{{ data.updatedAt ? data.updatedAt | date('d, M') : data.createdAt | date('d, M') }}</li>
-            <li class="size">23 MB</li>
+            <li class="size">{{ data.readableSize }}</li>
         </ul>
     </div>
     <div class="nk-file-actions">
-        <div class="dropdown">
-            <a href="" class="dropdown-toggle btn btn-sm btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <ul class="link-list-plain no-bdr">
-                    <li><a href="#file-share" data-toggle="modal"><em class="icon ni ni-share"></em><span>Share</span></a></li>
-                    <li><a href="#" class="file-dl-toast"><em class="icon ni ni-download"></em><span>Download</span></a></li>
-                </ul>
-            </div>
-        </div>
+        <form action="{{ path('report_document_delete', {uuid: data.uuid}) }}" method="post" class="d-inline-block">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ data.id) }}">
+            <button class="btn btn-sm btn-icon btn-trigger" title="{{ 'global.delete' | trans([], 'messages') }}" aria-label="{{ 'global.delete' | trans([], 'messages') }}">
+                {{ 'trash-empty-fill' | icon }}
+            </button>
+        </form>
     </div>
 </div>

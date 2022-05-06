@@ -6,17 +6,12 @@ namespace Domain\Report\Exception;
 
 use Domain\Shared\Exception\SafeMessageException;
 
-/**
- * Class NonMutableReportException.
- *
- * @author bernard-ng <bernard@devscast.tech>
- */
-final class NonMutableReportException extends SafeMessageException
+final class DeleteReportWithEvaluationException extends SafeMessageException
 {
     protected string $messageDomain = 'report';
 
     public function __construct(
-        string $message = 'report.exceptions.immutable_when_seen',
+        string $message = 'report.exceptions.delete_report_with_evaluation',
         array $messageData = [],
         int $code = 0,
         \Throwable $previous = null

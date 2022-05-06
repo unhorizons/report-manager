@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Infrastructure\Report\Doctrine\Repository;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Domain\Authentication\Entity\User;
 use Domain\Report\Entity\Report;
+use Domain\Report\Exception\DeleteReportWithEvaluationException;
 use Domain\Report\Repository\ReportRepositoryInterface;
-use Domain\Report\ValueObject\IntervalDate;
+use Domain\Report\ValueObject\Period;
 use Domain\Report\ValueObject\Status;
 use Infrastructure\Shared\Doctrine\Repository\AbstractRepository;
 
@@ -24,14 +27,26 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         parent::__construct($registry, Report::class);
     }
 
-    public function findAllForInterval(IntervalDate $interval): ?Report
+    public function delete(object $entity): void
     {
-        /** @var Report|null $result */
+        try {
+            parent::delete($entity);
+        } catch (ForeignKeyConstraintViolationException $e) {
+            throw new DeleteReportWithEvaluationException(previous: $e);
+        }
+    }
+
+    public function findAllForPeriod(Period $period): array
+    {
+        /** @var Report[] $result */
         $result = $this->createQueryBuilder('r')
-            ->where('r.interval_date.starting_at = :start')
-            ->andWhere('r.interval_date.ending_at = :end')
-            ->setParameter('start', $interval->getStartingAt())
-            ->set('end', $interval->getEndingAt());
+            ->where('r.period.starting_at = :start')
+            ->andWhere('r.period.ending_at = :end')
+            ->setParameter('start', $period->getStartingAt())
+            ->setParameter('end', $period->getEndingAt())
+            ->orderBy('r.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $result;
     }
@@ -42,22 +57,22 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         $result = $this->createQueryBuilder('r')
             ->where('r.employee = :employee')
             ->setParameter('employee', $employee)
+            ->orderBy('r.created_at', 'DESC')
             ->getQuery()
             ->getResult();
 
         return $result;
     }
 
-    public function findAllForEmployeeInInterval(User $employee, IntervalDate $interval): array
+    public function findAllForEmployeeForPeriod(User $employee, string $source): array
     {
         /** @var Report[] $result */
         $result = $this->createQueryBuilder('r')
-            ->where('r.interval_date.starting_at = :start')
-            ->andWhere('r.interval_date.ending_at = :end')
+            ->where('r.period.source = :source')
             ->andWhere('r.employee = :employee')
-            ->setParameter('start', $interval->getStartingAt())
-            ->setParameter('end', $interval->getEndingAt())
-            ->set('employee', $employee)
+            ->setParameter('employee', $employee)
+            ->setParameter('source', $source)
+            ->orderBy('r.created_at', 'DESC')
             ->getQuery()
             ->getResult();
 
@@ -70,6 +85,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         $result = $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
             ->setParameter('status', (string) Status::unseen())
+            ->orderBy('r.created_at', 'DESC')
             ->getQuery()
             ->getResult();
 
@@ -82,9 +98,28 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         $result = $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
             ->setParameter('status', (string) Status::seen())
+            ->orderBy('r.created_at', 'DESC')
             ->getQuery()
             ->getResult();
 
         return $result;
+    }
+
+    public function hasReportMatchingHashForEmployee(User $employee, string $hash): bool
+    {
+        try {
+            /** @var Report|null $result */
+            $result = $this->createQueryBuilder('r')
+                ->where('r.period.hash = :hash')
+                ->andWhere('r.employee = :employee')
+                ->setParameter('hash', $hash)
+                ->setParameter('employee', $employee)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException) {
+            return true;
+        }
+
+        return null !== $result;
     }
 }

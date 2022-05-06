@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Shared\Symfony\Controller;
 
+use Domain\Shared\Exception\SafeMessageException;
 use Infrastructure\Shared\Symfony\Messenger\DispatchTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
@@ -78,7 +79,31 @@ abstract class AbstractController extends SymfonyAbstractController
 
     protected function handleUnexpectedException(\Throwable $e): void
     {
+        if ($e instanceof SafeMessageException) {
+            $message = $this->getSafeMessageException($e);
+        } else {
+            $message = $this->translator->trans(
+                id: 'flashes.something_went_wrong',
+                parameters: [],
+                domain: 'messages'
+            );
+        }
+
         $this->logger->error($e->getMessage(), $e->getTrace());
+        $this->addFlash('error', $message);
+    }
+
+    protected function getSafeMessageException(SafeMessageException $e): string
+    {
+        return $this->translator->trans(
+            id: $e->getMessageKey(),
+            parameters: $e->getMessageData(),
+            domain: $e->getMessageDomain()
+        );
+    }
+
+    protected function addSomethingWentWrongFlash(): void
+    {
         $this->addFlash('error', $this->translator->trans(
             id: 'flashes.something_went_wrong',
             parameters: [],

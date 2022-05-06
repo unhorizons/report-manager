@@ -26,8 +26,12 @@ report:
                 index: Gestions des rapports
             links: ~
     flashes:
-        report_deleted_successfully: 'le rapport #%id% a bien été supprimé'
-        report_updated_successfully: 'le rapport #%id% a bien été modifié'
-        report_created_successfully: 'le rapport a bien été crée et soumis'
+        report_deleted_successfully: 'le rapport # %id% a bien été supprimé'
+        report_updated_successfully: 'le rapport # %id% a bien été modifié'
+        report_created_successfully: le rapport a bien été crée et soumis
+        document_deleted_successfully: le document a bien été supprimé
     exceptions:
-        immutable_when_seen: "Impossible d'apporter des modifications une fois que le rapport ait été soumis et vu"
+        immutable_when_seen: Impossible d'apporter des modifications une fois que le rapport ait été soumis et lu.
+        delete_report_with_evaluation: Désolé, il est impossible de supprimer un rapport ayant déjà reçu au moins une évaluation.
+        report_for_period_already_exists: Il existe déjà un rapport couvrant cette période pour votre compte.
+        empty_document_report: Désolé vous ne pouvez pas supprimer l'unique document associé rapport.

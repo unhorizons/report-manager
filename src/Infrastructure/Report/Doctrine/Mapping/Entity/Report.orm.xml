@@ -6,7 +6,7 @@
 
     <entity name="Domain\Report\Entity\Report" repository-class="Infrastructure\Report\Doctrine\Repository\ReportRepository" table="report">
         <indexes>
-            <index columns="starting_at,ending_at" />
+            <index columns="period_starting_at,period_ending_at,period_source" />
             <index columns="status" />
         </indexes>
         <lifecycle-callbacks>
@@ -23,7 +23,7 @@
         <field name="description" type="text" nullable="true"/>
 
         <many-to-one field="employee" target-entity="Domain\Authentication\Entity\User" />
-        <one-to-many field="documents" target-entity="Domain\Report\Entity\Document" mapped-by="report" >
+        <one-to-many field="documents" target-entity="Domain\Report\Entity\Document" mapped-by="report" orphan-removal="true" >
             <cascade>
                 <cascade-persist/>
             </cascade>
@@ -33,7 +33,7 @@
         </one-to-many>
 
         <!-- Value object -->
-        <embedded name="interval_date" class="Domain\Report\ValueObject\IntervalDate" use-column-prefix="false" />
+        <embedded name="period" class="Domain\Report\ValueObject\Period" use-column-prefix="true" />
         <embedded name="status" class="Domain\Report\ValueObject\Status" use-column-prefix="false" />
 
         <!-- Timestamp -->

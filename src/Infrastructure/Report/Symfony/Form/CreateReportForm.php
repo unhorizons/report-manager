@@ -24,8 +24,11 @@ final class CreateReportForm extends AbstractType
     {
         $builder->add('name', TextType::class)
             ->add('description', AutoGrowTextareaType::class)
-            ->add('interval_date', IntervalDateType::class)
+            ->add('period', IntervalDateType::class)
             ->add('documents', DropzoneType::class, [
+                'attr' => [
+                    'accept' => 'application/pdf, application/x-pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                ],
                 'multiple' => true,
             ]);
     }

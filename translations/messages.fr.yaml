@@ -11,6 +11,7 @@ global:
     back: Retour
     edit: Modifier
     delete: Supprimer
+    documents: Documents annexés
 
 app_name: UNH Rapports
 ROLE_USER: Employé

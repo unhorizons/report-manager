@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Report\Symfony\Form\ValueObject;
 
-use Domain\Report\ValueObject\IntervalDate;
+use Domain\Report\ValueObject\Period;
 use Infrastructure\Shared\Symfony\Form\Type\DatePickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
@@ -24,19 +24,20 @@ final class IntervalDateType extends AbstractType implements DataMapperInterface
         $builder
             ->add('starting_at', DatePickerType::class)
             ->add('ending_at', DatePickerType::class)
+            ->setDataMapper($this)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => IntervalDate::class,
+            'data_class' => Period::class,
             'empty_data' => null,
         ]);
     }
 
     /**
-     * @param IntervalDate $viewData
+     * @param Period $viewData
      */
     public function mapDataToForms(mixed $viewData, \Traversable $forms): void
     {
@@ -46,13 +47,13 @@ final class IntervalDateType extends AbstractType implements DataMapperInterface
     }
 
     /**
-     * @param IntervalDate $viewData
+     * @param Period $viewData
      */
     public function mapFormsToData(\Traversable $forms, mixed &$viewData): void
     {
         $forms = iterator_to_array($forms);
         try {
-            $viewData = IntervalDate::fromArray([
+            $viewData = Period::fromArray([
                 $forms['starting_at']->getData(),
                 $forms['ending_at']->getData(),
             ]);

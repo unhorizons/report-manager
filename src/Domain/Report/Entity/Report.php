@@ -7,7 +7,7 @@ namespace Domain\Report\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Domain\Authentication\Entity\User;
-use Domain\Report\ValueObject\IntervalDate;
+use Domain\Report\ValueObject\Period;
 use Domain\Report\ValueObject\Status;
 use Domain\Shared\Entity\IdentityTrait;
 use Domain\Shared\Entity\TimestampTrait;
@@ -31,7 +31,7 @@ class Report
 
     private Status $status;
 
-    private IntervalDate $interval_date;
+    private Period $period;
 
     private ?User $employee = null;
 
@@ -49,7 +49,7 @@ class Report
     {
         $this->uuid = Uuid::v4();
         $this->status = Status::unseen();
-        $this->interval_date = IntervalDate::createDefault();
+        $this->period = Period::createForPreviousWeek();
         $this->documents = new ArrayCollection();
     }
 
@@ -77,18 +77,14 @@ class Report
         return $this;
     }
 
-    public function getIntervalDate(): IntervalDate
+    public function getPeriod(): Period
     {
-        return $this->interval_date;
+        return $this->period;
     }
 
-    public function setIntervalDate(IntervalDate|array $date): self
+    public function setPeriod(Period $period): self
     {
-        if ($date instanceof IntervalDate) {
-            $this->interval_date = $date;
-        } else {
-            $this->interval_date = IntervalDate::fromArray($date);
-        }
+        $this->period = $period;
 
         return $this;
     }
@@ -159,11 +155,29 @@ class Report
         return $this->documents;
     }
 
-    public function addDocument(Document $document): self
+    public function setDocuments(?array $documents): self
     {
-        if (! $this->documents->contains($document)) {
-            $this->documents[] = $document;
-            $document->setReport($this);
+        if (null !== $documents) {
+            foreach ($documents as $document) {
+                $d = (new Document())->setReport($this)->setFile($document);
+                $this->addDocument($d);
+            }
+
+            $this->updated_at = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
+    public function addDocument(Document|\SplFileInfo $document): self
+    {
+        if ($document instanceof Document) {
+            if (! $this->documents->contains($document)) {
+                $this->documents[] = $document;
+                $document->setReport($this);
+            }
+        } else {
+            (new Document())->setReport($this)->setFile($document);
         }
 
         return $this;

@@ -5,13 +5,26 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="Domain\Report\Entity\Evaluation" repository-class="Infrastructure\Report\Doctrine\Repository\EvaluationRepository">
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="setCreatedAtOnPrePersist"/>
+            <lifecycle-callback type="postUpdate" method="setUpdatedAtOnPostUpdate"/>
+        </lifecycle-callbacks>
+
         <id name="id" type="integer" column="id">
             <generator strategy="IDENTITY"/>
         </id>
 
         <field name="content" type="text"/>
-        <many-to-one field="report" target-entity="Domain\Report\Entity\Report"/>
-        <many-to-one field="manager" target-entity="Domain\Authentication\Entity\User"/>
+        <many-to-one field="report" target-entity="Domain\Report\Entity\Report">
+            <cascade>
+                <cascade-remove />
+            </cascade>
+        </many-to-one>
+        <many-to-one field="manager" target-entity="Domain\Authentication\Entity\User">
+            <cascade>
+                <cascade-remove />
+            </cascade>
+        </many-to-one>
 
 
         <!-- Timestamp -->

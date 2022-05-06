@@ -11,6 +11,7 @@ use Domain\Authentication\Entity\User;
 use Domain\Report\Entity\Report;
 use Domain\Report\Repository\EvaluationRepositoryInterface;
 use Domain\Report\Repository\ReportRepositoryInterface;
+use Domain\Report\ValueObject\Period;
 use Infrastructure\Report\Symfony\Form\CreateReportForm;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Infrastructure\Shared\Symfony\Controller\DeleteCsrfTrait;
@@ -57,7 +58,10 @@ final class EmployeeReportController extends AbstractController
     {
         /** @var User $employee */
         $employee = $this->getUser();
-        $command = new CreateReportCommand(employee: $employee);
+        $command = new CreateReportCommand(
+            employee: $employee,
+            period: Period::createForPreviousWeek()
+        );
         $form = $this->createForm(CreateReportForm::class, $command)
             ->handleRequest($request);
 
@@ -69,6 +73,8 @@ final class EmployeeReportController extends AbstractController
                     parameters: [],
                     domain: 'report'
                 ));
+
+                $this->redirectSeeOther('report_employee_report_index');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
             }
@@ -117,14 +123,10 @@ final class EmployeeReportController extends AbstractController
                 $this->handleUnexpectedException($e);
             }
         } else {
-            $this->addFlash('error', $this->translator->trans(
-                id: 'flashes.something_went_wrong',
-                parameters: [],
-                domain: 'messages'
-            ));
+            $this->addSomethingWentWrongFlash();
 
             return $this->redirectSeeOther('report_employee_report_show', [
-                'id' => $report->getId(),
+                'uuid' => $report->getUuid(),
             ]);
         }
 

@@ -15,8 +15,12 @@ Domain\Authentication\Entity\User:
     user{1..10} (extends user):
 
 Domain\Report\Entity\Report:
-    report{1..20} (extends report):
-        employee: '@user1'
+    report{1..40} (extends report):
+        employee: '@user*'
+
+Domain\Report\Entity\Document:
+    document{1..60} (extends document):
+        report: '@report*'
 
 Domain\Report\Entity\Evaluation:
     evaluation{1..50} (extends evaluation):

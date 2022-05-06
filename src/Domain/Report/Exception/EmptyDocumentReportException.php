@@ -7,16 +7,16 @@ namespace Domain\Report\Exception;
 use Domain\Shared\Exception\SafeMessageException;
 
 /**
- * Class NonMutableReportException.
+ * Class EmptyDocumentReportException.
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-final class NonMutableReportException extends SafeMessageException
+final class EmptyDocumentReportException extends SafeMessageException
 {
     protected string $messageDomain = 'report';
 
     public function __construct(
-        string $message = 'report.exceptions.immutable_when_seen',
+        string $message = 'report.exceptions.empty_document_report',
         array $messageData = [],
         int $code = 0,
         \Throwable $previous = null

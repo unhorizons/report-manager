@@ -11,10 +11,12 @@ use Webmozart\Assert\Assert;
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-class IntervalDate
+class Period implements \Stringable
 {
     private readonly \DateTimeImmutable $starting_at;
     private readonly \DateTimeImmutable $ending_at;
+    private readonly string $hash;
+    private readonly string $source;
 
     private function __construct(\DateTimeImmutable $starting_at, \DateTimeImmutable $ending_at)
     {
@@ -24,13 +26,21 @@ class IntervalDate
 
         $this->starting_at = $starting_at;
         $this->ending_at = $ending_at;
+
+        $this->source = $starting_at->format('Ymd') . '-' . $ending_at->format('Ymd');
+        $this->hash = md5($this->source);
     }
 
-    public static function createDefault(): self
+    public function __toString(): string
+    {
+        return $this->starting_at->format('d M Y') . ' - ' . $this->ending_at->format('d M Y');
+    }
+
+    public static function createForPreviousWeek(): self
     {
         return new self(
-            starting_at: new \DateTimeImmutable(),
-            ending_at: new \DateTimeImmutable('+ 7 days')
+            starting_at: new \DateTimeImmutable('- 7 days'),
+            ending_at: new \DateTimeImmutable()
         );
     }
 
@@ -38,7 +48,10 @@ class IntervalDate
     {
         Assert::notEmpty($dates, 'report.validations.empty_dates');
 
-        return new self($dates[0], $dates[1]);
+        $starting = \DateTimeImmutable::createFromInterface($dates[0]);
+        $ending = \DateTimeImmutable::createFromInterface($dates[1]);
+
+        return new self($starting, $ending);
     }
 
     public function toArray(): array
@@ -48,8 +61,7 @@ class IntervalDate
 
     public function equals(self $date): bool
     {
-        return $this->starting_at === $date->starting_at &&
-            $this->ending_at === $date->ending_at;
+        return $date->hash === $this->hash;
     }
 
     public function getStartingAt(): \DateTimeImmutable
@@ -60,6 +72,16 @@ class IntervalDate
     public function getEndingAt(): \DateTimeImmutable
     {
         return $this->ending_at;
+    }
+
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
+
+    public function getSource(): string
+    {
+        return $this->source;
     }
 
     private function assertDateInCurrentYear(\DateTimeImmutable $date, string $message): void

@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Domain\Report\Repository;
 
 use Domain\Authentication\Entity\User;
-use Domain\Report\Entity\Report;
-use Domain\Report\ValueObject\IntervalDate;
+use Domain\Report\ValueObject\Period;
 use Domain\Shared\Repository\DataRepositoryInterface;
 
 /**
@@ -16,11 +15,13 @@ use Domain\Shared\Repository\DataRepositoryInterface;
  */
 interface ReportRepositoryInterface extends DataRepositoryInterface
 {
-    public function findAllForInterval(IntervalDate $interval): ?Report;
+    public function findAllForPeriod(Period $period): array;
 
     public function findAllForEmployee(User $employee): array;
 
-    public function findAllForEmployeeInInterval(User $employee, IntervalDate $interval): array;
+    public function findAllForEmployeeForPeriod(User $employee, string $source): array;
+
+    public function hasReportMatchingHashForEmployee(User $employee, string $hash): bool;
 
     public function findAllSeen(): array;
 

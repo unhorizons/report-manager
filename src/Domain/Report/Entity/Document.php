@@ -6,7 +6,6 @@ namespace Domain\Report\Entity;
 
 use Domain\Shared\Entity\IdentityTrait;
 use Domain\Shared\Entity\TimestampTrait;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Uid\Uuid;
 
@@ -22,7 +21,7 @@ class Document
 
     private Uuid $uuid;
 
-    private ?File $file = null;
+    private ?\SplFileInfo $file = null;
 
     private ?string $file_url = null;
 
@@ -37,12 +36,12 @@ class Document
         $this->uuid = Uuid::v4();
     }
 
-    public function getFile(): ?File
+    public function getFile(): ?\SplFileInfo
     {
         return $this->file;
     }
 
-    public function setFile(?File $file): self
+    public function setFile(?\SplFileInfo $file): self
     {
         $this->file = $file;
         if ($this->file instanceof UploadedFile) {
@@ -114,5 +113,10 @@ class Document
         }
 
         return $this;
+    }
+
+    public function getReadableSize(): string
+    {
+        return round(($this->file_size / 1024) / 1024, 2) . ' Mb';
     }
 }
