@@ -120,6 +120,8 @@ final class EmployeeReportController extends AbstractController
                     ],
                     domain: 'report'
                 ));
+
+                return $this->redirectSeeOther('report_employee_report_index');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
             }

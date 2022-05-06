@@ -22,8 +22,12 @@ final class PeriodType extends AbstractType implements DataMapperInterface
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('starting_at', DatePickerType::class)
-            ->add('ending_at', DatePickerType::class)
+            ->add('starting_at', DatePickerType::class, [
+                'label' => 'report.forms.labels.starting_at',
+            ])
+            ->add('ending_at', DatePickerType::class, [
+                'label' => 'report.forms.labels.ending_at',
+            ])
             ->setDataMapper($this)
         ;
     }

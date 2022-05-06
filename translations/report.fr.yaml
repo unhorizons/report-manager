@@ -38,4 +38,16 @@ report:
     validations:
         ending_not_current_year: la date de fin doit être de l'année en cours
         invalid_end_date: la date de début ne peut être plus récente que celle de fin
-        weeK_interval: le rapport est hebdomadaire il doit couvrir une période de 6 ou 7 jours
+        weeK_interval: le rapport est hebdomadaire il doit couvrir une période de 6 jours
+        week_days: le début de la période d'un rapport doit nécessairement être un lundi et la fin un samedi
+    forms:
+        labels:
+            name: Titre
+            description: Description
+            period: Période couverte par ce rapport
+            starting_at: Début
+            ending_at: Fin
+            documents: Documents à annexer
+            documents_help: Vous pouvez annexer plusieurs documents
+        placeholders:
+            name: "rapport : mise en place du projet..."

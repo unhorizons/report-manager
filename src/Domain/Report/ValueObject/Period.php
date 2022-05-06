@@ -22,8 +22,8 @@ class Period implements \Stringable
     {
         $this->assertDateInCurrentYear($ending_at);
         $this->assertEndingGreaterThenStartingDate($starting_at, $ending_at);
-        $this->assertWeekPeriod($starting_at, $ending_at);
-        $this->assertStartOnMondayEndOnSaturday($starting_at, $ending_at);
+        //$this->assertWeekPeriod($starting_at, $ending_at);
+        //$this->assertStartOnMondayEndOnSaturday($starting_at, $ending_at);
 
         $this->starting_at = $starting_at;
         $this->ending_at = $ending_at;
@@ -40,7 +40,7 @@ class Period implements \Stringable
     public static function createForPreviousWeek(): self
     {
         return new self(
-            starting_at: new \DateTimeImmutable('- 7 days'),
+            starting_at: new \DateTimeImmutable('- 6 days'),
             ending_at: new \DateTimeImmutable()
         );
     }

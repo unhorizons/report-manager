@@ -22,10 +22,22 @@ final class UpdateReportForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name', TextType::class)
-            ->add('description', AutoGrowTextareaType::class)
-            ->add('period', PeriodType::class)
+        $builder
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'report.forms.placeholders.name',
+                ],
+                'label' => 'report.forms.labels.name',
+            ])
+            ->add('description', AutoGrowTextareaType::class, [
+                'label' => 'report.forms.labels.description',
+            ])
+            ->add('period', PeriodType::class, [
+                'label' => 'report.forms.labels.period',
+            ])
             ->add('documents', DropzoneType::class, [
+                'label' => 'report.forms.labels.documents',
+                'help' => 'report.forms.labels.documents_help',
                 'attr' => [
                     'accept' => 'application/pdf, application/x-pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 ],
