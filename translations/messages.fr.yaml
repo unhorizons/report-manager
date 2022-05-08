@@ -23,6 +23,7 @@ flashes:
     something_went_wrong: Désolé une erreur est survenue de notre côté, veuillez réessayer
 
 employee_reports: Mes rapports
+manager_reports: Rapports reçus
 employee_evaluations: Évaluations reçues
 reports: Rapports
 report: Rapport
@@ -33,4 +34,5 @@ user: Utilisateurs
 uuid: Identifiant
 created_at: Crée le
 content: Contenu
-
+seen: Lu
+unseen: Non Lu

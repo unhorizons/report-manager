@@ -1,17 +1,9 @@
 {% extends 'domain/report/layout/base.html.twig' %}
-{% block title 'employee_reports' | trans([], 'messages') %}
+{% block title 'manager_reports' | trans([], 'messages') %}
 
 {% block header %}
     {% embed 'shared/component/_header.html.twig' %}
-        {% block header_title 'employee_reports' | trans([], 'messages') %}
-        {% block header_action_list %}
-            <li>
-                <a href="{{ path('report_employee_report_new') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.create' | trans([], 'report') }}" title="{{ 'report.actions.create' | trans([], 'report') }}">
-                    {{ 'plus' | icon }}
-                    <span>{{ 'report.actions.create' | trans([], 'report') }}</span>
-                </a>
-            </li>
-        {% endblock %}
+        {% block header_title 'manager_reports' | trans([], 'messages') %}
     {% endembed %}
 {% endblock %}
 
@@ -20,6 +12,7 @@
         {% block list_card_table_head %}
             <th>#</th>
             <th>{{ "report.name" | trans([], 'report') }}</th>
+            <th>{{ "report.employee" | trans([], 'report') }}</th>
             <th>{{ "report.status" | trans([], 'report') }}</th>
             <th>{{ "report.period" | trans([], 'report') }}</th>
             <th>&nbsp;</th>
@@ -28,12 +21,13 @@
             {% for row in data %}
                 <tr>
                     <td>{{ row.id }}</td>
-                    <td>{{ row.name | u.truncate(60, '...') }}</td>
+                    <td>{{ row.name | u.truncate(30, '...') }}</td>
+                    <td>{{ row.employee.username }}</td>
                     <td>{{ row.status | badge }}</td>
                     <td>{{ row.period }}</td>
                     <td class="tb-odr-action">
                         <div class="tb-odr-btns d-none d-md-inline">
-                            <a href="{{ path('report_employee_report_show', {uuid: row.uuid}) }}" class="btn btn-sm btn-primary" title="{{ 'global.show' | trans([], 'messages') }}">
+                            <a href="{{ path('report_manager_report_show', {uuid: row.uuid}) }}" class="btn btn-sm btn-primary" title="{{ 'global.show' | trans([], 'messages') }}">
                                 {{ 'eye-alt-fill' | icon }}
                                 <span>{{ 'global.show' | trans([], 'messages') }}</span>
                             </a>

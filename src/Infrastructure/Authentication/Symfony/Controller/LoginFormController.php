@@ -24,6 +24,10 @@ final class LoginFormController extends AbstractController
     #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $utils): Response
     {
+        if ($this->getUser()) {
+            $this->redirectToRoute('app_index');
+        }
+
         $error = $utils->getLastAuthenticationError();
         $command = new LoginCommand();
 

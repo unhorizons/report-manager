@@ -1,14 +1,16 @@
-{% extends _format %}
+{% extends _layout %}
 {% import 'shared/layout/mail/macro.html.twig' as e %}
 
 {% block body %}
-    # Bonjour {{ report.user.username }},
+    {% apply markdown_email %}
+        # Bonjour {{ report.employee.username }},
 
-    Vous avez reçu une nouvelle évaluation de **{{ evaluation.user.username }}**,
+        Vous avez reçu une nouvelle évaluation de **{{ evaluation.manager.username }}**,
 
-    ```
-        {{ evaluation.content | u.truncate(100, '...') }}
-    ```
+        ```
+        {{ evaluation.content | u.truncate(300, '...') }}
+        ```
+    {% endapply %}
 
-    {{ e.button('lire plus', url('report_user_show', {id: report.id}), 'primary', _format) }}
+    {{ e.button('lire plus', url('report_employee_report_show', {uuid: report.uuid}), 'primary', _format) }}
 {% endblock %}

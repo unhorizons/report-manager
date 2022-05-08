@@ -26,4 +26,6 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
     public function findAllSeen(): array;
 
     public function findAllUnseen(): array;
+
+    public function findAllWithStatus(string $status): array;
 }

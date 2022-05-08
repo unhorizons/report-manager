@@ -9,34 +9,27 @@
         {% block header_description %}
             <ul class="list-inline">
                 <li>{{ 'uuid' | trans([], 'messages') }} : <span class="text-base">{{ data.uuid }}</span></li>
-                <li>{{ 'created_at' | trans([], 'messages') }} : <span class="text-base">{{ data.createdAt | date }}</span></li>
+                <li>{{ 'created_at' | trans([], 'messages') }} : <span
+                            class="text-base">{{ data.createdAt | date }}</span></li>
             </ul>
         {% endblock %}
         {% block header_action_list %}
             <li>
-                <a href="{{ path('report_employee_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light"
+                   aria-label="{{ 'global.back' | trans([], 'messages') }}"
+                   title="{{ 'global.back' | trans([], 'messages') }}">
                     {{ 'arrow-long-left' | icon }}
                     <span>{{ 'global.back' | trans([], 'messages') }}</span>
                 </a>
             </li>
-            {% if data.mutable %}
-                <li>
-                    <a href="{{ path('report_employee_report_edit', {uuid: data.uuid}) }}" class="btn btn-primary" aria-label="{{ 'global.edit' | trans([], 'messages') }}" title="{{ 'global.edit' | trans([], 'messages') }}">
-                        {{ 'edit-alt-fill' | icon }}
-                        <span>{{ 'global.edit' | trans([], 'messages') }}</span>
-                    </a>
-                </li>
-                <li>
-                    <form class="d-inline-block" method="post" action="" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value='{{ csrf_token("delete_#{data.id}") }}'>
-                        <button is="app-confirm-button" title="{{ 'global.delete' | trans([], 'messages') }}" aria-label="{{ 'global.delete' | trans([], 'messages') }}" class="btn btn-danger">
-                            {{ 'trash-empty-fill' | icon }}
-                            <span>{{ 'global.delete' | trans([], 'messages') }}</span>
-                        </button>
-                    </form>
-                </li>
-            {% endif %}
+            <li>
+                <a href="{{ path('report_manager_evaluation_new', {report: data.uuid}) }}" class="btn btn-primary"
+                   aria-label="{{ 'report.actions.create_evaluation' | trans([], 'report') }}"
+                   title="{{ 'report.actions.create_evaluation' | trans([], 'report') }}">
+                    {{ 'comments' | icon }}
+                    <span>{{ 'report.actions.create_evaluation' | trans([], 'report') }}</span>
+                </a>
+            </li>
         {% endblock %}
     {% endembed %}
 {% endblock %}
@@ -48,7 +41,7 @@
             <div class="nk-block">
                 <div class="nk-block-head">
                     <h5 class="title">{{ data.name }}</h5>
-                    <p>{{  data.description }}</p>
+                    <p>{{ data.description }}</p>
                 </div>
             </div>
 
@@ -68,19 +61,20 @@
                 </div>
             {% endif %}
 
-            {% if data.evaluations | length > 0 %}
-                <div class="nk-divider divider md"></div>
-                <div class="nk-block">
-                    <div class="nk-block-head nk-block-head-sm nk-block-between">
-                        <h5 class="title">{{ 'evaluations' | trans([], 'messages') }}</h5>
-                    </div>
+            <div class="nk-divider divider md"></div>
+            <div class="nk-block">
+                <div class="nk-block-head nk-block-head-sm nk-block-between">
+                    <h5 class="title">{{ 'evaluations' | trans([], 'messages') }}</h5>
+                    <a href="{{ path('report_manager_evaluation_new', {report: data.uuid}) }}" class="link link-sm">+ ajouter une évaluation</a>
+                </div>
+                {% if data.evaluations | length > 0 %}
                     <div class="bq-note">
                         {% for evaluation in data.evaluations %}
                             {% include 'domain/report/component/_evaluation.html.twig' with {data: evaluation, report: data} %}
                         {% endfor %}
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         {% endblock %}
     {% endembed %}
 {% endblock %}

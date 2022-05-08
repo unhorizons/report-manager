@@ -245,12 +245,12 @@ img {
 
 .button-blue,
 .button-primary {
-  background-color: rgb(5, 255, 187);
-  border-bottom: 8px solid rgb(5, 255, 187);
-  border-left: 18px solid rgb(5, 255, 187);
-  border-right: 18px solid rgb(5, 255, 187);
-  border-top: 8px solid rgb(5, 255, 187);
-  color: rgb(17, 24, 39);
+  background-color: #3A8FAE;
+  border-bottom: 8px solid #3A8FAE;
+  border-left: 18px solid #3A8FAE;
+  border-right: 18px solid #3A8FAE;
+  border-top: 8px solid #3A8FAE;
+  color: #fff;
 }
 
 .button-green,

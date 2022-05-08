@@ -6,9 +6,9 @@
             {% if (is_granted('ROLE_ADMIN', app.user)) %}
                 {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\AdminSidebar') }}
             {% elseif(is_granted('ROLE_REPORT_MANAGER', app.user)) %}
-                {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\ReportManagerSidebar') }}
+                {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\ManagerSidebar') }}
             {% elseif(is_granted('ROLE_USER')) %}
-                {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\UserSidebar') }}
+                {{ sidebar_render('Infrastructure\\Report\\Symfony\\Twig\\Sidebar\\EmployeeSidebar') }}
             {% endif %}
         {% endblock %}
     {% endembed %}

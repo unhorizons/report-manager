@@ -15,7 +15,7 @@ use Infrastructure\Shared\Symfony\Twig\Sidebar\Type\SidebarLink;
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-final class UserSidebar extends AbstractSidebar
+final class EmployeeSidebar extends AbstractSidebar
 {
     public function build(SidebarBuilderInterface $builder): SidebarCollection
     {

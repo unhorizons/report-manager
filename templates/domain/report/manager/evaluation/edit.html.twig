@@ -1,0 +1,24 @@
+{% extends 'domain/report/layout/base.html.twig' %}
+{% block title "Modifier une évaluation" | title %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title "Modifier une évaluation" | title %}
+        {% block header_action_list %}
+            <li>
+                <a href="{{ path('report_manager_report_show', {uuid: report.uuid}) }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans }}" title="{{ 'global.back' | trans }}">
+                    {{ 'arrow-long-left' | icon }}
+                    <span>{{ 'global.back' | trans }}</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% embed "shared/component/card/_simple.html.twig" %}
+        {% block simple_card_body %}
+            {% include 'shared/component/_form.html.twig' %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -36,9 +36,9 @@ class Report
     private ?User $employee = null;
 
     /**
-     * @var Evaluation[]
+     * @var Collection<Evaluation>
      */
-    private array $evaluations = [];
+    private Collection $evaluations;
 
     /**
      * @var Collection<Document>
@@ -51,6 +51,7 @@ class Report
         $this->status = Status::unseen();
         $this->period = Period::createForPreviousWeek();
         $this->documents = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -138,14 +139,28 @@ class Report
         return $this;
     }
 
-    public function getEvaluations(): array
+    public function getEvaluations(): Collection
     {
         return $this->evaluations;
     }
 
-    public function setEvaluations(array $evaluations): self
+    public function addEvaluation(Evaluation $evaluation): self
     {
-        $this->evaluations = $evaluations;
+        if (! $this->evaluations->contains($evaluation)) {
+            $this->evaluations[] = $evaluation;
+            $evaluation->setReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): self
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            if ($evaluation->getReport() === $this) {
+                $evaluation->setReport(null);
+            }
+        }
 
         return $this;
     }

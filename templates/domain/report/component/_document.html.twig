@@ -26,13 +26,15 @@
             <li class="size">{{ data.readableSize }}</li>
         </ul>
     </div>
-    <div class="nk-file-actions">
-        <form action="{{ path('report_document_delete', {uuid: data.uuid}) }}" method="post" class="d-inline-block">
-            <input type="hidden" name="_method" value="DELETE">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ data.id) }}">
-            <button class="btn btn-sm btn-icon btn-trigger" title="{{ 'global.delete' | trans([], 'messages') }}" aria-label="{{ 'global.delete' | trans([], 'messages') }}">
-                {{ 'trash-empty-fill' | icon }}
-            </button>
-        </form>
-    </div>
+    {% if app.user.hasRole('ROLE_USER') %}
+        <div class="nk-file-actions">
+            <form action="{{ path('report_document_delete', {uuid: data.uuid}) }}" method="post" class="d-inline-block">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ data.id) }}">
+                <button class="btn btn-sm btn-icon btn-trigger" title="{{ 'global.delete' | trans([], 'messages') }}" aria-label="{{ 'global.delete' | trans([], 'messages') }}">
+                    {{ 'trash-empty-fill' | icon }}
+                </button>
+            </form>
+        </div>
+    {% endif %}
 </div>

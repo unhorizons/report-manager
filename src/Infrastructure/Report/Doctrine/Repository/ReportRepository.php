@@ -126,4 +126,13 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             return true;
         }
     }
+
+    public function findAllWithStatus(string $status): array
+    {
+        return match ($status) {
+            'seen' => $this->findAllSeen(),
+            'unseen' => $this->findAllUnseen(),
+            default => $this->findAll()
+        };
+    }
 }

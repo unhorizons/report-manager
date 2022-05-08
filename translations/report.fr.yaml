@@ -1,6 +1,12 @@
 report:
+    name: Titre
+    status: Statut
+    period: Période
+    employee: Employé
+
     actions:
         create: Ajouter un rapport
+        create_evaluation: Ajouter une évaluation
     titles:
         index: Accueil
         dashboard: Tableau de bord
@@ -21,15 +27,25 @@ report:
                 dashboard: Tableau de bord
                 index: Mes Rapports
                 evaluation: Mes Évaluations
-        report_managers:
+        managers:
             headers:
                 index: Gestions des rapports
-            links: ~
+            links:
+                all: Rapports reçus
+                seen: Rapports lus
+                unseen: Rapports non lus
+                index: Rapports reçus
+                dashboard: Statistiques
+
+
     flashes:
         report_deleted_successfully: 'le rapport # %id% a bien été supprimé'
         report_updated_successfully: 'le rapport # %id% a bien été modifié'
         report_created_successfully: le rapport a bien été crée et soumis
         document_deleted_successfully: le document a bien été supprimé
+        evaluation_deleted_successfully: l'évaluation a bien été supprimée
+        evaluation_created_successfully: l'évaluation a bien été créée
+        evaluation_updated_successfully: l'évaluation a bien été modifiée
     exceptions:
         immutable_when_seen: Impossible d'apporter des modifications une fois que le rapport ait été soumis et lu.
         delete_report_with_evaluation: Désolé, il est impossible de supprimer un rapport ayant déjà reçu au moins une évaluation.
@@ -44,6 +60,8 @@ report:
         labels:
             name: Titre
             description: Description
+            content: Évaluation
+            content_help: l'évaluation est aussi envoyé par email à l'employé
             period: Période couverte par ce rapport
             starting_at: Début
             ending_at: Fin

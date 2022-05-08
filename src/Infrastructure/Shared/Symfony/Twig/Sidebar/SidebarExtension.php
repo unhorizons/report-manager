@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Shared\Symfony\Twig\Sidebar;
 
-use Infrastructure\Report\Symfony\Twig\Sidebar\UserSidebar;
+use Infrastructure\Report\Symfony\Twig\Sidebar\EmployeeSidebar;
 use Infrastructure\Shared\Symfony\Twig\Sidebar\Type\SidebarGroup;
 use Infrastructure\Shared\Symfony\Twig\Sidebar\Type\SidebarHeader;
 use Infrastructure\Shared\Symfony\Twig\Sidebar\Type\SidebarLink;
@@ -34,7 +34,7 @@ class SidebarExtension extends AbstractExtension
     ) {
         $this->path = strval($stack->getCurrentRequest()?->getPathInfo());
         $this->route = strval($stack->getCurrentRequest()?->attributes?->get('_route'));
-        $this->defaultSidebarClass = UserSidebar::class;
+        $this->defaultSidebarClass = EmployeeSidebar::class;
     }
 
     public function getFunctions(): array

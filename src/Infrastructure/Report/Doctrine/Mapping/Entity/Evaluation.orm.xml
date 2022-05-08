@@ -15,16 +15,12 @@
         </id>
 
         <field name="content" type="text"/>
-        <many-to-one field="report" target-entity="Domain\Report\Entity\Report">
+        <many-to-one field="report" target-entity="Domain\Report\Entity\Report" inversed-by="evaluations">
             <cascade>
                 <cascade-remove />
             </cascade>
         </many-to-one>
-        <many-to-one field="manager" target-entity="Domain\Authentication\Entity\User">
-            <cascade>
-                <cascade-remove />
-            </cascade>
-        </many-to-one>
+        <many-to-one field="manager" target-entity="Domain\Authentication\Entity\User"/>
 
 
         <!-- Timestamp -->

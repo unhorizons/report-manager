@@ -178,4 +178,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->getEmail();
     }
+
+    public function hasRole(string $role): bool
+    {
+        if ('ROLE_USER' === $role && 1 !== count($this->getRoles())) {
+            return false;
+        }
+
+        return in_array($role, $this->getRoles(), true);
+    }
 }

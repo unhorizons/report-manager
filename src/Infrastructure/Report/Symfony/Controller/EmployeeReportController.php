@@ -9,7 +9,6 @@ use Application\Report\Command\DeleteReportCommand;
 use Application\Report\Command\UpdateReportCommand;
 use Domain\Authentication\Entity\User;
 use Domain\Report\Entity\Report;
-use Domain\Report\Repository\EvaluationRepositoryInterface;
 use Domain\Report\Repository\ReportRepositoryInterface;
 use Domain\Report\ValueObject\Period;
 use Infrastructure\Report\Symfony\Form\CreateReportForm;
@@ -91,11 +90,9 @@ final class EmployeeReportController extends AbstractController
     }
 
     #[Route('/{uuid}', name: 'show', methods: ['GET'])]
-    public function show(Report $report, EvaluationRepositoryInterface $repository): Response
+    public function show(Report $report): Response
     {
         $this->denyAccessUnlessGranted('REPORT_VIEW', $report);
-        $evaluations = $repository->findAllEvaluationForReport($report);
-        $report->setEvaluations($evaluations);
 
         return $this->render(
             view: 'domain/report/user/show.html.twig',

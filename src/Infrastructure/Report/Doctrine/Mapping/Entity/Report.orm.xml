@@ -22,11 +22,16 @@
         <field name="name" length="255" type="string"/>
         <field name="description" type="text" nullable="true"/>
 
-        <many-to-one field="employee" target-entity="Domain\Authentication\Entity\User" />
-        <one-to-many field="documents" target-entity="Domain\Report\Entity\Document" mapped-by="report" orphan-removal="true" >
+        <many-to-one field="employee" target-entity="Domain\Authentication\Entity\User" fetch="EAGER"/>
+        <one-to-many field="documents" target-entity="Domain\Report\Entity\Document" mapped-by="report" orphan-removal="true">
             <cascade>
                 <cascade-persist/>
             </cascade>
+            <order-by>
+                <order-by-field name="created_at" direction="DESC"/>
+            </order-by>
+        </one-to-many>
+        <one-to-many field="evaluations" target-entity="Domain\Report\Entity\Evaluation" mapped-by="report" orphan-removal="true">
             <order-by>
                 <order-by-field name="created_at" direction="DESC"/>
             </order-by>
