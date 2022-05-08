@@ -30,8 +30,8 @@ final class ManagerEvaluationController extends AbstractController
     #[Entity('report', options: [
         'mapping' => [
             'report' => 'uuid',
-
-        ], ])]
+        ],
+    ])]
     public function new(Report $report, Request $request): Response
     {
         /** @var User $manager */
@@ -71,8 +71,8 @@ final class ManagerEvaluationController extends AbstractController
     #[Entity('report', options: [
         'mapping' => [
             'report' => 'uuid',
-
-        ], ])]
+        ],
+    ])]
     public function edit(Report $report, Evaluation $evaluation, Request $request): Response
     {
         $command = new UpdateEvaluationCommand($evaluation);
