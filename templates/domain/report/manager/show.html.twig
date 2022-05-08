@@ -8,24 +8,24 @@
         {% endblock %}
         {% block header_description %}
             <ul class="list-inline">
-                <li>{{ 'uuid' | trans([], 'messages') }} : <span class="text-base">{{ data.uuid }}</span></li>
-                <li>{{ 'created_at' | trans([], 'messages') }} : <span
-                            class="text-base">{{ data.createdAt | date }}</span></li>
+                <li>{{ 'created_at' | trans([], 'messages') }} : <span class="text-base">{{ data.createdAt | date }}</span></li>
             </ul>
         {% endblock %}
         {% block header_action_list %}
             <li>
-                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light"
-                   aria-label="{{ 'global.back' | trans([], 'messages') }}"
-                   title="{{ 'global.back' | trans([], 'messages') }}">
+                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
                     {{ 'arrow-long-left' | icon }}
-                    <span>{{ 'global.back' | trans([], 'messages') }}</span>
+                    <span>Tous les rapports</span>
                 </a>
             </li>
             <li>
-                <a href="{{ path('report_manager_evaluation_new', {report: data.uuid}) }}" class="btn btn-primary"
-                   aria-label="{{ 'report.actions.create_evaluation' | trans([], 'report') }}"
-                   title="{{ 'report.actions.create_evaluation' | trans([], 'report') }}">
+                <a href="{{ path('report_manager_employee_show', {id: data.employee.id}) }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                    {{ 'user-fill' | icon }}
+                    <span>Rapports de l'employé</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('report_manager_evaluation_new', {report: data.uuid}) }}" class="btn btn-primary" aria-label="{{ 'report.actions.create_evaluation' | trans([], 'report') }}" title="{{ 'report.actions.create_evaluation' | trans([], 'report') }}">
                     {{ 'comments' | icon }}
                     <span>{{ 'report.actions.create_evaluation' | trans([], 'report') }}</span>
                 </a>
@@ -77,4 +77,6 @@
             </div>
         {% endblock %}
     {% endembed %}
+
+    {% include 'domain/report/component/_employee_sidebar.html.twig' with {employee: data.employee} %}
 {% endblock %}

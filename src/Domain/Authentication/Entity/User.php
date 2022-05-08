@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\Authentication\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Domain\Authentication\ValueObject\Gender;
 use Domain\Authentication\ValueObject\Roles;
+use Domain\Report\Entity\Evaluation;
+use Domain\Report\Entity\Report;
 use Domain\Shared\Entity\{IdentityTrait, TimestampTrait};
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -37,10 +41,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $last_login_ip = null;
 
+    /**
+     * @var Collection<Report>
+     */
+    private Collection $reports;
+
+    /**
+     * @var Collection<Evaluation>
+     */
+    private Collection $evaluations;
+
     public function __construct()
     {
         $this->gender = Gender::male();
         $this->roles = Roles::employee();
+        $this->evaluations = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public static function create(
@@ -186,5 +202,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return in_array($role, $this->getRoles(), true);
+    }
+
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function setReports(Collection $reports): self
+    {
+        $this->reports = $reports;
+
+        return $this;
+    }
+
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function setEvaluations(Collection $evaluations): self
+    {
+        $this->evaluations = $evaluations;
+
+        return $this;
     }
 }

@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-inner">
+        <div class="team">
+            <div class="user-card user-card-s2">
+                <div class="user-avatar md bg-primary">
+                    <span>{{ 'user-fill' | icon }}</span>
+                   {% if employee.lastLoginAt %}
+                       <div class="status dot dot-lg dot-success"></div>
+                   {% else %}
+                       <div class="status dot dot-lg dot-danger"></div>
+                   {% endif %}
+                </div>
+                <div class="user-info">
+                    <h6>{{ employee.username }}</h6>
+                    <span class="sub-text">{{ employee.email }}</span>
+                </div>
+            </div>
+            <div class="team-details">
+                <p>{{ employee.jobTitle }}</p>
+            </div>
+            <ul class="team-statistics">
+                <li><span>{{ employee.reports  }}</span><span>Rapports</span></li>
+                <li><span>{{ employee.evaluations }}</span><span>Évaluations</span></li>
+            </ul>
+            <div class="team-view">
+                <a href="{{ path('report_manager_employee_show', {id: employee.id}) }}" class="btn btn-round btn-outline-light w-150px">
+                    <span>Voir les rapports</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

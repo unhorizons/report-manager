@@ -20,7 +20,7 @@
                 <cascade-remove />
             </cascade>
         </many-to-one>
-        <many-to-one field="manager" target-entity="Domain\Authentication\Entity\User"/>
+        <many-to-one field="manager" target-entity="Domain\Authentication\Entity\User" inversed-by="evaluations"/>
 
 
         <!-- Timestamp -->

@@ -104,6 +104,24 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
         }
     }
 
+    public function findAllEmployeeWithStats(): array
+    {
+        /** @var array<array<string, string>> $result */
+        $result = $this->createQueryBuilder('u')
+            ->select('u.username', 'u.email', 'u.id', 'u.job_title jobTitle', 'u.last_login_at lastLoginAt', 'COUNT(r.id) reports', 'COUNT(er.id) evaluations')
+            ->leftJoin('u.reports', 'r', 'WITH', 'r.employee = u.id')
+            ->leftJoin('u.evaluations', 'e')
+            ->leftJoin('e.report', 'er', 'WITH', 'er.employee = u.id')
+            ->groupBy('u.id')
+            ->orderBy('COUNT(r.id)', 'DESC')
+            ->where('u.roles.roles = :role')
+            ->setParameter('role', '["ROLE_USER"]')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
     /**
      * {@inheritdoc}
      */

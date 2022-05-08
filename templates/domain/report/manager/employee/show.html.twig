@@ -1,26 +1,14 @@
 {% extends 'domain/report/layout/base.html.twig' %}
-{% block title 'manager_reports' | trans([], 'messages') %}
+{% block title 'manager_employee_report' | trans({"%employee%": employee.username}, 'messages') %}
 
 {% block header %}
     {% embed 'shared/component/_header.html.twig' %}
-        {% block header_title 'manager_reports' | trans([], 'messages') %}
+        {% block header_title 'manager_employee_report' | trans({"%employee%": employee.username}, 'messages') %}
         {% block header_action_list %}
             <li>
                 <a href="{{ path('report_manager_employee_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
-                    {{ 'users' | icon }}
+                    {{ 'arrow-long-left' | icon }}
                     <span>Rapports par employé</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('report_manager_report_index', {status: 'unseen'}) }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
-                    {{ 'clipboard' | icon }}
-                    <span>Rapports non lus</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('report_manager_report_index', {status: 'seen'}) }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
-                    {{ 'clipboad-check' | icon }}
-                    <span>Rapports lus</span>
                 </a>
             </li>
         {% endblock %}
@@ -32,7 +20,6 @@
         {% block list_card_table_head %}
             <th>#</th>
             <th>{{ "report.name" | trans([], 'report') }}</th>
-            <th>{{ "report.employee" | trans([], 'report') }}</th>
             <th>{{ "report.status" | trans([], 'report') }}</th>
             <th>{{ "report.period" | trans([], 'report') }}</th>
             <th>&nbsp;</th>
@@ -41,8 +28,7 @@
             {% for row in data %}
                 <tr>
                     <td>{{ row.id }}</td>
-                    <td>{{ row.name | u.truncate(30, '...') }}</td>
-                    <td>{{ row.employee.username }}</td>
+                    <td>{{ row.name | u.truncate(60, '...') }}</td>
                     <td>{{ row.status | badge }}</td>
                     <td>{{ row.period }}</td>
                     <td class="tb-odr-action">

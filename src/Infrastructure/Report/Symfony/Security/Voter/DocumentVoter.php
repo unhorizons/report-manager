@@ -7,7 +7,6 @@ namespace Infrastructure\Report\Symfony\Security\Voter;
 use Domain\Report\Entity\Document;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Class DocumentVoter.
@@ -20,11 +19,6 @@ final class DocumentVoter extends Voter
         'DOCUMENT_DELETE',
         'DOCUMENT_DOWNLOAD',
     ];
-
-    public function __construct(
-        private readonly Security $security
-    ) {
-    }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -49,14 +43,6 @@ final class DocumentVoter extends Voter
             return false;
         }
 
-        if (
-            $this->security->isGranted('ROLE_ADMIN') ||
-            $this->security->isGranted('ROLE_REPORT_MANAGER') ||
-            $subject->getReport()?->getEmployee() === $user
-        ) {
-            return true;
-        }
-
-        return false;
+        return $subject->getReport()?->getEmployee() === $user;
     }
 }

@@ -21,6 +21,9 @@
         <embedded name="gender" class="Domain\Authentication\ValueObject\Gender" use-column-prefix="false" />
         <embedded name="roles" class="Domain\Authentication\ValueObject\Roles" use-column-prefix="false" />
 
+        <one-to-many field="reports" target-entity="Domain\Report\Entity\Report" mapped-by="employee" />
+        <one-to-many field="evaluations" target-entity="Domain\Report\Entity\Evaluation" mapped-by="manager" />
+
         <field name="username" type="string" length="30"/>
         <field name="job_title" type="string" length="150" nullable="true"/>
         <field name="email" type="string" length="180" unique="true" nullable="true"/>

@@ -31,11 +31,12 @@ report:
             headers:
                 index: Gestions des rapports
             links:
-                all: Rapports reçus
+                all: Rapports
                 seen: Rapports lus
                 unseen: Rapports non lus
                 index: Rapports reçus
                 dashboard: Statistiques
+                employee: Rapports par employée
 
 
     flashes:

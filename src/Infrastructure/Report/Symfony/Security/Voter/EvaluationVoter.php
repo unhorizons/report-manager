@@ -43,10 +43,6 @@ final class EvaluationVoter extends Voter
             return false;
         }
 
-        if ($subject->getManager() === $user) {
-            return true;
-        }
-
-        return false;
+        return $subject->getManager() === $user;
     }
 }

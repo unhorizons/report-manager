@@ -24,12 +24,12 @@
             obj[key] = ext[key];
         });
         return obj;
-    } // ClassInit @v1.0
+    }
 
 
     NioApp.ClassBody = function () {
         NioApp.AddInBody(_sidebar);
-    }; // ClassInit @v1.0
+    };
 
 
     NioApp.ClassNavMenu = function () {
@@ -46,12 +46,12 @@
                 classAdd: _sidebar_mob
             });
         });
-    }; // Code Prettify @v1.0
+    };
 
 
     NioApp.Prettify = function () {
         window.prettyPrint && prettyPrint();
-    }; // Copied @v1.0
+    };
 
 
     NioApp.Copied = function () {
@@ -99,7 +99,7 @@
         }
 
         ;
-    }; // CurrentLink Detect @v1.0
+    };
 
 
     NioApp.CurrentLink = function () {
@@ -120,12 +120,12 @@
                 self.closest("li").removeClass('active current-page').parents().closest("li:not(.current-page)").removeClass("active");
             }
         });
-    }; // PasswordSwitch @v1.0
+    };
 
 
     NioApp.PassSwitch = function () {
         NioApp.Passcode('.passcode-switch');
-    }; // Toastr Message @v1.0
+    };
 
 
     NioApp.Toast = function (msg, ttype, opt) {
@@ -166,7 +166,7 @@
             toastr.options = extend(option, attr);
             toastr[ttype](msg);
         }
-    }; // Toggle Screen @v1.0
+    };
 
 
     NioApp.TGL.screen = function (elm) {
@@ -179,7 +179,7 @@
                 }
             });
         }
-    }; // Toggle Content @v1.0
+    };
 
 
     NioApp.TGL.content = function (elm, opt) {
@@ -221,7 +221,7 @@
                 }
             });
         });
-    }; // ToggleExpand @v1.0
+    };
 
 
     NioApp.TGL.expand = function (elm, opt) {
@@ -234,7 +234,7 @@
             NioApp.Toggle.trigger($(this).data('target'), attr);
             e.preventDefault();
         });
-    }; // Dropdown Menu @v1.0
+    };
 
 
     NioApp.TGL.ddmenu = function (elm, opt) {
@@ -252,7 +252,7 @@
 
             e.preventDefault();
         });
-    }; // Show Menu @v1.0
+    };
 
 
     NioApp.TGL.showmenu = function (elm, opt) {
@@ -288,7 +288,7 @@
                 NioApp.Toggle.removed($toggle.data('target'), attr);
             }
         });
-    }; // Animate FormSearch @v1.0
+    };
 
 
     NioApp.Ani.formSearch = function (elm, opt) {
@@ -332,7 +332,7 @@
                 }
             });
         }
-    }; // Animate FormElement @v1.0
+    };
 
 
     NioApp.Ani.formElm = function (elm, opt) {
@@ -361,7 +361,7 @@
                 });
             });
         }
-    }; // Form Validate @v1.0
+    };
 
 
     NioApp.Validate = function (elm, opt) {
@@ -384,7 +384,7 @@
                 error.appendTo(element.parent());
             }
         });
-    }; // Dropzone @v1.0
+    };
 
 
     NioApp.Dropzone = function (elm, opt) {
@@ -397,7 +397,7 @@
                 $(this).addClass('dropzone').dropzone(attr);
             });
         }
-    }; // Wizard @v1.0
+    };
 
 
     NioApp.Wizard = function () {
@@ -441,7 +441,7 @@
                 error.appendTo(element.parent());
             }
         });
-    }; // DataTable @1.1
+    };
 
 
     NioApp.DataTable = function (elm, opt) {
@@ -603,8 +603,8 @@
 
     NioApp.OtherInit = function () {
         NioApp.ClassBody();
-        NioApp.PassSwitch();
-        NioApp.CurrentLink();
+        //NioApp.PassSwitch();
+        //NioApp.CurrentLink();
         NioApp.LinkOff('.is-disable');
         NioApp.ClassNavMenu(); //v1.5
 
@@ -620,7 +620,7 @@
 
 
     NioApp.BS.init = function () {
-        NioApp.BS.menutip('a.nk-menu-link');
+        //NioApp.BS.menutip('a.nk-menu-link');
         NioApp.BS.tooltip('.nk-tooltip');
         NioApp.BS.tooltip('.btn-tooltip', {
             placement: 'top'
@@ -646,12 +646,12 @@
 
 
     NioApp.Addons.Init = function () {
-        NioApp.Knob.init();
-        NioApp.Range.init();
-        NioApp.Select2.init();
-        NioApp.Dropzone.init();
-        NioApp.Slider.init();
-        NioApp.DataTable.init();
+        //NioApp.Knob.init();
+        ///NioApp.Range.init();
+        //NioApp.Select2.init();
+        //NioApp.Dropzone.init();
+        //NioApp.Slider.init();
+        //NioApp.DataTable.init();
     }; // Toggler @v1
 
 
@@ -670,8 +670,8 @@
 
     NioApp.BS.modalOnInit = function () {
         $('.modal').on('shown.bs.modal', function () {
-            NioApp.Select2.init();
-            NioApp.Validate.init();
+            //NioApp.Select2.init();
+            //NioApp.Validate.init();
         });
     }; // Initial by default
     /////////////////////////////
@@ -679,18 +679,18 @@
 
     NioApp.init = function () {
         NioApp.coms.docReady.push(NioApp.OtherInit);
-        NioApp.coms.docReady.push(NioApp.Prettify);
+        //NioApp.coms.docReady.push(NioApp.Prettify);
         NioApp.coms.docReady.push(NioApp.ColorBG);
         NioApp.coms.docReady.push(NioApp.ColorTXT);
-        NioApp.coms.docReady.push(NioApp.Copied);
+        //NioApp.coms.docReady.push(NioApp.Copied);
         NioApp.coms.docReady.push(NioApp.Ani.init);
         NioApp.coms.docReady.push(NioApp.TGL.init);
         NioApp.coms.docReady.push(NioApp.BS.init);
-        NioApp.coms.docReady.push(NioApp.Validate.init);
-        NioApp.coms.docReady.push(NioApp.Picker.init);
+        //NioApp.coms.docReady.push(NioApp.Validate.init);
+        //NioApp.coms.docReady.push(NioApp.Picker.init);
         NioApp.coms.docReady.push(NioApp.Addons.Init);
-        NioApp.coms.docReady.push(NioApp.Wizard);
-        NioApp.coms.winLoad.push(NioApp.ModeSwitch);
+        //NioApp.coms.docReady.push(NioApp.Wizard);
+        //NioApp.coms.winLoad.push(NioApp.ModeSwitch);
     };
 
     NioApp.init();

@@ -24,6 +24,8 @@ flashes:
 
 employee_reports: Mes rapports
 manager_reports: Rapports reçus
+manager_employee_reports: Rapports par employé
+manager_employee_report: "Tous les rapports de %employee%"
 employee_evaluations: Évaluations reçues
 reports: Rapports
 report: Rapport

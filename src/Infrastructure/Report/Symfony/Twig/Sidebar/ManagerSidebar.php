@@ -23,15 +23,8 @@ final class ManagerSidebar extends AbstractSidebar
             ->add(new SidebarHeader('report.sidebars.managers.headers.index'))
             ->add(new SidebarLink('app_index', 'report.sidebars.users.links.dashboard', 'home'))
 
-            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.all', icon: 'folder-list', params: [
-                'status' => 'all',
-            ]))
-            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.seen', icon: 'clipboard', params: [
-                'status' => 'seen',
-            ]))
-            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.unseen', icon: 'clipboad-check', params: [
-                'status' => 'unseen',
-            ]))
+            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.all', icon: 'folder-list'))
+            ->add(new SidebarLink('report_manager_employee_index', 'report.sidebars.managers.links.employee', icon: 'users'))
 
             ->setTranslationDomain('report')
             ->create();

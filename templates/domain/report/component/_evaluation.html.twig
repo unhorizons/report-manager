@@ -1,11 +1,6 @@
 <div class="bq-note-item pos-rel">
     <div class="bq-note-text">
         <p>{{ data.content }}</p>
-        {% if is_granted('EVALUATION_DELETE', app.user) %}
-            <div style="position: absolute; top: 8px; right: 8px;">
-
-            </div>
-        {% endif %}
     </div>
     <div class="bq-note-meta">
         <span class="bq-note-added">
@@ -14,7 +9,7 @@
         <span class="bq-note-sep sep">|</span>
         <span class="bq-note-by">par <span>{{ data.manager.username }}</span></span>
 
-        {% if app.user.hasRole('ROLE_REPORT_MANAGER') %}
+        {% if is_granted('EVALUATION_DELETE', data) %}
             <a class="link link-sm" href="{{ path('report_manager_evaluation_edit', {report: report.uuid, id: data.id}) }}">Modifier</a>
             <form action="{{ path('report_manager_evaluation_delete', {id: data.id}) }}" method="post" class="d-inline-block">
                 <input type="hidden" name="_method" value="DELETE">

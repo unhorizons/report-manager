@@ -1,0 +1,24 @@
+{% extends 'domain/report/layout/base.html.twig' %}
+{% block title 'manager_employee_reports' | trans([], 'messages') %}
+
+{% block header %}
+    {% embed 'shared/component/_header.html.twig' %}
+        {% block header_title 'manager_employee_reports' | trans([], 'messages') %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    <div class="row g-gs">
+        {% for employee in data %}
+            <div class="col-sm-6 col-lg-4 col-xxl-3">
+                {% include 'domain/report/component/_employee_card.html.twig' with {employee: employee} %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-4 d-flex justify-content-center">
+        {% if data is defined %}
+            {{ knp_pagination_render(data) }}
+        {% endif %}
+    </div>
+{% endblock %}

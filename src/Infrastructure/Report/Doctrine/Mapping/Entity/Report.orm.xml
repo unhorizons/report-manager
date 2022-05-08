@@ -22,7 +22,7 @@
         <field name="name" length="255" type="string"/>
         <field name="description" type="text" nullable="true"/>
 
-        <many-to-one field="employee" target-entity="Domain\Authentication\Entity\User" fetch="EAGER"/>
+        <many-to-one field="employee" target-entity="Domain\Authentication\Entity\User" fetch="EAGER" inversed-by="reports"/>
         <one-to-many field="documents" target-entity="Domain\Report\Entity\Document" mapped-by="report" orphan-removal="true">
             <cascade>
                 <cascade-persist/>
