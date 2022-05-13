@@ -118,8 +118,8 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             }
 
             return null !== $query
-                    ->getQuery()
-                    ->getOneOrNullResult();
+                ->getQuery()
+                ->getOneOrNullResult();
         } catch (NonUniqueResultException) {
             return false;
         }
@@ -195,7 +195,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $this->execute($sql, [
             'seen' => 'seen',
             'unseen' => 'unseen',
-            'employee' => $employee->getId()
+            'employee' => $employee->getId(),
         ], false);
     }
 
@@ -213,7 +213,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         SQL;
 
         return $this->execute($sql, [
-            'employee' => $employee->getId()
+            'employee' => $employee->getId(),
         ], false);
     }
 
@@ -244,7 +244,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             'end' => $end,
             'start' => $start,
             'status' => (string) $status,
-            'employee' => $employee->getId()
+            'employee' => $employee->getId(),
         ], false);
     }
 
@@ -276,21 +276,18 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             'end' => $end,
             'start' => $start,
             'status' => (string) $status,
-            'manager' => $manager->getId()
+            'manager' => $manager->getId(),
         ], false);
     }
 
-    public function searchForManager(User $manager, string $query): array
+    public function searchForManager(User $manager, string $query, array $options): array
     {
-        /** @var Report[] $result */
-        $result = $this->createQueryBuilder('r')
-            ->leftJoin('r.managers', 'm')
-            ->where('r.name LIKE :query')
+        $qb = $this->searchQuery($query, $options)
             ->andWhere('m = :manager')
-            ->setParameter('query', mb_strtolower($query))
-            ->setParameter('manager', $manager)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('manager', $manager);
+
+        /** @var Report[] $result */
+        $result = $qb->getQuery()->getResult();
 
         return $result;
     }
@@ -312,7 +309,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         SQL;
 
         return $this->execute($sql, [
-            'manager' => $manager->getId()
+            'manager' => $manager->getId(),
         ], false);
     }
 
@@ -331,11 +328,21 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
+    public function search(string $query, array $options): array
+    {
+        /** @var Report[] $result */
+        $result = $this->searchQuery($query, $options)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
     private function findAllUnseenQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string)Status::unseen())
+            ->setParameter('status', (string) Status::unseen())
             ->orderBy('r.created_at', 'DESC');
     }
 
@@ -343,7 +350,34 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string)Status::seen())
+            ->setParameter('status', (string) Status::seen())
             ->orderBy('r.created_at', 'DESC');
+    }
+
+    private function searchQuery(string $query, array $options): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.managers', 'm')
+            ->where('CONCAT(r.name, r.description) LIKE :query')
+            ->setParameter('query', mb_strtolower("%{$query}%"));
+
+        if ($options['seen'] && ! $options['unseen']) {
+            $qb->andWhere('r.status.status = :status')->setParameter('status', 'seen');
+        } elseif ($options['unseen'] && ! $options['seen']) {
+            $qb->andWhere('r.status.status = :status')->setParameter('status', 'unseen');
+        }
+
+        if (true === $options['use_period']) {
+            /** @var Period $period */
+            $period = $options['period'];
+
+            $qb
+                ->andWhere('r.period.starting_at BETWEEN :start AND :end')
+                ->andWhere('r.period.ending_at BETWEEN :start AND :end')
+                ->setParameter('start', $period->getStartingAt())
+                ->setParameter('end', $period->getEndingAt());
+        }
+
+        return $qb;
     }
 }

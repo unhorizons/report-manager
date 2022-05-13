@@ -8,8 +8,8 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Class GreetingExtension
- * @package Infrastructure\Shared\Symfony\Twig
+ * Class GreetingExtension.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 final class GreetingExtension extends AbstractExtension
@@ -17,7 +17,7 @@ final class GreetingExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('greeting', [$this, 'greeting'])
+            new TwigFunction('greeting', [$this, 'greeting']),
         ];
     }
 

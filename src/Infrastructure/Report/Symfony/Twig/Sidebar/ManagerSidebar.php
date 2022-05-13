@@ -25,7 +25,7 @@ final class ManagerSidebar extends AbstractSidebar
 
             ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.all', 'folder-list'))
             ->add(new SidebarLink('report_manager_employee_index', 'report.sidebars.managers.links.employee', 'users'))
-            ->add(new SidebarLink('report_manager_report_search', 'report.sidebars.managers.links.search', 'search'))
+            ->add(new SidebarLink('report_manager_report_search_index', 'report.sidebars.managers.links.search', 'search'))
 
             ->setTranslationDomain('report')
             ->create();

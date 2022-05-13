@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Infrastructure\Shared\Doctrine\Repository;
 
 /**
- * Trait NativeQueryTrait
- * @package Infrastructure\Shared\Doctrine\Repository
+ * Trait NativeQueryTrait.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 trait NativeQueryTrait
@@ -20,10 +20,10 @@ trait NativeQueryTrait
 
             if ($fetchAll) {
                 return $result->fetchAllAssociative();
-            } else {
-                $data = $result->fetchAssociative();
-                return $data === false ? [] : $data;
             }
+            $data = $result->fetchAssociative();
+
+            return false === $data ? [] : $data;
         } catch (\Throwable) {
             return [];
         }

@@ -44,11 +44,13 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
 
     public function findAllWithStatusForManager(string $status, User $manager): array;
 
-    public function searchForManager(User $manager, string $query): array;
+    public function searchForManager(User $manager, string $query, array $options): array;
 
     public function findCurrentYearStatsForManager(User $manager): array;
 
     public function findAllForEmployeeAndManager(User $manager, User $employee): array;
 
     public function findCurrentYearStatsForManagerWithStatus(User $manager, Status $status): array;
+
+    public function search(string $query, array $options): array;
 }

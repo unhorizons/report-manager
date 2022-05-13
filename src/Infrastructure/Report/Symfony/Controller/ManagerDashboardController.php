@@ -39,7 +39,7 @@ final class ManagerDashboardController extends AbstractController
             parameters: [
                 'evaluationChart' => $evaluationChart,
                 'reportChart' => $reportChart,
-                'stats' => $stats
+                'stats' => $stats,
             ]
         );
     }
@@ -71,6 +71,7 @@ final class ManagerDashboardController extends AbstractController
     private function createReportChart(ChartBuilderInterface $builder, array $reports): Chart
     {
         [$seen, $unseen] = $reports;
+
         return $builder
             ->createChart(Chart::TYPE_BAR)
             ->setData([

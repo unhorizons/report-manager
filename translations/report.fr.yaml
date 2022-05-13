@@ -56,6 +56,8 @@ report:
         delete_report_with_evaluation: Désolé, il est impossible de supprimer un rapport ayant déjà reçu au moins une évaluation.
         report_for_period_already_exists: Il existe déjà un rapport couvrant cette période pour votre compte.
         empty_document_report: Désolé vous ne pouvez pas supprimer l'unique document associé rapport.
+        empty_search_query: Veuillez complétez la recherche pour obtenir des résultats.
+        no_search_result: Désolé aucun rapport ne correspond à votre recherche.
     validations:
         ending_not_current_year: la date de fin doit être de l'année en cours
         invalid_end_date: la date de début ne peut être plus récente que celle de fin
@@ -74,5 +76,10 @@ report:
             documents_help: Vous pouvez annexer plusieurs documents
             managers: À quel responsable est destiné ce rapport ?
             managers_help: tapez le nom du responsable et choisissez dans la liste qui apparaît
+            query: Recherche
+            query_help: la recherche est faite en prenant en compte le titre ou la description d'un rapport
+            use_period: Prendre en compte l'interval de temps
+            seen: Inclure les rapports lus
+            unseen: Inclure les rapports non lus
         placeholders:
             name: "rapport : mise en place du projet..."

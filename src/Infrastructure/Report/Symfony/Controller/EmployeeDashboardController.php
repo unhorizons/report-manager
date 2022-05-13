@@ -32,7 +32,7 @@ final class EmployeeDashboardController extends AbstractController
             view: 'domain/report/user/dashboard.html.twig',
             parameters: [
                 'chart' => $chart,
-                'stats' => $stats
+                'stats' => $stats,
             ]
         );
     }
@@ -40,6 +40,7 @@ final class EmployeeDashboardController extends AbstractController
     private function createReportChart(ChartBuilderInterface $builder, array $reports): Chart
     {
         [$seen, $unseen] = $reports;
+
         return $builder
             ->createChart(Chart::TYPE_BAR)
             ->setData([

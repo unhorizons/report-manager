@@ -85,7 +85,7 @@ final class EvaluationRepository extends AbstractRepository implements Evaluatio
         return $this->execute($sql, [
             'end' => $end,
             'start' => $start,
-            'manager' => $manager->getId()
+            'manager' => $manager->getId(),
         ], false);
     }
 }
