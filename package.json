@@ -9,7 +9,7 @@
         "@symfony/webpack-encore": "^1.7.0",
         "chart.js": "^3.4.1",
         "core-js": "^3.0.0",
-        "node-sass": "^6.0.1",
+        "node-sass": "^7.0.0",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^12.1.0",
         "webpack-notifier": "^1.6.0"
