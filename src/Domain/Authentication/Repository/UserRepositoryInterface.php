@@ -26,5 +26,7 @@ interface UserRepositoryInterface extends DataRepositoryInterface
 
     public function findAllEmployeeWithStats(): array;
 
+    public function findAllEmployeeWithStatsForManager(User $manager): array;
+
     public function findAllManager(): array;
 }

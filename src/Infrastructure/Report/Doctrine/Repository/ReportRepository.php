@@ -144,8 +144,10 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         /** @var Report[] $result */
         $result = $this->createQueryBuilder('r')
-            ->where('r.managers = :manager')
+            ->leftJoin('r.managers', 't')
+            ->where('t = :manager')
             ->setParameter('manager', $manager)
+            ->orderBy('r.created_at', 'DESC')
             ->getQuery()
             ->getResult();
 
@@ -156,7 +158,8 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         /** @var Report[] $result */
         $result = $this->findAllSeenQuery()
-            ->where('r.managers = :manager')
+            ->leftJoin('r.managers', 't')
+            ->andWhere('t = :manager')
             ->setParameter('manager', $manager)
             ->getQuery()
             ->getResult();
@@ -168,7 +171,8 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         /** @var Report[] $result */
         $result = $this->findAllUnseenQuery()
-            ->where('r.managers = :manager')
+            ->leftJoin('r.managers', 't')
+            ->andWhere('t = :manager')
             ->setParameter('manager', $manager)
             ->getQuery()
             ->getResult();

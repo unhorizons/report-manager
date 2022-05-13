@@ -108,15 +108,20 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     public function findAllEmployeeWithStats(): array
     {
         /** @var array<array<string, string>> $result */
-        $result = $this->createQueryBuilder('u')
-            ->select('u.username', 'u.email', 'u.id', 'u.job_title jobTitle', 'u.last_login_at lastLoginAt', 'COUNT(r.id) reports', 'COUNT(er.id) evaluations')
-            ->leftJoin('u.reports', 'r', 'WITH', 'r.employee = u.id')
-            ->leftJoin('u.evaluations', 'e')
-            ->leftJoin('e.report', 'er', 'WITH', 'er.employee = u.id')
-            ->groupBy('u.id')
-            ->orderBy('COUNT(r.id)', 'DESC')
-            ->where('u.roles.roles = :role')
-            ->setParameter('role', '["ROLE_USER"]')
+        $result = $this->findAllEmployeeWithStatsQuery()
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function findAllEmployeeWithStatsForManager(User $manager): array
+    {
+        /** @var  $result */
+        $result = $this->findAllEmployeeWithStatsQuery()
+            ->leftJoin('r.managers', 't')
+            ->andWhere('t = :manager')
+            ->setParameter('manager', $manager)
             ->getQuery()
             ->getResult();
 
@@ -151,5 +156,18 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
         $user->setPassword($newHashedPassword);
         $this->save($user);
+    }
+
+    private function findAllEmployeeWithStatsQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.username', 'u.email', 'u.id', 'u.job_title jobTitle', 'u.last_login_at lastLoginAt', 'COUNT(r.id) reports', 'COUNT(er.id) evaluations')
+            ->leftJoin('u.submitted_reports', 'r', 'WITH', 'r.employee = u.id')
+            ->leftJoin('u.evaluations', 'e')
+            ->leftJoin('e.report', 'er', 'WITH', 'er.employee = u.id')
+            ->groupBy('u.id')
+            ->orderBy('r.created_at', 'DESC')
+            ->where('u.roles.roles = :role')
+            ->setParameter('role', '["ROLE_USER"]');
     }
 }

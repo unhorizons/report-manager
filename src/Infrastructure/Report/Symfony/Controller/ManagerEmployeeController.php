@@ -23,11 +23,13 @@ final class ManagerEmployeeController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'], priority: 10)]
     public function index(Request $request, PaginatorInterface $paginator, UserRepositoryInterface $repository): Response
     {
+        /** @var User $manager */
+        $manager = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $this->assertIsGreaterThanZero($page);
 
         $data = $paginator->paginate(
-            target: $repository->findAllEmployeeWithStats(),
+            target: $repository->findAllEmployeeWithStatsForManager($manager),
             page: $page,
             limit: 20
         );
