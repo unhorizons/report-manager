@@ -3,14 +3,16 @@
         "@hotwired/stimulus": "^3.0.0",
         "@hotwired/turbo": "^7.0.1",
         "@symfony/stimulus-bridge": "^3.0.0",
+        "@symfony/ux-chartjs": "file:vendor/symfony/ux-chartjs/Resources/assets",
         "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/Resources/assets",
         "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
         "@symfony/webpack-encore": "^1.7.0",
+        "chart.js": "^3.4.1",
         "core-js": "^3.0.0",
+        "node-sass": "^6.0.1",
         "regenerator-runtime": "^0.13.2",
-        "webpack-notifier": "^1.6.0",
         "sass-loader": "^12.1.0",
-        "node-sass": "^6.0.1"
+        "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -21,15 +23,15 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-      "axios": "^0.21.1",
-      "bootstrap": "^4.6.0",
-      "flatpickr": "^4.6.9",
-      "htm": "^3.1.0",
-      "perfect-scrollbar": "^1.5.2",
-      "popper.js": "^1.16.1",
-      "postcss": "^8.3.6",
-      "speakingurl": "^14.0.1",
-      "sweetalert2": "^11.0.8",
-      "tom-select": "^2.0.0-Beta.2"
+        "axios": "^0.21.1",
+        "bootstrap": "^4.6.0",
+        "flatpickr": "^4.6.9",
+        "htm": "^3.1.0",
+        "perfect-scrollbar": "^1.5.2",
+        "popper.js": "^1.16.1",
+        "postcss": "^8.3.6",
+        "speakingurl": "^14.0.1",
+        "sweetalert2": "^11.0.8",
+        "tom-select": "^2.0.0-Beta.2"
     }
 }

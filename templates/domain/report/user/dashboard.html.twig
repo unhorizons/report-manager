@@ -19,16 +19,24 @@
     <div class="row g-gs">
         <div class="col-xxl-6 col-sm-6">
             {% embed 'shared/component/card/_stats.html.twig' %}
-                {% block stats_card_label 'Rapports' %}
-                {% block stats_card_value '49' %}
-                {% block stats_card_info 'pour le mois en cours' %}
+                {% block stats_card_label 'Mes Rapports' %}
+                {% block stats_card_value stats.reports %}
+                {% block stats_card_info "Statistique de l'année en cours" %}
             {% endembed %}
         </div>
         <div class="col-xxl-6 col-sm-6">
             {% embed 'shared/component/card/_stats.html.twig' %}
-                {% block stats_card_label 'Évaluations' %}
-                {% block stats_card_value '34' %}
-                {% block stats_card_info 'pour le mois en cours' %}
+                {% block stats_card_label 'Mes Évaluations' %}
+                {% block stats_card_value stats.evaluations %}
+                {% block stats_card_info "Statistique de l'année en cours" %}
+            {% endembed %}
+        </div>
+        <div class="col-12">
+            {% embed 'shared/component/card/_simple.html.twig' %}
+                {% block simple_card_title 'Statistiques ' ~ 'now' | date('Y') %}
+                {% block simple_card_body %}
+                    {{ render_chart(chart) }}
+                {% endblock %}
             {% endembed %}
         </div>
     </div>

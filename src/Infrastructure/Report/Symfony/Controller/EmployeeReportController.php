@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_USER')]
-#[Route('/profile/reports', name: 'report_employee_report_')]
+#[Route('/profile/employee/reports', name: 'report_employee_report_')]
 final class EmployeeReportController extends AbstractController
 {
     use DeleteCsrfTrait;

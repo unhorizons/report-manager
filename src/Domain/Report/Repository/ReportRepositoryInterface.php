@@ -6,6 +6,7 @@ namespace Domain\Report\Repository;
 
 use Domain\Authentication\Entity\User;
 use Domain\Report\ValueObject\Period;
+use Domain\Report\ValueObject\Status;
 use Domain\Shared\Repository\DataRepositoryInterface;
 
 /**
@@ -34,4 +35,10 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
     public function findAllWithStatus(string $status): array;
 
     public function findAllWithStatusForManager(string $status, User $manager): array;
+
+    public function reportStatusCountForEmployee(User $employee): array;
+
+    public function findCurrentYearReportStatsForEmployee(User $employee, Status $status): array;
+
+    public function findCurrentYearStatsForEmployee(User $employee): array;
 }

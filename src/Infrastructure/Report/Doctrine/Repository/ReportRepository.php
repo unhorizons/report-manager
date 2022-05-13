@@ -15,6 +15,7 @@ use Domain\Report\Repository\ReportRepositoryInterface;
 use Domain\Report\ValueObject\Period;
 use Domain\Report\ValueObject\Status;
 use Infrastructure\Shared\Doctrine\Repository\AbstractRepository;
+use Infrastructure\Shared\Doctrine\Repository\NativeQueryTrait;
 
 /**
  * Class ReportRepository.
@@ -23,6 +24,8 @@ use Infrastructure\Shared\Doctrine\Repository\AbstractRepository;
  */
 final class ReportRepository extends AbstractRepository implements ReportRepositoryInterface
 {
+    use NativeQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Report::class);
@@ -115,8 +118,8 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             }
 
             return null !== $query
-                ->getQuery()
-                ->getOneOrNullResult();
+                    ->getQuery()
+                    ->getOneOrNullResult();
         } catch (NonUniqueResultException) {
             return false;
         }
@@ -180,11 +183,76 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
+    public function reportStatusCountForEmployee(User $employee): array
+    {
+        $sql = <<< SQL
+            SELECT
+                (SELECT COUNT(id) FROM  report WHERE status = :seen AND employee_id = :employee) AS seen, 
+                (SELECT COUNT(id) FROM report WHERE status = :unseen AND employee_id = :employee) AS unseen
+            FROM dual;
+        SQL;
+
+        return $this->execute($sql, [
+            'seen' => 'seen',
+            'unseen' => 'unseen',
+            'employee' => $employee->getId()
+        ], false);
+    }
+
+    public function findCurrentYearStatsForEmployee(User $employee): array
+    {
+        $sql = <<< SQL
+            SELECT
+                (SELECT COUNT(id) FROM  report WHERE employee_id = :employee) AS reports, 
+                (
+                    SELECT COUNT(evaluation.id) FROM evaluation 
+                    LEFT JOIN report ON report.id = evaluation.report_id 
+                    WHERE report.employee_id = :employee
+                ) AS evaluations
+            FROM dual;
+        SQL;
+
+        return $this->execute($sql, [
+            'employee' => $employee->getId()
+        ], false);
+    }
+
+    public function findCurrentYearReportStatsForEmployee(User $employee, Status $status): array
+    {
+        $start = (new \DateTimeImmutable('first day of January this year'))->format('Y-m-d');
+        $end = (new \DateTimeImmutable('last day of December this year'))->format('Y-m-d');
+
+        $sql = <<< SQL
+            SELECT 
+                SUM(MONTH(created_at) = 1) AS 'Jan',
+                SUM(MONTH(created_at) = 2) AS 'Feb',
+                SUM(MONTH(created_at) = 3) AS 'Mar',
+                SUM(MONTH(created_at) = 4) AS 'Apr',
+                SUM(MONTH(created_at) = 5) AS 'May',
+                SUM(MONTH(created_at) = 6) AS 'Jun',
+                SUM(MONTH(created_at) = 7) AS 'Jul',
+                SUM(MONTH(created_at) = 8) AS 'Aug',
+                SUM(MONTH(created_at) = 9) AS 'Sep',
+                SUM(MONTH(created_at) = 10) AS 'Oct',
+                SUM(MONTH(created_at) = 11) AS 'Nov',
+                SUM(MONTH(created_at) = 12) AS 'Dec'
+            FROM report
+            WHERE (created_at BETWEEN :start AND :end) AND (status = :status AND employee_id = :employee)
+        SQL;
+
+        return $this->execute($sql, [
+            'end' => $end,
+            'start' => $start,
+            'status' => (string) $status,
+            'employee' => $employee->getId()
+        ], false);
+    }
+
     private function findAllUnseenQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string) Status::unseen())
+            ->setParameter('status', (string)Status::unseen())
             ->orderBy('r.created_at', 'DESC');
     }
 
@@ -192,7 +260,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string) Status::seen())
+            ->setParameter('status', (string)Status::seen())
             ->orderBy('r.created_at', 'DESC');
     }
 }

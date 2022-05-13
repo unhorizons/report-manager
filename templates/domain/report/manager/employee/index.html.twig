@@ -4,6 +4,14 @@
 {% block header %}
     {% embed 'shared/component/_header.html.twig' %}
         {% block header_title 'manager_employee_reports' | trans([], 'messages') %}
+        {% block header_action_list %}
+            <li>
+                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                    {{ 'arrow-long-left' | icon }}
+                    <span>Tous les rapports</span>
+                </a>
+            </li>
+        {% endblock %}
     {% endembed %}
 {% endblock %}
 

@@ -13,6 +13,8 @@ services:
     volumes:
       - database-data:/var/lib/mysql:rw
       - ./var:/var/www/var
+    ports:
+      - "3307:3306"
     labels:
       com.symfony.server.service-prefix: 'DATABASE'
 

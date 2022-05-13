@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_USER')]
-#[Route('/profile/evaluations', name: 'report_employee_evaluation_')]
+#[Route('/profile/employee/evaluations', name: 'report_employee_evaluation_')]
 final class EmployeeEvaluationController extends AbstractController
 {
     #[Route('', name: 'index', methods: ['GET'])]

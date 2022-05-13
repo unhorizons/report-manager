@@ -21,7 +21,7 @@ final class EmployeeSidebar extends AbstractSidebar
     {
         return $builder
             ->add(new SidebarHeader('report.sidebars.users.headers.index'))
-            ->add(new SidebarLink('app_index', 'report.sidebars.users.links.dashboard', 'home'))
+            ->add(new SidebarLink('report_employee_dashboard_index', 'report.sidebars.users.links.dashboard', 'growth-fill'))
             ->add(new SidebarLink('report_employee_report_index', 'report.sidebars.users.links.index', 'folder-list'))
             ->add(new SidebarLink('report_employee_evaluation_index', 'report.sidebars.users.links.evaluation', 'comments'))
 

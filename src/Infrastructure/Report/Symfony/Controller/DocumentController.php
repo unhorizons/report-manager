@@ -20,7 +20,7 @@ final class DocumentController extends AbstractController
 {
     use DeleteCsrfTrait;
 
-    #[Route('/profile/documents/{uuid}', name: 'report_document_delete', methods: ['DELETE'])]
+    #[Route('/profile/employee/documents/{uuid}', name: 'report_document_delete', methods: ['DELETE'])]
     public function delete(Document $document, Request $request): Response
     {
         $this->denyAccessUnlessGranted('DOCUMENT_DELETE', $document);
