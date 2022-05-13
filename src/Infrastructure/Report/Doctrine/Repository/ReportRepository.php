@@ -103,7 +103,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
-    public function hasReportMatchingHashForEmployee(User $employee, string $hash, ?string $excludeReportUuid = null): bool
+    public function findMatchingHashForEmployee(User $employee, string $hash, ?string $excludeReportUuid = null): bool
     {
         try {
             $query = $this->createQueryBuilder('r')
@@ -183,7 +183,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
-    public function reportStatusCountForEmployee(User $employee): array
+    public function statusCountForEmployee(User $employee): array
     {
         $sql = <<< SQL
             SELECT
@@ -217,7 +217,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         ], false);
     }
 
-    public function findCurrentYearReportStatsForEmployee(User $employee, Status $status): array
+    public function findCurrentYearStatsForEmployeeWithStatus(User $employee, Status $status): array
     {
         $start = (new \DateTimeImmutable('first day of January this year'))->format('Y-m-d');
         $end = (new \DateTimeImmutable('last day of December this year'))->format('Y-m-d');
@@ -246,6 +246,89 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             'status' => (string) $status,
             'employee' => $employee->getId()
         ], false);
+    }
+
+    public function findCurrentYearStatsForManagerWithStatus(User $manager, Status $status): array
+    {
+        $start = (new \DateTimeImmutable('first day of January this year'))->format('Y-m-d');
+        $end = (new \DateTimeImmutable('last day of December this year'))->format('Y-m-d');
+
+        $sql = <<< SQL
+            SELECT 
+                SUM(MONTH(created_at) = 1) AS 'Jan',
+                SUM(MONTH(created_at) = 2) AS 'Feb',
+                SUM(MONTH(created_at) = 3) AS 'Mar',
+                SUM(MONTH(created_at) = 4) AS 'Apr',
+                SUM(MONTH(created_at) = 5) AS 'May',
+                SUM(MONTH(created_at) = 6) AS 'Jun',
+                SUM(MONTH(created_at) = 7) AS 'Jul',
+                SUM(MONTH(created_at) = 8) AS 'Aug',
+                SUM(MONTH(created_at) = 9) AS 'Sep',
+                SUM(MONTH(created_at) = 10) AS 'Oct',
+                SUM(MONTH(created_at) = 11) AS 'Nov',
+                SUM(MONTH(created_at) = 12) AS 'Dec'
+            FROM report
+            LEFT JOIN manager_assigned_report ON report.id = manager_assigned_report.report_id
+            WHERE (created_at BETWEEN :start AND :end) AND (status = :status AND manager_assigned_report.manager_id = :manager)
+        SQL;
+
+        return $this->execute($sql, [
+            'end' => $end,
+            'start' => $start,
+            'status' => (string) $status,
+            'manager' => $manager->getId()
+        ], false);
+    }
+
+    public function searchForManager(User $manager, string $query): array
+    {
+        /** @var Report[] $result */
+        $result = $this->createQueryBuilder('r')
+            ->leftJoin('r.managers', 'm')
+            ->where('r.name LIKE :query')
+            ->andWhere('m = :manager')
+            ->setParameter('query', mb_strtolower($query))
+            ->setParameter('manager', $manager)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function findCurrentYearStatsForManager(User $manager): array
+    {
+        $sql = <<< SQL
+            SELECT
+                (
+                    SELECT COUNT(id) FROM  report
+                    LEFT JOIN manager_assigned_report ON report.id = manager_assigned_report.report_id
+                    WHERE manager_assigned_report.manager_id = :manager
+                ) AS reports,
+                (
+                    SELECT COUNT(evaluation.id) FROM evaluation 
+                    WHERE manager_id = :manager
+                ) AS evaluations
+            FROM dual;
+        SQL;
+
+        return $this->execute($sql, [
+            'manager' => $manager->getId()
+        ], false);
+    }
+
+    public function findAllForEmployeeAndManager(User $manager, User $employee): array
+    {
+        /** @var array $result */
+        $result = $this->createQueryBuilder('r')
+            ->leftJoin('r.managers', 'm')
+            ->where('r.employee = :employee')
+            ->andWhere('m = :manager')
+            ->setParameter('manager', $manager)
+            ->setParameter('employee', $employee)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
     }
 
     private function findAllUnseenQuery(): QueryBuilder

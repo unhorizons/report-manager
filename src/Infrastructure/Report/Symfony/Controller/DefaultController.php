@@ -29,7 +29,8 @@ final class DefaultController extends AbstractController
         return match (true) {
             $user->hasRole('ROLE_USER') => $this->redirectToRoute('report_employee_dashboard_index'),
             $user->hasRole('ROLE_REPORT_MANAGER') => $this->redirectToRoute('report_manager_dashboard_index'),
-            $user->hasRole('ROLE_ADMIN') => $this->redirect('report_admin_dashboard_index')
+            $user->hasRole('ROLE_ADMIN') => $this->redirectToRoute('report_admin_dashboard_index'),
+            default => $this->redirectToRoute('authentication_logout')
         };
     }
 }

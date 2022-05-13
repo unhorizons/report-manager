@@ -3,7 +3,7 @@
 
 {% block header %}
     {% embed "shared/component/_header.html.twig" %}
-        {% block header_title  'report.titles.dashboard' | trans([], 'report') | title %}
+        {% block header_title greeting(app.user.username) | title %}
         {% block header_action_list %}
             <li>
                 <a href="{{ path('report_employee_report_new') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.create' | trans([], 'report') }}" title="{{ 'report.actions.create' | trans([], 'report') }}">

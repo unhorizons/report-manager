@@ -21,10 +21,11 @@ final class ManagerSidebar extends AbstractSidebar
     {
         return $builder
             ->add(new SidebarHeader('report.sidebars.managers.headers.index'))
-            ->add(new SidebarLink('app_index', 'report.sidebars.users.links.dashboard', 'home'))
+            ->add(new SidebarLink('report_manager_dashboard_index', 'report.sidebars.users.links.dashboard', 'growth-fill'))
 
-            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.all', icon: 'folder-list'))
-            ->add(new SidebarLink('report_manager_employee_index', 'report.sidebars.managers.links.employee', icon: 'users'))
+            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.all', 'folder-list'))
+            ->add(new SidebarLink('report_manager_employee_index', 'report.sidebars.managers.links.employee', 'users'))
+            ->add(new SidebarLink('report_manager_report_search', 'report.sidebars.managers.links.search', 'search'))
 
             ->setTranslationDomain('report')
             ->create();

@@ -32,7 +32,7 @@ final class CreateReportHandler
 
     public function __invoke(CreateReportCommand $command): void
     {
-        if ($this->repository->hasReportMatchingHashForEmployee($command->employee, $command->period->getHash())) {
+        if ($this->repository->findMatchingHashForEmployee($command->employee, $command->period->getHash())) {
             throw new ReportForPeriodAlreadyExistsException();
         }
 

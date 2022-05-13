@@ -7,9 +7,11 @@ report:
     actions:
         create: Ajouter un rapport
         create_evaluation: Ajouter une évaluation
+        search: Rechercher un rapport
     titles:
         index: Accueil
         dashboard: Tableau de bord
+        dashboard_named: "Bonjour, %name%"
 
     mails:
         subjects:
@@ -37,7 +39,8 @@ report:
                 unseen: Rapports non lus
                 index: Rapports reçus
                 dashboard: Statistiques
-                employee: Rapports par employée
+                employee: Employées
+                search: Recherche
 
 
     flashes:

@@ -117,7 +117,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
     public function findAllEmployeeWithStatsForManager(User $manager): array
     {
-        /** @var  $result */
+        /** @var array $result */
         $result = $this->findAllEmployeeWithStatsQuery()
             ->leftJoin('r.managers', 't')
             ->andWhere('t = :manager')

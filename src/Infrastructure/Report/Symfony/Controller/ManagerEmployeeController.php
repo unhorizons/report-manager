@@ -6,6 +6,7 @@ namespace Infrastructure\Report\Symfony\Controller;
 
 use Domain\Authentication\Entity\User;
 use Domain\Authentication\Repository\UserRepositoryInterface;
+use Domain\Report\Repository\ReportRepositoryInterface;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Infrastructure\Shared\Symfony\Controller\PaginationAssertionTrait;
 use Knp\Component\Pager\PaginatorInterface;
@@ -45,13 +46,19 @@ final class ManagerEmployeeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'], priority: 11)]
-    public function show(User $employee, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function show(
+        User $employee,
+        Request $request,
+        PaginatorInterface $paginator,
+        ReportRepositoryInterface $repository,
+    ): Response {
+        /** @var User $manager */
+        $manager = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $this->assertIsGreaterThanZero($page);
 
         $data = $paginator->paginate(
-            target: $employee->getSubmittedReports(),
+            target: $repository->findAllForEmployeeAndManager($manager, $employee),
             page: $page,
             limit: 20
         );

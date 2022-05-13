@@ -24,23 +24,36 @@ final class EmployeeDashboardController extends AbstractController
         /** @var User $employee */
         $employee = $this->getUser();
         $stats = $repository->findCurrentYearStatsForEmployee($employee);
-        $seen_reports = $repository->findCurrentYearReportStatsForEmployee($employee, Status::seen());
-        $unseen_reports = $repository->findCurrentYearReportStatsForEmployee($employee, Status::unseen());
+        $seen_reports = $repository->findCurrentYearStatsForEmployeeWithStatus($employee, Status::seen());
+        $unseen_reports = $repository->findCurrentYearStatsForEmployeeWithStatus($employee, Status::unseen());
+        $chart = $this->createReportChart($builder, [$seen_reports, $unseen_reports]);
 
-        $chart = $builder
+        return $this->render(
+            view: 'domain/report/user/dashboard.html.twig',
+            parameters: [
+                'chart' => $chart,
+                'stats' => $stats
+            ]
+        );
+    }
+
+    private function createReportChart(ChartBuilderInterface $builder, array $reports): Chart
+    {
+        [$seen, $unseen] = $reports;
+        return $builder
             ->createChart(Chart::TYPE_BAR)
             ->setData([
-                'labels' => array_keys($seen_reports),
+                'labels' => array_keys($seen),
                 'datasets' => [
                     [
                         'label' => 'Rapports lus',
                         'backgroundColor' => 'rgb(57, 135, 156)',
-                        'data' => array_values($seen_reports),
+                        'data' => array_values($seen),
                     ],
                     [
                         'label' => 'Rapports non lus',
                         'backgroundColor' => 'rgb(235, 100, 89)',
-                        'data' => array_values($unseen_reports),
+                        'data' => array_values($unseen),
                     ],
                 ],
             ])
@@ -52,13 +65,5 @@ final class EmployeeDashboardController extends AbstractController
                     ],
                 ],
             ]);
-
-        return $this->render(
-            view: 'domain/report/user/dashboard.html.twig',
-            parameters: [
-                'chart' => $chart,
-                'stats' => $stats
-            ]
-        );
     }
 }

@@ -30,7 +30,7 @@ final class UpdateReportHandler
         }
 
         if (
-            $this->repository->hasReportMatchingHashForEmployee(
+            $this->repository->findMatchingHashForEmployee(
                 employee: $employee,
                 hash: $command->period->getHash(),
                 excludeReportUuid: $report->getUuid()->toBinary()

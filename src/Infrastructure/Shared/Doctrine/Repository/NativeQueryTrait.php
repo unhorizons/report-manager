@@ -11,13 +11,19 @@ namespace Infrastructure\Shared\Doctrine\Repository;
  */
 trait NativeQueryTrait
 {
-    public function execute(string $sql, array $data, bool $fetchAll = true): mixed
+    public function execute(string $sql, array $data, bool $fetchAll = true): array
     {
         try {
             $connection = $this->_em->getConnection();
             $statement = $connection->prepare($sql);
             $result = $statement->executeQuery($data);
-            return $fetchAll ? $result->fetchAllAssociative() : $result->fetchAssociative();
+
+            if ($fetchAll) {
+                return $result->fetchAllAssociative();
+            } else {
+                $data = $result->fetchAssociative();
+                return $data === false ? [] : $data;
+            }
         } catch (\Throwable) {
             return [];
         }
