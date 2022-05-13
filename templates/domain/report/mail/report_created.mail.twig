@@ -1,0 +1,13 @@
+{% extends _layout %}
+{% import 'shared/layout/mail/macro.html.twig' as e %}
+
+{% block body %}
+    {% apply markdown_email %}
+        # Rapport {{ report.period.source }} - {{ report.employee.username }},
+
+        ## {{ report.name }} ({{ report.period }})
+        {{ report.description }}
+    {% endapply %}
+
+    {{ e.button('lire plus', url('report_manager_report_show', {uuid: report.uuid}), 'primary', _format) }}
+{% endblock %}

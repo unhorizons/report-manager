@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
 {
     use IdentityTrait;
     use TimestampTrait;
@@ -44,7 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<Report>
      */
-    private Collection $reports;
+    private Collection $submitted_reports;
+
+    /**
+     * @var Collection<Report>
+     */
+    private Collection $assigned_reports;
 
     /**
      * @var Collection<Evaluation>
@@ -56,7 +61,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->gender = Gender::male();
         $this->roles = Roles::employee();
         $this->evaluations = new ArrayCollection();
-        $this->reports = new ArrayCollection();
+        $this->submitted_reports = new ArrayCollection();
+        $this->assigned_reports = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->username;
     }
 
     public static function create(
@@ -204,14 +215,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return in_array($role, $this->getRoles(), true);
     }
 
-    public function getReports(): Collection
+    public function getSubmittedReports(): Collection
     {
-        return $this->reports;
+        return $this->submitted_reports;
     }
 
-    public function setReports(Collection $reports): self
+    public function setSubmittedReports(Collection $reports): self
     {
-        $this->reports = $reports;
+        $this->submitted_reports = $reports;
+
+        return $this;
+    }
+
+    public function getAssignedReports(): Collection
+    {
+        return $this->assigned_reports;
+    }
+
+    public function addAssignedReport(Report $report): self
+    {
+        if (! $this->assigned_reports->contains($report)) {
+            $this->assigned_reports[] = $report;
+            $report->addManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedReport(Report $report): self
+    {
+        if ($this->assigned_reports->removeElement($report)) {
+            $report->removeManager($this);
+        }
 
         return $this;
     }
@@ -226,5 +261,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->evaluations = $evaluations;
 
         return $this;
+    }
+
+    public function getAutocompleteValue(): string
+    {
+        return (string) $this->id;
+    }
+
+    public function getAutocompleteLabel(): string
+    {
+        return (string) $this->username;
     }
 }

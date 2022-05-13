@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Infrastructure\Report\Symfony\Form;
 
 use Application\Report\Command\CreateReportCommand;
+use Domain\Authentication\Entity\User;
+use Infrastructure\Authentication\Doctrine\Repository\UserRepository;
 use Infrastructure\Report\Symfony\Form\ValueObject\PeriodType;
 use Infrastructure\Shared\Symfony\Form\Type\AutoGrowTextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,6 +45,16 @@ final class CreateReportForm extends AbstractType
                     'accept' => 'application/pdf, application/x-pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 ],
                 'multiple' => true,
+            ])
+            ->add('managers', EntityType::class, [
+                'label' => 'report.forms.labels.managers',
+                'help' => 'report.forms.labels.managers_help',
+                'attr' => [
+                    'is' => 'app-select-choices',
+                ],
+                'multiple' => true,
+                'class' => User::class,
+                'query_builder' => fn (UserRepository $repository) => $repository->findAllManagerQuery(),
             ]);
     }
 

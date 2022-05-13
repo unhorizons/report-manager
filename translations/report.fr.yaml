@@ -14,6 +14,7 @@ report:
     mails:
         subjects:
             evaluation_created: '[UNH Rapports] %username%, vous avez reçu une nouvelle évaluation'
+            report_created: '[UNH Rapports] vous avez reçu un nouveau rapport de %username%'
 
     sidebars:
         admins:
@@ -68,5 +69,7 @@ report:
             ending_at: Fin
             documents: Documents à annexer
             documents_help: Vous pouvez annexer plusieurs documents
+            managers: À quel responsable est destiné ce rapport ?
+            managers_help: tapez le nom du responsable et choisissez dans la liste qui apparaît
         placeholders:
             name: "rapport : mise en place du projet..."

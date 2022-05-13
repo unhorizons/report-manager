@@ -25,7 +25,13 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
 
     public function findAllSeen(): array;
 
+    public function findAllSeenForManager(User $manager): array;
+
     public function findAllUnseen(): array;
 
+    public function findAllUnseenForManager(User $manager): array;
+
     public function findAllWithStatus(string $status): array;
+
+    public function findAllWithStatusForManager(string $status, User $manager): array;
 }

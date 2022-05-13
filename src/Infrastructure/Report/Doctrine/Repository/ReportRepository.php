@@ -6,6 +6,7 @@ namespace Infrastructure\Report\Doctrine\Repository;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Domain\Authentication\Entity\User;
 use Domain\Report\Entity\Report;
@@ -82,10 +83,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     public function findAllUnseen(): array
     {
         /** @var Report[] $result */
-        $result = $this->createQueryBuilder('r')
-            ->where('r.status.status = :status')
-            ->setParameter('status', (string) Status::unseen())
-            ->orderBy('r.created_at', 'DESC')
+        $result = $this->findAllUnseenQuery()
             ->getQuery()
             ->getResult();
 
@@ -95,10 +93,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     public function findAllSeen(): array
     {
         /** @var Report[] $result */
-        $result = $this->createQueryBuilder('r')
-            ->where('r.status.status = :status')
-            ->setParameter('status', (string) Status::seen())
-            ->orderBy('r.created_at', 'DESC')
+        $result = $this->findAllSeenQuery()
             ->getQuery()
             ->getResult();
 
@@ -123,7 +118,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (NonUniqueResultException) {
-            return true;
+            return false;
         }
     }
 
@@ -134,5 +129,66 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             'unseen' => $this->findAllUnseen(),
             default => $this->findAll()
         };
+    }
+
+    public function findAllWithStatusForManager(string $status, User $manager): array
+    {
+        return match ($status) {
+            'seen' => $this->findAllSeenForManager($manager),
+            'unseen' => $this->findAllUnseenForManager($manager),
+            default => $this->findAllForManager($manager)
+        };
+    }
+
+    public function findAllForManager(User $manager): array
+    {
+        /** @var Report[] $result */
+        $result = $this->createQueryBuilder('r')
+            ->where('r.managers = :manager')
+            ->setParameter('manager', $manager)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function findAllSeenForManager(User $manager): array
+    {
+        /** @var Report[] $result */
+        $result = $this->findAllSeenQuery()
+            ->where('r.managers = :manager')
+            ->setParameter('manager', $manager)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function findAllUnseenForManager(User $manager): array
+    {
+        /** @var Report[] $result */
+        $result = $this->findAllUnseenQuery()
+            ->where('r.managers = :manager')
+            ->setParameter('manager', $manager)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    private function findAllUnseenQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.status.status = :status')
+            ->setParameter('status', (string) Status::unseen())
+            ->orderBy('r.created_at', 'DESC');
+    }
+
+    private function findAllSeenQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.status.status = :status')
+            ->setParameter('status', (string) Status::seen())
+            ->orderBy('r.created_at', 'DESC');
     }
 }

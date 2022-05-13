@@ -25,4 +25,6 @@ interface UserRepositoryInterface extends DataRepositoryInterface
     public function upgradePassword(User $user, string $newHashedPassword): void;
 
     public function findAllEmployeeWithStats(): array;
+
+    public function findAllManager(): array;
 }

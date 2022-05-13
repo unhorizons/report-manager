@@ -36,6 +36,11 @@ class Report
     private ?User $employee = null;
 
     /**
+     * @var Collection<User>
+     */
+    private Collection $managers;
+
+    /**
      * @var Collection<Evaluation>
      */
     private Collection $evaluations;
@@ -52,6 +57,7 @@ class Report
         $this->period = Period::createForPreviousWeek();
         $this->documents = new ArrayCollection();
         $this->evaluations = new ArrayCollection();
+        $this->managers = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -205,6 +211,27 @@ class Report
                 $document->setReport(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getManagers(): Collection
+    {
+        return $this->managers;
+    }
+
+    public function addManager(User $manager): self
+    {
+        if (! $this->managers->contains($manager)) {
+            $this->managers[] = $manager;
+        }
+
+        return $this;
+    }
+
+    public function removeManager(User $manager): self
+    {
+        $this->managers->removeElement($manager);
 
         return $this;
     }

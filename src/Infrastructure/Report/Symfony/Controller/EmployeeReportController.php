@@ -7,6 +7,7 @@ namespace Infrastructure\Report\Symfony\Controller;
 use Application\Report\Command\CreateReportCommand;
 use Application\Report\Command\DeleteReportCommand;
 use Application\Report\Command\UpdateReportCommand;
+use Doctrine\Common\Collections\ArrayCollection;
 use Domain\Authentication\Entity\User;
 use Domain\Report\Entity\Report;
 use Domain\Report\Repository\ReportRepositoryInterface;
@@ -60,7 +61,8 @@ final class EmployeeReportController extends AbstractController
         $employee = $this->getUser();
         $command = new CreateReportCommand(
             employee: $employee,
-            period: Period::createForPreviousWeek()
+            period: Period::createForPreviousWeek(),
+            managers: new ArrayCollection()
         );
         $form = $this->createForm(CreateReportForm::class, $command)
             ->handleRequest($request);
@@ -77,6 +79,7 @@ final class EmployeeReportController extends AbstractController
                 return $this->redirectSeeOther('report_employee_report_index');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -85,7 +88,7 @@ final class EmployeeReportController extends AbstractController
             parameters: [
                 'form' => $form->createView(),
             ],
-            response: $this->getResponseBasedOnFormValidationStatus($form)
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );
     }
 
@@ -135,7 +138,11 @@ final class EmployeeReportController extends AbstractController
     public function edit(Request $request, Report $report): Response
     {
         $this->denyAccessUnlessGranted('REPORT_UPDATE', $report);
-        $command = new UpdateReportCommand($report, $report->getPeriod());
+        $command = new UpdateReportCommand(
+            report: $report,
+            period: $report->getPeriod(),
+            managers: $report->getManagers()
+        );
         $form = $this->createForm(UpdateReportForm::class, $command)
             ->handleRequest($request);
 
@@ -155,6 +162,7 @@ final class EmployeeReportController extends AbstractController
                 ]);
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -163,7 +171,7 @@ final class EmployeeReportController extends AbstractController
             parameters: [
                 'form' => $form->createView(),
             ],
-            response: $this->getResponseBasedOnFormValidationStatus($form)
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );
     }
 }

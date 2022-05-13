@@ -49,7 +49,7 @@ final class ManagerEmployeeController extends AbstractController
         $this->assertIsGreaterThanZero($page);
 
         $data = $paginator->paginate(
-            target: $employee->getReports(),
+            target: $employee->getSubmittedReports(),
             page: $page,
             limit: 20
         );

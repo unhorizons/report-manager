@@ -54,6 +54,7 @@ final class ManagerEvaluationController extends AbstractController
                 ]);
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -63,7 +64,7 @@ final class ManagerEvaluationController extends AbstractController
                 'report' => $report,
                 'form' => $form->createView(),
             ],
-            response: $this->getResponseBasedOnFormValidationStatus($form)
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );
     }
 
@@ -93,6 +94,7 @@ final class ManagerEvaluationController extends AbstractController
                 ]);
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -101,7 +103,8 @@ final class ManagerEvaluationController extends AbstractController
             parameters: [
                 'report' => $report,
                 'form' => $form->createView(),
-            ]
+            ],
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );
     }
 

@@ -1,6 +1,8 @@
 // dashlite theme
 import './css/dashlite.min.css'
 import './css/skins/theme-bluelite.css'
+import '../node_modules/tom-select/dist/css/tom-select.min.css'
+import '../node_modules/tom-select/dist/css/tom-select.bootstrap4.min.css'
 
 // start stimulus app
 import './js/bootstrap'

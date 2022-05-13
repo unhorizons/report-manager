@@ -7,22 +7,23 @@ Domain\Authentication\Entity\User:
         email: admin\@admin.com
         roles: [ 'ROLE_USER', 'ROLE_ADMIN' ]
 
-    user_report_manager (extends user):
-        username: manager
-        email: manager\@manager.com
+    user_report_manager{1..5} (extends user):
+        username: manager<current()>
+        email: manager<current()>\@manager.com
         roles: [ 'ROLE_USER', 'ROLE_REPORT_MANAGER' ]
 
-    user{1..10} (extends user):
+    user_employee{1..80} (extends user):
 
 Domain\Report\Entity\Report:
-    report{1..40} (extends report):
-        employee: '@user*'
+    report{1..200} (extends report):
+        employee: '@user_employee*'
+        managers: [ '@user_report_manager*' ]
 
 Domain\Report\Entity\Document:
-    document{1..60} (extends document):
+    document{1..400} (extends document):
         report: '@report*'
 
 Domain\Report\Entity\Evaluation:
-    evaluation{1..50} (extends evaluation):
-        manager: '@user_report_manager'
+    evaluation{1..200} (extends evaluation):
+        manager: '@user_report_manager*'
         report: '@report*'

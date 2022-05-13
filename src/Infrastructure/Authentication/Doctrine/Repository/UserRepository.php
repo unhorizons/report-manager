@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Infrastructure\Authentication\Doctrine\Repository;
 
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Domain\Authentication\Entity\User;
 use Domain\Authentication\Repository\UserRepositoryInterface;
@@ -120,6 +121,23 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
             ->getResult();
 
         return $result;
+    }
+
+    public function findAllManager(): array
+    {
+        /** @var User[] $result */
+        $result = $this->findAllManagerQuery()
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function findAllManagerQuery(): QueryBuilder
+    {
+        return  $this->createQueryBuilder('u')
+            ->where('u.roles.roles LIKE :role')
+            ->setParameter('role', '%ROLE_REPORT_MANAGER%');
     }
 
     /**

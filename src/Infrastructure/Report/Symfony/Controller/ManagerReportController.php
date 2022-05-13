@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Infrastructure\Report\Symfony\Controller;
 
 use Application\Report\Command\SetReportSeenStatusCommand;
+use Domain\Authentication\Entity\User;
 use Domain\Report\Entity\Report;
 use Domain\Report\Repository\ReportRepositoryInterface;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
@@ -26,11 +27,13 @@ final class ManagerReportController extends AbstractController
     ], methods: ['GET'])]
     public function index(string $status, Request $request, PaginatorInterface $paginator, ReportRepositoryInterface $repository): Response
     {
+        /** @var User $manager */
+        $manager = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $this->assertIsGreaterThanZero($page);
 
         $data = $paginator->paginate(
-            target: $repository->findAllWithStatus($status),
+            target: $repository->findAllWithStatusForManager($status, $manager),
             page: $page,
             limit: 20
         );
