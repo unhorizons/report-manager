@@ -13,7 +13,7 @@ Domain\Authentication\Entity\User:
         last_login_ip: <ipv4()>
 
         # Timestamp
-        created_at: <dateTimeThisYear()>
+        created_at: <dateTimeBetween("first day of January this year", "last day of December this year")>
         updated_at: ~
 
 Domain\Report\Entity\Report:
@@ -24,7 +24,7 @@ Domain\Report\Entity\Report:
         status: <randomElement(['seen', 'unseen'])>
 
         # Timestamp
-        created_at: <dateTimeThisYear()>
+        created_at: <dateTimeBetween("first day of January this year", "last day of December this year")>
         updated_at: ~
 
 Domain\Report\Entity\Document:
@@ -35,7 +35,7 @@ Domain\Report\Entity\Document:
         file_size: 1024
 
         # Timestamp
-        created_at: <dateTimeThisYear()>
+        created_at: <dateTimeBetween("first day of January this year", "last day of December this year")>
         updated_at: ~
 
 Domain\Report\Entity\Evaluation:
@@ -43,5 +43,5 @@ Domain\Report\Entity\Evaluation:
         content: <text()>
 
         # Timestamp
-        created_at: <dateTimeThisYear()>
+        created_at: <dateTimeBetween("first day of January this year", "last day of December this year")>
         updated_at: ~

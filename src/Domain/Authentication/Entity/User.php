@@ -41,6 +41,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     private ?string $last_login_ip = null;
 
+    private ?\DateTimeImmutable $notifications_read_at = null;
+
     /**
      * @var Collection<Report>
      */
@@ -271,5 +273,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     public function getAutocompleteLabel(): string
     {
         return (string) $this->username;
+    }
+
+    public function getNotificationsReadAt(): ?\DateTimeImmutable
+    {
+        return $this->notifications_read_at;
+    }
+
+    public function setNotificationsReadAt(?\DateTimeImmutable $notifications_read_at): self
+    {
+        $this->notifications_read_at = $notifications_read_at;
+
+        return $this;
     }
 }

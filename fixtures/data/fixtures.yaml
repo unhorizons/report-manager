@@ -15,15 +15,15 @@ Domain\Authentication\Entity\User:
     user_employee{1..80} (extends user):
 
 Domain\Report\Entity\Report:
-    report{1..200} (extends report):
+    report{1..400} (extends report):
         employee: '@user_employee*'
         managers: [ '@user_report_manager*' ]
 
 Domain\Report\Entity\Document:
-    document{1..400} (extends document):
+    document{1..800} (extends document):
         report: '@report*'
 
 Domain\Report\Entity\Evaluation:
-    evaluation{1..200} (extends evaluation):
+    evaluation{1..300} (extends evaluation):
         manager: '@user_report_manager*'
         report: '@report*'

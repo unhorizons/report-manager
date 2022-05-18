@@ -88,4 +88,35 @@ final class EvaluationRepository extends AbstractRepository implements Evaluatio
             'manager' => $manager->getId(),
         ], false);
     }
+
+    public function findCurrentYearFrequencyForEmployee(User $employee): array
+    {
+        $start = (new \DateTimeImmutable('first day of January this year'))->format('Y-m-d');
+        $end = (new \DateTimeImmutable('last day of December this year'))->format('Y-m-d');
+
+        $sql = <<< SQL
+            SELECT 
+                SUM(MONTH(evaluation.created_at) = 1) AS 'Jan',
+                SUM(MONTH(evaluation.created_at) = 2) AS 'Feb',
+                SUM(MONTH(evaluation.created_at) = 3) AS 'Mar',
+                SUM(MONTH(evaluation.created_at) = 4) AS 'Apr',
+                SUM(MONTH(evaluation.created_at) = 5) AS 'May',
+                SUM(MONTH(evaluation.created_at) = 6) AS 'Jun',
+                SUM(MONTH(evaluation.created_at) = 7) AS 'Jul',
+                SUM(MONTH(evaluation.created_at) = 8) AS 'Aug',
+                SUM(MONTH(evaluation.created_at) = 9) AS 'Sep',
+                SUM(MONTH(evaluation.created_at) = 10) AS 'Oct',
+                SUM(MONTH(evaluation.created_at) = 11) AS 'Nov',
+                SUM(MONTH(evaluation.created_at) = 12) AS 'Dec'
+            FROM evaluation
+            LEFT JOIN report ON evaluation.report_id = report.id
+            WHERE (evaluation.created_at BETWEEN :start AND :end) AND report.employee_id = :employee
+        SQL;
+
+        return $this->execute($sql, [
+            'end' => $end,
+            'start' => $start,
+            'employee' => $employee->getId(),
+        ], false);
+    }
 }

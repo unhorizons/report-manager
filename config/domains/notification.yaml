@@ -1,0 +1,9 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Doctrine Repositories
+    Domain\Notification\Repository\NotificationRepositoryInterface: '@Infrastructure\Notification\Doctrine\Repository\NotificationRepository'

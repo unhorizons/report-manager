@@ -22,10 +22,10 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 final class CreateReportHandler
 {
     public function __construct(
+        private readonly string $projectDir,
         private readonly ReportRepositoryInterface $repository,
         private readonly TranslatorInterface $translator,
         private readonly UploaderHelper $uploader,
-        private readonly KernelInterface $kernel,
         private readonly Mailer $mailer
     ) {
     }
@@ -85,7 +85,7 @@ final class CreateReportHandler
 
         foreach ($documents as $document) {
             $email->attachFromPath(
-                path: sprintf('%s/public%s', $this->kernel->getProjectDir(), $this->uploader->asset($document, 'file')),
+                path: sprintf('%s/public%s', $this->projectDir, $this->uploader->asset($document, 'file')),
                 name: (string) $report->getName(),
                 contentType: (string) $document->getFileType()
             );

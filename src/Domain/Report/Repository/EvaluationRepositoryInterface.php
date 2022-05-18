@@ -23,4 +23,6 @@ interface EvaluationRepositoryInterface extends DataRepositoryInterface
     public function findAllEvaluationForEmployee(User $employee): array;
 
     public function findCurrentYearEvaluationStatsForManager(User $manager): array;
+
+    public function findCurrentYearFrequencyForEmployee(User $employee): array;
 }

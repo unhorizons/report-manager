@@ -27,6 +27,7 @@
             {% embed 'shared/component/card/_stats.html.twig' %}
                 {% block stats_card_label 'Rapports reçus' %}
                 {% block stats_card_value stats.reports %}
+                {% block stats_card_frequency render_chart(report_frequency_chart) %}
                 {% block stats_card_info "Statistique de l'année en cours" %}
             {% endembed %}
         </div>
@@ -34,6 +35,7 @@
             {% embed 'shared/component/card/_stats.html.twig' %}
                 {% block stats_card_label 'Évaluations données' %}
                 {% block stats_card_value stats.evaluations %}
+                {% block stats_card_frequency render_chart(evaluation_frequency_chart) %}
                 {% block stats_card_info "Statistique de l'année en cours" %}
             {% endembed %}
         </div>
@@ -41,7 +43,7 @@
             {% embed 'shared/component/card/_simple.html.twig' %}
                 {% block simple_card_title 'Statistiques ' ~ 'now' | date('Y') %}
                 {% block simple_card_body %}
-                    {{ render_chart(reportChart) }}
+                    {{ render_chart(report_chart) }}
                 {% endblock %}
             {% endembed %}
         </div>
@@ -49,7 +51,7 @@
             {% embed 'shared/component/card/_simple.html.twig' %}
                 {% block simple_card_title 'Statistiques ' ~ 'now' | date('Y') %}
                 {% block simple_card_body %}
-                    {{ render_chart(evaluationChart) }}
+                    {{ render_chart(evaluation_chart) }}
                 {% endblock %}
             {% endembed %}
         </div>

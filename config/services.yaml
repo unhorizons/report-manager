@@ -30,3 +30,9 @@ services:
         exclude:
             - '../src/Infrastructure/Shared/Symfony/Kernel.php'
 
+    Infrastructure\Notification\Mercure\MercureCookieGenerator:
+        arguments: [ '%env(resolve:MERCURE_SUBSCRIBER_JWT_KEY)%' ]
+
+    Application\Report\Handler\CreateReportHandler:
+        arguments: [ '%kernel.project_dir%' ]
+

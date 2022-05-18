@@ -48,6 +48,24 @@ services:
     labels:
       com.symfony.server.service-prefix: 'REDIS'
 
+  mercure:
+    container_name: unh_report_mercure
+    image: dunglas/mercure:v0.10.4
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: ':80'
+      MERCURE_PUBLISHER_JWT_KEY: mercure_publisher
+      MERCURE_SUBSCRIBER_JWT_KEY: mercure_subscriber
+      MERCURE_EXTRA_DIRECTIVES: |
+        cors_origins http://127.0.0.1:8000
+
+   #command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
+    volumes:
+      - mercure_data:/data
+      - mercure_config:/config
+    ports:
+      - "8001:80"
+
   ## Development Tools
   mailer:
     image: maildev/maildev:2.0.2
@@ -74,6 +92,7 @@ services:
 
   node:
     container_name: unh_report_node
+    restart: unless-stopped
     user: '${USER_ID}:${GROUP_ID}'
     build:
       context: ./tools/docker/node
@@ -86,6 +105,7 @@ services:
 
   php_test:
     user: '${USER_ID}:${GROUP_ID}'
+    restart: unless-stopped
     container_name: unh_report_phptest
     build:
       context: ./tools/docker/php
@@ -97,6 +117,7 @@ services:
   database_test:
     image: mariadb:10.7.3
     container_name: unh_report_databasetest
+    restart: unless-stopped
     environment:
       MARIADB_USER: test
       MARIADB_ROOT_PASSWORD: test
@@ -107,6 +128,7 @@ services:
 
   redis_gui:
     image: rediscommander/redis-commander
+    restart: unless-stopped
     container_name: unh_report_redisgui
     environment:
       - REDIS_HOSTS=local:redis:6379
@@ -117,3 +139,5 @@ volumes:
   database-data:
     driver:
       local
+  mercure_data:
+  mercure_config:

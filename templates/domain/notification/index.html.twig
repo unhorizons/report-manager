@@ -1,0 +1,17 @@
+{% extends 'domain/report/layout/base.html.twig' %}
+{% block title 'Mes Notifications' %}
+
+{% block header %}
+    {% embed 'shared/component/_header.html.twig' %}
+        {% block header_title 'Mes Notifications' %}
+        {% block header_action_list %}
+            <li>
+                <a href="{{ path('report_employee_report_new') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}" title="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}">
+                    {{ 'check-circle' | icon }}
+                    <span>{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+

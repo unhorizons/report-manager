@@ -16,6 +16,7 @@
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
                     {% block navbar_tool_list %}{% endblock %}
+                    {% include 'shared/component/_notification.html.twig' %}
                     {% if app.user %}
                         <li class="dropdown user-dropdown">
                             <a href="#" class="dropdown-toggle mr-n1" data-toggle="dropdown" aria-expanded="false">
