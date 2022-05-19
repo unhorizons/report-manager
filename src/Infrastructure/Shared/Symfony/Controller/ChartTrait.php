@@ -8,8 +8,8 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
 /**
- * Trait ChartTrait
- * @package Infrastructure\Shared\Symfony\Controller
+ * Trait ChartTrait.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 trait ChartTrait
@@ -47,9 +47,9 @@ trait ChartTrait
                         'labels' => [
                             'boxWidth' => 12,
                             'padding' => 20,
-                            'fontColor' => '#6783b8'
-                        ]
-                    ]
+                            'fontColor' => '#6783b8',
+                        ],
+                    ],
                 ],
                 'scales' => [
                     'y' => [
@@ -69,9 +69,9 @@ trait ChartTrait
                             'fontSize' => 9,
                             'fontColor' => '#9eaecf',
                             'source' => 'auto',
-                            'padding' => 10
+                            'padding' => 10,
                         ],
-                    ]
+                    ],
                 ],
             ]);
     }
@@ -111,9 +111,9 @@ trait ChartTrait
                         'labels' => [
                             'boxWidth' => 12,
                             'padding' => 20,
-                            'fontColor' => '#6783b8'
-                        ]
-                    ]
+                            'fontColor' => '#6783b8',
+                        ],
+                    ],
                 ],
                 'scales' => [
                     'y' => [
@@ -131,19 +131,19 @@ trait ChartTrait
                         ],
                     ],
                     'x' => [
-                        'display' => false,
+                        'display' => true,
                         'ticks' => [
                             'fontSize' => 9,
                             'fontColor' => '#9eaecf',
                             'source' => 'auto',
-                            'padding' => 10
+                            'padding' => 10,
                         ],
                         'gridLines' => [
                             'color' => 'transparent',
                             'tickMarkLength' => 0,
-                            'zeroLineColor' => 'transparent'
-                        ]
-                    ]
+                            'zeroLineColor' => 'transparent',
+                        ],
+                    ],
                 ],
             ]);
     }
@@ -176,8 +176,8 @@ trait ChartTrait
                     'labels' => [
                         'boxWidth' => 12,
                         'padding' => 20,
-                        'fontColor' => '#6783b8'
-                    ]
+                        'fontColor' => '#6783b8',
+                    ],
                 ],
             ],
             'maintainAspectRatio' => false,
@@ -188,10 +188,10 @@ trait ChartTrait
                         'beginAtZero' => true,
                         'fontSize' => 12,
                         'fontColor' => '#9eaecf',
-                        'padding' => 0
+                        'padding' => 0,
                     ],
                     'gridLines' => [
-                        'tickMarkLength' => 0
+                        'tickMarkLength' => 0,
                     ],
                 ],
                 'x' => [
@@ -201,14 +201,14 @@ trait ChartTrait
                         'fontSize' => 12,
                         'fontColor' => '#9eaecf',
                         'source' => 'auto',
-                        'padding' => 0
+                        'padding' => 0,
                     ],
                     'gridLines' => [
                         'color' => 'transparent',
                         'tickMarkLength' => 0,
-                        'offsetGridLines' => true
-                    ]
-                ]
+                        'offsetGridLines' => true,
+                    ],
+                ],
             ],
         ];
     }

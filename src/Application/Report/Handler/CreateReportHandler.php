@@ -11,7 +11,6 @@ use Domain\Report\Entity\Report;
 use Domain\Report\Exception\ReportForPeriodAlreadyExistsException;
 use Domain\Report\Repository\ReportRepositoryInterface;
 use Infrastructure\Shared\Symfony\Mailer\Mailer;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;

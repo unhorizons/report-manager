@@ -10,8 +10,8 @@ use Domain\Shared\Repository\CleanableRepositoryInterface;
 use Domain\Shared\Repository\DataRepositoryInterface;
 
 /**
- * Interface NotificationRepositoryInterface
- * @package Domain\Notification\Repository
+ * Interface NotificationRepositoryInterface.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 interface NotificationRepositoryInterface extends DataRepositoryInterface, CleanableRepositoryInterface

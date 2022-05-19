@@ -7,13 +7,13 @@ namespace Infrastructure\Notification\Mercure;
 use Application\Notification\Service\NotificationService;
 use Domain\Authentication\Entity\User;
 use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
- * Class MercureCookieGenerator
- * @package Infrastructure\Notification\Mercure
+ * Class MercureCookieGenerator.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 final class MercureCookieGenerator
@@ -27,7 +27,7 @@ final class MercureCookieGenerator
     public function generate(User $user): Cookie
     {
         $channels = array_map(
-            fn(string $channel) => "/notifications/$channel",
+            fn (string $channel) => "/notifications/${channel}",
             $this->service->getChannelsForUser($user)
         );
         $config = Configuration::forSymmetricSigner(

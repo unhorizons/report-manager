@@ -11,8 +11,8 @@ use Domain\Notification\Repository\NotificationRepositoryInterface;
 use Infrastructure\Shared\Doctrine\Repository\AbstractRepository;
 
 /**
- * Class NotificationRepository
- * @package Infrastructure\Notification\Doctrine\Repository
+ * Class NotificationRepository.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 final class NotificationRepository extends AbstractRepository implements NotificationRepositoryInterface
@@ -41,11 +41,10 @@ final class NotificationRepository extends AbstractRepository implements Notific
             $oldNotification->setMessage($notification->getMessage());
 
             return $oldNotification;
-        } else {
-            $this->getEntityManager()->persist($notification);
-
-            return $notification;
         }
+        $this->getEntityManager()->persist($notification);
+
+        return $notification;
     }
 
     public function findRecentForUser(User $user, array $channels = ['public']): array

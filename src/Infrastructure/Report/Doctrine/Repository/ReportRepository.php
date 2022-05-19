@@ -118,8 +118,8 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             }
 
             return null !== $query
-                ->getQuery()
-                ->getOneOrNullResult();
+                    ->getQuery()
+                    ->getOneOrNullResult();
         } catch (NonUniqueResultException) {
             return false;
         }
@@ -201,80 +201,39 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
 
     public function findCurrentYearStatsForEmployee(User $employee): array
     {
-        $sql = <<< SQL
-            SELECT
-                (SELECT COUNT(id) FROM  report WHERE employee_id = :employee) AS reports, 
-                (
-                    SELECT COUNT(evaluation.id) FROM evaluation 
-                    LEFT JOIN report ON report.id = evaluation.report_id 
-                    WHERE report.employee_id = :employee
-                ) AS evaluations
-            FROM dual;
-        SQL;
-
-        return $this->execute($sql, [
-            'employee' => $employee->getId(),
-        ], false);
+        return $this->findCurrentYearStatsForUser($employee);
     }
 
     public function findCurrentYearStatsForEmployeeWithStatus(User $employee, Status $status): array
     {
-        $start = (new \DateTimeImmutable('first day of January this year'))->format('Y-m-d');
-        $end = (new \DateTimeImmutable('last day of December this year'))->format('Y-m-d');
+        $interval = $this->createDateTimeInterval('first day of January this year', 'last day of December this year');
 
         $sql = <<< SQL
-            SELECT 
-                SUM(MONTH(created_at) = 1) AS 'Jan',
-                SUM(MONTH(created_at) = 2) AS 'Feb',
-                SUM(MONTH(created_at) = 3) AS 'Mar',
-                SUM(MONTH(created_at) = 4) AS 'Apr',
-                SUM(MONTH(created_at) = 5) AS 'May',
-                SUM(MONTH(created_at) = 6) AS 'Jun',
-                SUM(MONTH(created_at) = 7) AS 'Jul',
-                SUM(MONTH(created_at) = 8) AS 'Aug',
-                SUM(MONTH(created_at) = 9) AS 'Sep',
-                SUM(MONTH(created_at) = 10) AS 'Oct',
-                SUM(MONTH(created_at) = 11) AS 'Nov',
-                SUM(MONTH(created_at) = 12) AS 'Dec'
-            FROM report
+            SELECT {$this->createMonthSumSQL('created_at')} FROM report
             WHERE (created_at BETWEEN :start AND :end) AND (status = :status AND employee_id = :employee)
         SQL;
 
         return $this->execute($sql, [
-            'end' => $end,
-            'start' => $start,
-            'status' => (string) $status,
+            'end' => $interval[1],
+            'start' => $interval[0],
+            'status' => (string)$status,
             'employee' => $employee->getId(),
         ], false);
     }
 
     public function findCurrentYearStatsForManagerWithStatus(User $manager, Status $status): array
     {
-        $start = (new \DateTimeImmutable('first day of January this year'))->format('Y-m-d');
-        $end = (new \DateTimeImmutable('last day of December this year'))->format('Y-m-d');
+        $interval = $this->createDateTimeInterval('first day of January this year', 'last day of December this year');
 
         $sql = <<< SQL
-            SELECT 
-                SUM(MONTH(created_at) = 1) AS 'Jan',
-                SUM(MONTH(created_at) = 2) AS 'Feb',
-                SUM(MONTH(created_at) = 3) AS 'Mar',
-                SUM(MONTH(created_at) = 4) AS 'Apr',
-                SUM(MONTH(created_at) = 5) AS 'May',
-                SUM(MONTH(created_at) = 6) AS 'Jun',
-                SUM(MONTH(created_at) = 7) AS 'Jul',
-                SUM(MONTH(created_at) = 8) AS 'Aug',
-                SUM(MONTH(created_at) = 9) AS 'Sep',
-                SUM(MONTH(created_at) = 10) AS 'Oct',
-                SUM(MONTH(created_at) = 11) AS 'Nov',
-                SUM(MONTH(created_at) = 12) AS 'Dec'
-            FROM report
+            SELECT {$this->createMonthSumSQL('created_at')} FROM report
             LEFT JOIN manager_assigned_report ON report.id = manager_assigned_report.report_id
             WHERE (created_at BETWEEN :start AND :end) AND (status = :status AND manager_assigned_report.manager_id = :manager)
         SQL;
 
         return $this->execute($sql, [
-            'end' => $end,
-            'start' => $start,
+            'end' => $interval[1],
+            'start' => $interval[0],
             'status' => (string) $status,
             'manager' => $manager->getId(),
         ], false);
@@ -294,23 +253,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
 
     public function findCurrentYearStatsForManager(User $manager): array
     {
-        $sql = <<< SQL
-            SELECT
-                (
-                    SELECT COUNT(id) FROM  report
-                    LEFT JOIN manager_assigned_report ON report.id = manager_assigned_report.report_id
-                    WHERE manager_assigned_report.manager_id = :manager
-                ) AS reports,
-                (
-                    SELECT COUNT(evaluation.id) FROM evaluation 
-                    WHERE manager_id = :manager
-                ) AS evaluations
-            FROM dual;
-        SQL;
-
-        return $this->execute($sql, [
-            'manager' => $manager->getId(),
-        ], false);
+        return $this->findCurrentYearStatsForUser($manager);
     }
 
     public function findAllForEmployeeAndManager(User $manager, User $employee): array
@@ -338,11 +281,27 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
+    public function findCurrentYearFrequencyForEmployee(User $employee): array
+    {
+        $interval = $this->createDateTimeInterval('first day of January this year', 'last day of December this year');
+
+        $sql = <<< SQL
+            SELECT {$this->createMonthSumSQL('created_at')} FROM report
+            WHERE (created_at BETWEEN :start AND :end) AND employee_id = :employee
+        SQL;
+
+        return $this->execute($sql, [
+            'end' => $interval[0],
+            'start' => $interval[1],
+            'employee' => $employee->getId(),
+        ], false);
+    }
+
     private function findAllUnseenQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string) Status::unseen())
+            ->setParameter('status', (string)Status::unseen())
             ->orderBy('r.created_at', 'DESC');
     }
 
@@ -350,20 +309,23 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string) Status::seen())
+            ->setParameter('status', (string)Status::seen())
             ->orderBy('r.created_at', 'DESC');
     }
 
     private function searchQuery(string $query, array $options): QueryBuilder
     {
         $qb = $this->createQueryBuilder('r')
-            ->leftJoin('r.managers', 'm')
-            ->where('CONCAT(r.name, r.description) LIKE :query')
-            ->setParameter('query', mb_strtolower("%{$query}%"));
+            ->leftJoin('r.managers', 'm');
 
-        if ($options['seen'] && ! $options['unseen']) {
+        if (!empty($query)) {
+            $qb->andWhere('CONCAT(r.name, r.description) LIKE :query')
+                ->setParameter('query', mb_strtolower("%{$query}%"));
+        }
+
+        if ($options['seen'] && !$options['unseen']) {
             $qb->andWhere('r.status.status = :status')->setParameter('status', 'seen');
-        } elseif ($options['unseen'] && ! $options['seen']) {
+        } elseif ($options['unseen'] && !$options['seen']) {
             $qb->andWhere('r.status.status = :status')->setParameter('status', 'unseen');
         }
 
@@ -381,33 +343,118 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $qb;
     }
 
-    public function findCurrentYearFrequencyForEmployee(User $employee): array
+    private function calculateProgressionRatio(int $previous, int $current): int|float
     {
-        $start = (new \DateTimeImmutable('first day of January this year'))->format('Y-m-d');
-        $end = (new \DateTimeImmutable('last day of December this year'))->format('Y-m-d');
+        return $previous === 0 ?
+            $current * 100 :
+            round(($current - $previous) * ($previous / 100), 2);
+    }
 
-        $sql = <<< SQL
-            SELECT 
-                SUM(MONTH(created_at) = 1) AS 'Jan',
-                SUM(MONTH(created_at) = 2) AS 'Feb',
-                SUM(MONTH(created_at) = 3) AS 'Mar',
-                SUM(MONTH(created_at) = 4) AS 'Apr',
-                SUM(MONTH(created_at) = 5) AS 'May',
-                SUM(MONTH(created_at) = 6) AS 'Jun',
-                SUM(MONTH(created_at) = 7) AS 'Jul',
-                SUM(MONTH(created_at) = 8) AS 'Aug',
-                SUM(MONTH(created_at) = 9) AS 'Sep',
-                SUM(MONTH(created_at) = 10) AS 'Oct',
-                SUM(MONTH(created_at) = 11) AS 'Nov',
-                SUM(MONTH(created_at) = 12) AS 'Dec'
-            FROM report
-            WHERE (created_at BETWEEN :start AND :end) AND employee_id = :employee
-        SQL;
+    private function createDateTimeInterval(string $start, string $end): array
+    {
+        return [
+            (new \DateTimeImmutable($start))->format('Y-m-d'),
+            (new \DateTimeImmutable($end))->format('Y-m-d')
+        ];
+    }
 
-        return $this->execute($sql, [
-            'end' => $end,
-            'start' => $start,
-            'employee' => $employee->getId(),
+    private function createCurrentYearStatsSQL(User $user): string
+    {
+        if ($user->hasRole('ROLE_REPORT_MANAGER')) {
+            return <<< SQL
+                SELECT
+                    (
+                        SELECT COUNT(id) FROM report 
+                        LEFT JOIN manager_assigned_report on report.id = manager_assigned_report.report_id
+                        WHERE manager_assigned_report.manager_id = :user
+                    ) AS reports,
+                    (
+                        SELECT COUNT(id) FROM report 
+                        LEFT JOIN manager_assigned_report on report.id = manager_assigned_report.report_id
+                        WHERE manager_assigned_report.manager_id = :user AND created_at BETWEEN :previous_month_start AND :previous_month_end
+                    ) AS reports_previous_month,
+                    (
+                        SELECT COUNT(id) FROM report 
+                        LEFT JOIN manager_assigned_report on report.id = manager_assigned_report.report_id
+                        WHERE manager_assigned_report.manager_id = :user AND created_at BETWEEN :current_month_start AND :current_month_end
+                    ) AS reports_current_month,
+                    (
+                        SELECT COUNT(id) FROM evaluation WHERE manager_id = :user
+                     ) AS evaluations,
+                     (
+                        SELECT COUNT(id) FROM evaluation 
+                        WHERE manager_id = :user AND created_at BETWEEN :previous_month_start AND :previous_month_end
+                    ) AS evaluations_previous_month,
+                     (
+                        SELECT COUNT(evaluation.id) FROM evaluation 
+                        WHERE manager_id = :user AND created_at BETWEEN :current_month_start AND :current_month_end
+                    ) AS evaluations_current_month
+                FROM dual;
+            SQL;
+        } else {
+            return <<< SQL
+                SELECT
+                    (SELECT COUNT(id) FROM report WHERE employee_id = :user) AS reports,
+                    (SELECT COUNT(id) FROM report WHERE employee_id = :user AND created_at BETWEEN :previous_month_start AND :previous_month_end) AS reports_previous_month,
+                    (SELECT COUNT(id) FROM report WHERE employee_id = :user AND created_at BETWEEN :current_month_start AND :current_month_end) AS reports_current_month,
+                    (
+                        SELECT COUNT(evaluation.id) FROM evaluation 
+                        LEFT JOIN report ON report.id = evaluation.report_id 
+                        WHERE report.employee_id = :user
+                    ) AS evaluations,
+                     (
+                        SELECT COUNT(evaluation.id) FROM evaluation 
+                        LEFT JOIN report ON report.id = evaluation.report_id 
+                        WHERE report.employee_id = :user AND evaluation.created_at BETWEEN :previous_month_start AND :previous_month_end
+                    ) AS evaluations_previous_month,
+                     (
+                        SELECT COUNT(evaluation.id) FROM evaluation 
+                        LEFT JOIN report ON report.id = evaluation.report_id 
+                        WHERE report.employee_id = :user AND evaluation.created_at BETWEEN :current_month_start AND :current_month_end
+                    ) AS evaluations_current_month
+                FROM dual;
+            SQL;
+        }
+    }
+
+    private function findCurrentYearStatsForUser(User $user): array
+    {
+        $previousMonth = $this->createDateTimeInterval('first day of previous month', 'last day of previous month');
+        $currentMonth = $this->createDateTimeInterval('first day of this month', 'last day of this month');
+        $data = $this->execute($this->createCurrentYearStatsSQL($user), [
+            'user' => $user->getId(),
+            'previous_month_start' => $previousMonth[0],
+            'previous_month_end' => $previousMonth[1],
+            'current_month_start' => $currentMonth[0],
+            'current_month_end' => $currentMonth[1]
         ], false);
+
+        $reportMonthRatio = $this->calculateProgressionRatio($data['reports_previous_month'], $data['reports_current_month']);
+        $evaluationMonthRatio = $this->calculateProgressionRatio($data['evaluations_previous_month'], $data['evaluations_current_month']);
+
+        return [
+            'reports_month_ratio' => $reportMonthRatio,
+            'evaluations_month_ratio' => $evaluationMonthRatio,
+            'reports' => $data['reports'],
+            'evaluations' => $data['evaluations']
+        ];
+    }
+
+    private function createMonthSumSQL(string $date): string
+    {
+        return <<< SQL
+            SUM(MONTH({$date}) = 1) AS 'Jan',
+            SUM(MONTH({$date}) = 2) AS 'Feb',
+            SUM(MONTH({$date}) = 3) AS 'Mar',
+            SUM(MONTH({$date}) = 4) AS 'Apr',
+            SUM(MONTH({$date}) = 5) AS 'May',
+            SUM(MONTH({$date}) = 6) AS 'Jun',
+            SUM(MONTH({$date}) = 7) AS 'Jul',
+            SUM(MONTH({$date}) = 8) AS 'Aug',
+            SUM(MONTH({$date}) = 9) AS 'Sep',
+            SUM(MONTH({$date}) = 10) AS 'Oct',
+            SUM(MONTH({$date}) = 11) AS 'Nov',
+            SUM(MONTH({$date}) = 12) AS 'Dec'
+        SQL;
     }
 }

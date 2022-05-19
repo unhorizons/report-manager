@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class NotificationController extends AbstractController
 {
     #[Route('{status?all}', name: 'index', requirements: [
-        'status' => 'all|unseen'
+        'status' => 'all|unseen',
     ], methods: ['GET'])]
     public function index(PaginatorInterface $pagination, NotificationRepositoryInterface $repository): Response
     {

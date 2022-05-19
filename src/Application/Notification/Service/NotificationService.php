@@ -8,8 +8,8 @@ use Domain\Authentication\Entity\User;
 use Domain\Notification\Repository\NotificationRepositoryInterface;
 
 /**
- * Class NotificationService
- * @package Application\Notification\Service
+ * Class NotificationService.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 final class NotificationService

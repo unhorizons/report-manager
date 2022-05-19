@@ -7,8 +7,8 @@ namespace Domain\Notification\Event;
 use Domain\Notification\Entity\Notification;
 
 /**
- * Class NotificationReadEvent
- * @package Domain\Notification\Event
+ * Class NotificationReadEvent.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 final class NotificationReadEvent

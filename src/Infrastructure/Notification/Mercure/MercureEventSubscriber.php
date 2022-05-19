@@ -12,23 +12,22 @@ use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 
 /**
- * Class MercureEventSubscriber
- * @package Infrastructure\Notification\Mercure
+ * Class MercureEventSubscriber.
+ *
  * @author bernard-ng <bernard@devscast.tech>
  */
 final class MercureEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly HubInterface $hub
-    )
-    {
+    ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             NotificationCreatedEvent::class => 'onNotificationCreated',
-            NotificationReadEvent::class => 'onNotificationRead'
+            NotificationReadEvent::class => 'onNotificationRead',
         ];
     }
 

@@ -41,9 +41,9 @@ class Notification implements \Stringable
     {
         return json_encode([
             'uuid' => $this->uuid->toRfc4122(),
-            'url' => (string)$this->user,
-            'message' => (string)$this->message,
-            'created_at' => (int)$this->created_at?->getTimestamp(),
+            'url' => (string) $this->user,
+            'message' => (string) $this->message,
+            'created_at' => (int) $this->created_at?->getTimestamp(),
         ]);
     }
 
@@ -62,7 +62,7 @@ class Notification implements \Stringable
         return $this->uuid;
     }
 
-    public function setUuid(UuidV4|Uuid $uuid): Notification
+    public function setUuid(UuidV4|Uuid $uuid): self
     {
         $this->uuid = $uuid;
 
@@ -74,7 +74,7 @@ class Notification implements \Stringable
         return $this->user;
     }
 
-    public function setUser(?User $user): Notification
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
@@ -86,7 +86,7 @@ class Notification implements \Stringable
         return $this->channel;
     }
 
-    public function setChannel(?string $channel): Notification
+    public function setChannel(?string $channel): self
     {
         $this->channel = $channel;
 
@@ -98,7 +98,7 @@ class Notification implements \Stringable
         return $this->target;
     }
 
-    public function setTarget(?string $target): Notification
+    public function setTarget(?string $target): self
     {
         $this->target = $target;
 
@@ -110,7 +110,7 @@ class Notification implements \Stringable
         return $this->url;
     }
 
-    public function setUrl(?string $url): Notification
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
 
@@ -122,7 +122,7 @@ class Notification implements \Stringable
         return $this->message;
     }
 
-    public function setMessage(?string $message): Notification
+    public function setMessage(?string $message): self
     {
         $this->message = $message;
 

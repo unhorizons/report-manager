@@ -7,6 +7,21 @@
     </div>
 {% endmacro %}
 
+{% macro stats_infos(data, label) %}
+    {% if data != 0.0 %}
+        <span class="change {{ data > 0 ? 'up text-success' : 'down text-danger' }}">
+            {{  (data > 0 ? 'arrow-long-up' : 'arrow-long-down') | icon }}
+            {{  data }} %
+        </span>
+        <span> vs. le mois passé</span>
+    {% else %}
+        <span class="change down">
+            {{ 'alert-fill-c' | icon }}
+        </span>
+        <span class="text-danger"> Aucun {{ label }} ce mois</span>
+    {% endif %}
+{% endmacro %}
+
 {% macro user_data_link(label, value, link, options) %}
     <div class="profile-ud-item">
         <div class="profile-ud {{ options.style ?? 'wider' }}">

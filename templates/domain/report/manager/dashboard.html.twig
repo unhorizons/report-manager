@@ -25,18 +25,20 @@
     <div class="row g-gs">
         <div class="col-xxl-6 col-sm-6">
             {% embed 'shared/component/card/_stats.html.twig' %}
+                {% import 'shared/component/_macros.html.twig' as m %}
                 {% block stats_card_label 'Rapports reçus' %}
                 {% block stats_card_value stats.reports %}
                 {% block stats_card_frequency render_chart(report_frequency_chart) %}
-                {% block stats_card_info "Statistique de l'année en cours" %}
+                {% block stats_card_info %}{{ m.stats_infos(stats.reports_month_ratio, 'rapport') }}{% endblock %}
             {% endembed %}
         </div>
         <div class="col-xxl-6 col-sm-6">
             {% embed 'shared/component/card/_stats.html.twig' %}
+                {% import 'shared/component/_macros.html.twig' as m %}
                 {% block stats_card_label 'Évaluations données' %}
                 {% block stats_card_value stats.evaluations %}
                 {% block stats_card_frequency render_chart(evaluation_frequency_chart) %}
-                {% block stats_card_info "Statistique de l'année en cours" %}
+                {% block stats_card_info %}{{ m.stats_infos(stats.evaluations_month_ratio, 'évaluation') }}{% endblock %}
             {% endembed %}
         </div>
         <div class="col-12">
