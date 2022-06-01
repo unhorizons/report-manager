@@ -44,7 +44,7 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
 
     public function findAllWithStatusForManager(string $status, User $manager): array;
 
-    public function searchForManager(User $manager, string $query, array $options): array;
+    public function searchForManager(User $manager, ?string $query, array $options): array;
 
     public function findCurrentYearStatsForManager(User $manager): array;
 
@@ -52,7 +52,7 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
 
     public function findCurrentYearStatsForManagerWithStatus(User $manager, Status $status): array;
 
-    public function search(string $query, array $options): array;
+    public function search(?string $query, array $options): array;
 
     public function findCurrentYearFrequencyForEmployee(User $employee): array;
 }

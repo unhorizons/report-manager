@@ -239,7 +239,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         ], false);
     }
 
-    public function searchForManager(User $manager, string $query, array $options): array
+    public function searchForManager(User $manager, ?string $query, array $options): array
     {
         $qb = $this->searchQuery($query, $options)
             ->andWhere('m = :manager')
@@ -271,7 +271,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $result;
     }
 
-    public function search(string $query, array $options): array
+    public function search(?string $query, array $options): array
     {
         /** @var Report[] $result */
         $result = $this->searchQuery($query, $options)
@@ -313,7 +313,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             ->orderBy('r.created_at', 'DESC');
     }
 
-    private function searchQuery(string $query, array $options): QueryBuilder
+    private function searchQuery(?string $query, array $options): QueryBuilder
     {
         $qb = $this->createQueryBuilder('r')
             ->leftJoin('r.managers', 'm');

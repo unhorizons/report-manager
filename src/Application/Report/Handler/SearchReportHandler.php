@@ -28,10 +28,6 @@ final class SearchReportHandler
             'use_period' => $command->use_period,
         ];
 
-        if (empty($command->query)) {
-            throw new EmptySearchQueryException();
-        }
-
         if ($user->hasRole('ROLE_REPORT_MANAGER')) {
             $data = $this->repository->searchForManager($user, $command->query, $options);
         } else {

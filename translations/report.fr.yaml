@@ -76,7 +76,7 @@ report:
             documents_help: Vous pouvez annexer plusieurs documents
             managers: À quel responsable est destiné ce rapport ?
             managers_help: tapez le nom du responsable et choisissez dans la liste qui apparaît
-            query: Recherche
+            query: Mots clés
             query_help: la recherche est faite en prenant en compte le titre ou la description d'un rapport
             use_period: Prendre en compte l'interval de temps
             seen: Inclure les rapports lus

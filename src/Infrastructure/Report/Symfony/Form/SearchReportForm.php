@@ -25,6 +25,7 @@ final class SearchReportForm extends AbstractType
             ->add('query', TextType::class, [
                 'label' => 'report.forms.labels.query',
                 'help' => 'report.forms.labels.query_help',
+                'required' => false,
             ])
             ->add('use_period', CheckboxType::class, [
                 'label' => 'report.forms.labels.use_period',
