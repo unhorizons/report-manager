@@ -4,6 +4,7 @@ authentication:
         reset_password_request: Mot de passe oublié ?
         login_link: Un Problème de connexion ?
         login: Connexion
+        login_2fa: Authentification à facteur double
     pages:
         login:
             title: UNH Rapports
@@ -24,6 +25,8 @@ authentication:
             password: Mot de passe
             password_confirm: Confirmer le mot de passe
             email: Adresse Email
+            2fa_email_provider: 2FA avec votre adresse email
+            2fa_google_authenticator_provider: 2FA avec Google Authenticator
         placeholders:
             identifier: "Email ou Nom d'utilisateur..."
             password: Mot de passe 6+ caractères
@@ -34,6 +37,7 @@ authentication:
         login_link_requested_successfully: Un lien de connexion vous a été envoyé par email.
         reset_password_requested_successfully: Les instructions de récupération de mot de passe vous ont été envoyées par email.
         reset_password_confirmed_successfully: Votre mot de passe à bien été mise à jour.
+        resend_code_requested_successfully: Le code d'authentification a été renvoyé avec succès
     validations:
         password_must_match: Les deux mots de passe ne sont pas identiques !
         empty_role: Veuillez définir au moins un rôle
@@ -47,6 +51,9 @@ authentication:
         reset_password_token_expired: Désolé le lien que vous avez utilisé n'est plus valide.
     mails:
         subjects:
-            login_link_requested: "%name%, voici le lien d'accès à votre compte UNH Rapports"
-            reset_password_requested: Instruction de réinitialisation de mot de passe UNH Rapports
-            reset_password_confirmed: "%name%, votre mot de passe sur UNH Rapports a été mise à jour"
+            login_link_requested: "[UNH Rapports] %name%, voici le lien d'accès à votre compte UNH Rapports"
+            reset_password_requested: "[UNH Rapports] Instruction de réinitialisation de mot de passe UNH Rapports"
+            reset_password_confirmed: "[UNH Rapports] %name%, votre mot de passe sur UNH Rapports a été mise à jour"
+            2fa_enabled: "[UNH Rapports] Authentification à facteur double activée"
+            2fa_disabled: "[UNH Rapports] Authentification à facteur double désactivée"
+            2fa_auth_code: "[UNH Rapports] Code d'authentification"

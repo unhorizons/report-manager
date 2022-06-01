@@ -1,0 +1,36 @@
+{% extends 'shared/layout/base.html.twig' %}
+{% block title "Code d'accès hors ligne" %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title "Code d'accès hors ligne" %}
+        {% block header_action_list %}
+            <li>
+                <form action="{{ path('authentication_setting_backup_codes_regenerate') }}" method="post" class="d-inline-block">
+                    <button type="submit" class="btn btn-primary">Régénérer</button>
+                </form>
+            </li>
+            <li>
+                <a href="{{ path('authentication_setting_backup_codes_export') }}" class="btn btn-primary">
+                    {{ 'download' | icon }}
+                    <span>Télécharger (csv)</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% embed "shared/component/card/_simple.html.twig" %}
+        {% block simple_card_body %}
+            <code class="pb-4">
+            {% for index, code in codes %}
+                <strong class="font-weight-bold fs-22px">{{ code ~ '\t' }}</strong>
+                {% if index == 2 %}
+                    <br>
+                {% endif %}
+            {% endfor %}
+            </code>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

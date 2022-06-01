@@ -1,0 +1,32 @@
+{% extends 'shared/layout/base.html.twig' %}
+{% block title 'Authentification à facteur double' %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title "Authentification à facteur double" %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% embed "shared/component/card/_simple.html.twig" %}
+        {% block simple_card_body %}
+            {{ form_start(form) }}
+                {{ form_row(form.email) }}
+
+                <div class="nk-divider divider md"></div>
+                <p>
+                    Si vous souhaitez vous utiliser <strong>Google Authenticator</strong>, <br>
+                    activez l'option et scannez ce qrcode depuis votre mobile.
+                </p>
+                {{ form_row(form.google) }}
+                <img src="{{ qr_code_data_uri(qrcode_content) }}" alt="google authenticator qrcode">
+                <div class="nk-divider divider md"></div>
+
+                <button class="btn btn-primary">
+                    {{ 'save-fill' | icon }}
+                    <span>{{ 'global.submit' | trans([], 'messages') }}</span>
+                </button>
+            {{ form_end(form) }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

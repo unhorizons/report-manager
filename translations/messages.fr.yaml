@@ -1,5 +1,6 @@
 global:
     submit: Soumettre
+    resend: Renvoyer
     logout: Déconnexion
     page: Page
     of: Sur

@@ -1,0 +1,68 @@
+{% extends 'domain/authentication/layout/base.html.twig' %}
+{% block title 'authentication.titles.login_2fa' | trans([], 'authentication') %}
+
+{% block body %}
+    {% if authenticationError %}
+        <app-toast type="error" message="{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}"></app-toast>
+    {% endif %}
+
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h5 class="nk-block-title fw-bolder">{{ 'authentication.titles.login_2fa' | trans([], 'authentication') }}</h5>
+            <div>
+                {{ "choose_provider"|trans({}, 'SchebTwoFactorBundle') }}:
+                {% for provider in availableTwoFactorProviders %}
+                    <a class="mr-2"
+                       href="{{ path("authentication_2fa_login", {"preferProvider": provider}) }}">{{ provider }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <form class="form" action="{{ checkPathUrl ? checkPathUrl: path(checkPathRoute) }}" method="post">
+        <div class="form-group">
+            <label for="_code" class="form-label required">{{ "auth_code"|trans({}, 'SchebTwoFactorBundle') }} {{ twoFactorProvider }} : </label>
+            <div class="form-control-wrap">
+                <input type="number"
+                       id="_code"
+                       name="{{ authCodeParameterName }}"
+                       required="required"
+                       placeholder="123456"
+                       class="form-control form-control-lg"
+                       autocomplete="one-time-code"
+                       autofocus
+                       inputmode="numeric"
+                       pattern="[0-9]*"
+                >
+            </div>
+        </div>
+
+        {% if displayTrustedOption %}
+            <div class="form-group">
+                <div class="form-control-wrap">
+                    <div class="custom-switch">
+                        <input type="checkbox" id="_trusted" name="{{ trustedParameterName }}" class="custom-control-input">
+                        <label class="custom-control-label" for="_trusted">{{ "trusted"|trans({}, 'SchebTwoFactorBundle') }}</label>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if isCsrfProtectionEnabled %}
+            <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+        {% endif %}
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+            {{ "login"|trans({}, 'SchebTwoFactorBundle') }}
+        </button>
+    </form>
+
+    <div class="mt-4 d-flex between-center">
+        <form action="{{ logoutPath }}" method="post" class="d-inline-block">
+            <button class="btn btn-link">{{ "cancel"|trans({}, 'SchebTwoFactorBundle') }}</button>
+        </form>
+        {% if twoFactorProvider == 'email' %}
+            <form action="{{ path('authentication_2fa_resend_code') }}" method="post" class="d-inline-block">
+                <button class="btn btn-link">{{ 'global.resend'|trans({}, 'messages') }}</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

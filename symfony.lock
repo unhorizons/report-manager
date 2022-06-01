@@ -2,6 +2,9 @@
     "bacon/bacon-qr-code": {
         "version": "2.0.7"
     },
+    "beberlei/assert": {
+        "version": "v3.3.2"
+    },
     "brick/math": {
         "version": "0.9.3"
     },
@@ -183,6 +186,9 @@
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.5.0"
+    },
     "phar-io/manifest": {
         "version": "2.0.3"
     },
@@ -269,6 +275,31 @@
     "ramsey/uuid": {
         "version": "4.2.3"
     },
+    "scheb/2fa-backup-code": {
+        "version": "v6.0.2"
+    },
+    "scheb/2fa-bundle": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "1e6f68089146853a790b5da9946fc5974f6fcd49"
+        },
+        "files": [
+            "config/packages/scheb_2fa.yaml",
+            "config/routes/scheb_2fa.yaml"
+        ]
+    },
+    "scheb/2fa-email": {
+        "version": "v6.0.2"
+    },
+    "scheb/2fa-google-authenticator": {
+        "version": "v6.0.2"
+    },
+    "scheb/2fa-trusted-device": {
+        "version": "v6.0.2"
+    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },
@@ -328,6 +359,9 @@
         "files": [
             "config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "spomky-labs/otphp": {
+        "version": "v10.0.3"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.6",
@@ -467,6 +501,18 @@
     },
     "symfony/intl": {
         "version": "v6.0.5"
+    },
+    "symfony/lock": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.2",
+            "ref": "a1c8800e40ae735206bb14586fdd6c4630a51b8d"
+        },
+        "files": [
+            "config/packages/lock.yaml"
+        ]
     },
     "symfony/mailer": {
         "version": "6.0",
@@ -608,6 +654,9 @@
     },
     "symfony/proxy-manager-bridge": {
         "version": "v6.0.6"
+    },
+    "symfony/rate-limiter": {
+        "version": "v6.0.9"
     },
     "symfony/routing": {
         "version": "6.0",
@@ -760,6 +809,9 @@
     },
     "symplify/easy-coding-standard": {
         "version": "10.2.2"
+    },
+    "thecodingmachine/safe": {
+        "version": "v2.2.0"
     },
     "theofidry/alice-data-fixtures": {
         "version": "1.5",
