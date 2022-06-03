@@ -7,6 +7,7 @@ namespace Infrastructure\Authentication\Symfony\Controller;
 use Application\Authentication\Command\ConfirmResetPasswordCommand;
 use Application\Authentication\Command\RequestResetPasswordCommand;
 use Application\Authentication\Service\ResetPasswordService;
+use Domain\Authentication\Entity\User;
 use Domain\Authentication\Exception\ResetPasswordOngoingException;
 use Domain\Authentication\Exception\ResetPasswordTokenExpiredException;
 use Domain\Authentication\Exception\UserNotFoundException;
@@ -27,14 +28,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/password', name: 'authentication_reset_password_')]
 final class ResetPasswordController extends AbstractController
 {
-    #[Route('/request', name: 'request', methods: ['GET', 'POST'])]
-    public function request(Request $request): Response
+    #[Route('/request/{id?}', name: 'request', methods: ['GET', 'POST'])]
+    public function request(Request $request, ?User $user = null): Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_index');
+        $command = new RequestResetPasswordCommand();
+
+        if ($this->getUser()->getUserIdentifier() === $user?->getUserIdentifier()) {
+            $command = new RequestResetPasswordCommand(email: $user->getEmail());
         }
 
-        $command = new RequestResetPasswordCommand();
         $form = $this->createForm(RequestResetPasswordForm::class, $command)
             ->handleRequest($request);
 

@@ -4,7 +4,8 @@ authentication:
         reset_password_request: Mot de passe oublié ?
         login_link: Un Problème de connexion ?
         login: Connexion
-        login_2fa: Authentification à facteur double
+        login_2fa: Authentification à facteur
+        settings: Paramètres
     pages:
         login:
             title: UNH Rapports

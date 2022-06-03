@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Infrastructure\Authentication\Symfony\Controller;
 
 use Application\Authentication\Command\GenerateGoogleAuthenticatorSecretCommand;
+use Application\Authentication\Command\RegenerateBackupCodeCommand;
 use Application\Authentication\Command\Toggle2FACommand;
 use Domain\Authentication\Entity\User;
 use Infrastructure\Authentication\Symfony\Form\Setting\Toggle2FaForm;
@@ -34,6 +35,14 @@ final class SettingController extends AbstractController
         if (empty($user->getGoogleAuthenticatorSecret())) {
             try {
                 $this->dispatchSync(new GenerateGoogleAuthenticatorSecretCommand($user));
+            } catch (\Throwable $e) {
+                $this->handleUnexpectedException($e);
+            }
+        }
+
+        if (empty($user->getBackupCode())) {
+            try {
+                $this->dispatchSync(new RegenerateBackupCodeCommand($user));
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
             }

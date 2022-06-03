@@ -23,28 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/profile/settings/authentication/backup_codes', name: 'authentication_setting_backup_codes_')]
 final class BackupCodeController extends AbstractController
 {
-    #[Route('', name: 'index', methods: ['GET', 'POST'])]
-    public function index(): Response
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-
-        if (empty($user->getBackupCode())) {
-            try {
-                $this->dispatchSync(new RegenerateBackupCodeCommand($user));
-            } catch (\Throwable $e) {
-                $this->handleUnexpectedException($e);
-            }
-        }
-
-        return $this->render(
-            view: 'domain/authentication/setting/backup_code.html.twig',
-            parameters: [
-                'codes' => $user->getBackupCode(),
-            ]
-        );
-    }
-
     #[Route('/regenerate', name: 'regenerate', methods: ['POST'])]
     public function regenerate(): Response
     {
@@ -53,11 +31,12 @@ final class BackupCodeController extends AbstractController
 
         try {
             $this->dispatchSync(new RegenerateBackupCodeCommand($user));
+            $this->addFlash('success', 'Les codes ont été régénérés avec succès');
         } catch (\Throwable $e) {
             $this->handleUnexpectedException($e);
         }
 
-        return $this->redirectSeeOther('authentication_setting_backup_codes_index');
+        return $this->redirectSeeOther('authentication_settings_index');
     }
 
     #[Route('/export', name: 'export', methods: ['GET', 'POST'])]
@@ -83,6 +62,6 @@ final class BackupCodeController extends AbstractController
             $this->handleUnexpectedException($e);
         }
 
-        return $this->redirectSeeOther('authentication_setting_backup_codes_index');
+        return $this->redirectSeeOther('authentication_settings_index');
     }
 }

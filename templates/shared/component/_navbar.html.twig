@@ -41,6 +41,12 @@
                                 <div class="dropdown-inner">
                                     <ul class="link-list">
                                         <li>
+                                            <a href="{{ path('authentication_settings_index') }}" title="Paramètres">
+                                                {{ 'setting' | icon }}
+                                                <span>Paramètres</span>
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="{{ logout_url('main') }}" title="Déconnexion" aria-label="Déconnexion">
                                                 {{ 'signout' | icon }}
                                                 <span>Déconnexion</span>
