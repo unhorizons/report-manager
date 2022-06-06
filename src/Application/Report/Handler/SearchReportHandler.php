@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Application\Report\Handler;
 
 use Application\Report\Command\SearchReportCommand;
-use Domain\Report\Exception\EmptySearchQueryException;
 use Domain\Report\Exception\NoSearchResultException;
 use Domain\Report\Repository\ReportRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

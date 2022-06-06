@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted("IS_AUTHENTICATED_FULLY")]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/profile/settings/authentication', name: 'authentication_settings_')]
 final class SettingController extends AbstractController
 {
@@ -60,7 +60,8 @@ final class SettingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->dispatchSync($command);
-                $this->addFlash("success", "Paramètres 2FA modifiés");
+                $this->addFlash('success', 'Paramètres 2FA modifiés');
+
                 return $this->redirectSeeOther('authentication_settings_2fa');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
@@ -68,11 +69,12 @@ final class SettingController extends AbstractController
         }
 
         $qrcode = $authenticator->getQRContent($user);
+
         return $this->render(
             view: 'domain/authentication/setting/2fa.html.twig',
             parameters: [
                 'qrcode_content' => $qrcode,
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]
         );
     }

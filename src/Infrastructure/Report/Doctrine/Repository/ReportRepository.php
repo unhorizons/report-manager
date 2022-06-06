@@ -118,8 +118,8 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             }
 
             return null !== $query
-                    ->getQuery()
-                    ->getOneOrNullResult();
+                ->getQuery()
+                ->getOneOrNullResult();
         } catch (NonUniqueResultException) {
             return false;
         }
@@ -216,7 +216,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         return $this->execute($sql, [
             'end' => $interval[1],
             'start' => $interval[0],
-            'status' => (string)$status,
+            'status' => (string) $status,
             'employee' => $employee->getId(),
         ], false);
     }
@@ -301,7 +301,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string)Status::unseen())
+            ->setParameter('status', (string) Status::unseen())
             ->orderBy('r.created_at', 'DESC');
     }
 
@@ -309,7 +309,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         return $this->createQueryBuilder('r')
             ->where('r.status.status = :status')
-            ->setParameter('status', (string)Status::seen())
+            ->setParameter('status', (string) Status::seen())
             ->orderBy('r.created_at', 'DESC');
     }
 
@@ -318,14 +318,14 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         $qb = $this->createQueryBuilder('r')
             ->leftJoin('r.managers', 'm');
 
-        if (!empty($query)) {
+        if (! empty($query)) {
             $qb->andWhere('CONCAT(r.name, r.description) LIKE :query')
                 ->setParameter('query', mb_strtolower("%{$query}%"));
         }
 
-        if ($options['seen'] && !$options['unseen']) {
+        if ($options['seen'] && ! $options['unseen']) {
             $qb->andWhere('r.status.status = :status')->setParameter('status', 'seen');
-        } elseif ($options['unseen'] && !$options['seen']) {
+        } elseif ($options['unseen'] && ! $options['seen']) {
             $qb->andWhere('r.status.status = :status')->setParameter('status', 'unseen');
         }
 
@@ -345,7 +345,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
 
     private function calculateProgressionRatio(int $previous, int $current): int|float
     {
-        return $previous === 0 ?
+        return 0 === $previous ?
             $current * 100 :
             round(($current - $previous) * ($previous / 100), 2);
     }
@@ -354,7 +354,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
     {
         return [
             (new \DateTimeImmutable($start))->format('Y-m-d'),
-            (new \DateTimeImmutable($end))->format('Y-m-d')
+            (new \DateTimeImmutable($end))->format('Y-m-d'),
         ];
     }
 
@@ -391,8 +391,9 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
                     ) AS evaluations_current_month
                 FROM dual;
             SQL;
-        } else {
-            return <<< SQL
+        }
+
+        return <<< SQL
                 SELECT
                     (SELECT COUNT(id) FROM report WHERE employee_id = :user) AS reports,
                     (SELECT COUNT(id) FROM report WHERE employee_id = :user AND created_at BETWEEN :previous_month_start AND :previous_month_end) AS reports_previous_month,
@@ -414,7 +415,6 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
                     ) AS evaluations_current_month
                 FROM dual;
             SQL;
-        }
     }
 
     private function findCurrentYearStatsForUser(User $user): array
@@ -426,7 +426,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             'previous_month_start' => $previousMonth[0],
             'previous_month_end' => $previousMonth[1],
             'current_month_start' => $currentMonth[0],
-            'current_month_end' => $currentMonth[1]
+            'current_month_end' => $currentMonth[1],
         ], false);
 
         $reportMonthRatio = $this->calculateProgressionRatio($data['reports_previous_month'], $data['reports_current_month']);
@@ -436,7 +436,7 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             'reports_month_ratio' => $reportMonthRatio,
             'evaluations_month_ratio' => $evaluationMonthRatio,
             'reports' => $data['reports'],
-            'evaluations' => $data['evaluations']
+            'evaluations' => $data['evaluations'],
         ];
     }
 

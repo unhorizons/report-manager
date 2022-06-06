@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-#[IsGranted("IS_AUTHENTICATED_FULLY")]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/profile/settings/authentication/backup_codes', name: 'authentication_setting_backup_codes_')]
 final class BackupCodeController extends AbstractController
 {

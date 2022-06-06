@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-#[IsGranted("IS_AUTHENTICATED_FULLY")]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/profile/authentication/settings/2fa', name: 'authentication_setting_2fa_')]
 final class TwoFactorController extends AbstractController
 {
