@@ -6,16 +6,19 @@ namespace Application\Report\Handler;
 
 use Application\Report\Command\UpdateReportCommand;
 use Domain\Authentication\Entity\User;
+use Domain\Report\Event\ReportUpdatedEvent;
 use Domain\Report\Exception\NonMutableReportException;
 use Domain\Report\Exception\ReportForPeriodAlreadyExistsException;
 use Domain\Report\Repository\ReportRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final class UpdateReportHandler
 {
     public function __construct(
-        private readonly ReportRepositoryInterface $repository
+        private readonly ReportRepositoryInterface $repository,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
     }
 
@@ -46,5 +49,6 @@ final class UpdateReportHandler
             ->setPeriod($command->period);
 
         $this->repository->save($report);
+        $this->dispatcher->dispatch(new ReportUpdatedEvent($report));
     }
 }

@@ -13,7 +13,7 @@ use Domain\Notification\Entity\Notification;
  */
 final class NotificationCreatedEvent
 {
-    private function __construct(
+    public function __construct(
         public readonly Notification $notification
     ) {
     }

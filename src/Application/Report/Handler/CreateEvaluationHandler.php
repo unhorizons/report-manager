@@ -7,8 +7,10 @@ namespace Application\Report\Handler;
 use Application\Report\Command\CreateEvaluationCommand;
 use Domain\Report\Entity\Evaluation;
 use Domain\Report\Entity\Report;
+use Domain\Report\Event\EvaluationCreatedEvent;
 use Domain\Report\Repository\EvaluationRepositoryInterface;
 use Infrastructure\Shared\Symfony\Mailer\Mailer;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -19,7 +21,8 @@ final class CreateEvaluationHandler
     public function __construct(
         private readonly Mailer $mailer,
         private readonly TranslatorInterface $translator,
-        private readonly EvaluationRepositoryInterface $repository
+        private readonly EvaluationRepositoryInterface $repository,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
     }
 
@@ -32,6 +35,7 @@ final class CreateEvaluationHandler
         );
 
         $this->repository->save($evaluation);
+        $this->dispatcher->dispatch(new EvaluationCreatedEvent($evaluation));
         $this->sendEvaluationNotificationToEmployee($command->report, $evaluation);
     }
 

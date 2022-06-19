@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 <doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
                   xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
@@ -14,7 +14,7 @@
             <generator strategy="IDENTITY"/>
         </id>
 
-        <many-to-one field="user" target-entity="Domain\Authentication\Entity\User">
+        <many-to-one field="user" target-entity="Domain\Authentication\Entity\User" fetch="EAGER">
             <join-columns>
                 <join-column name="user_id" on-delete="CASCADE" nullable="true"/>
             </join-columns>

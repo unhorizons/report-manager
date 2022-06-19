@@ -33,8 +33,8 @@ final class ResetPasswordController extends AbstractController
     {
         $command = new RequestResetPasswordCommand();
 
-        if ($this->getUser()->getUserIdentifier() === $user?->getUserIdentifier()) {
-            $command = new RequestResetPasswordCommand(email: $user->getEmail());
+        if ($this->getUser()?->getUserIdentifier() === $user?->getUserIdentifier()) {
+            $command = new RequestResetPasswordCommand(email: $user?->getEmail());
         }
 
         $form = $this->createForm(RequestResetPasswordForm::class, $command)

@@ -50,7 +50,7 @@ final class MercureEventSubscriber implements EventSubscriberInterface
 
     public function onNotificationRead(NotificationReadEvent $event): void
     {
-        $user = $event->notification->getUser();
+        $user = $event->user;
         $update = new Update(
             topics: "/notifications/user/{$user->getId()}",
             data: '{"type": "mark_as_read"}',

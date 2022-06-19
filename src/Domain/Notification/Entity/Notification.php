@@ -39,11 +39,13 @@ class Notification implements \Stringable
 
     public function __toString(): string
     {
-        return json_encode([
+        return (string) json_encode([
             'uuid' => $this->uuid->toRfc4122(),
-            'url' => (string) $this->user,
-            'message' => (string) $this->message,
-            'created_at' => (int) $this->created_at?->getTimestamp(),
+            'user' => (string) $this->getUser()?->getId(),
+            'target' => (string) $this->getTarget(),
+            'url' => (string) $this->getUrl(),
+            'message' => (string) $this->getMessage(),
+            'created_at' => (int) $this->getCreatedAt()?->getTimestamp(),
         ]);
     }
 

@@ -8,9 +8,11 @@ use Application\Report\Command\CreateReportCommand;
 use Domain\Authentication\Entity\User;
 use Domain\Report\Entity\Document;
 use Domain\Report\Entity\Report;
+use Domain\Report\Event\ReportCreatedEvent;
 use Domain\Report\Exception\ReportForPeriodAlreadyExistsException;
 use Domain\Report\Repository\ReportRepositoryInterface;
 use Infrastructure\Shared\Symfony\Mailer\Mailer;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -25,7 +27,8 @@ final class CreateReportHandler
         private readonly ReportRepositoryInterface $repository,
         private readonly TranslatorInterface $translator,
         private readonly UploaderHelper $uploader,
-        private readonly Mailer $mailer
+        private readonly Mailer $mailer,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
     }
 
@@ -48,6 +51,7 @@ final class CreateReportHandler
         }
 
         $this->repository->save($report);
+        $this->dispatcher->dispatch(new ReportCreatedEvent($report));
         $this->sendReportToManagers($report);
     }
 

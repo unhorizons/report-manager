@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Notification\Event;
 
-use Domain\Notification\Entity\Notification;
+use Domain\Authentication\Entity\User;
 
 /**
  * Class NotificationReadEvent.
@@ -13,8 +13,8 @@ use Domain\Notification\Entity\Notification;
  */
 final class NotificationReadEvent
 {
-    private function __construct(
-        public readonly Notification $notification
+    public function __construct(
+        public readonly User $user
     ) {
     }
 }

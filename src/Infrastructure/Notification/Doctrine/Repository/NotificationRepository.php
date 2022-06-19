@@ -30,13 +30,14 @@ final class NotificationRepository extends AbstractRepository implements Notific
             return $notification;
         }
 
+        /** @var Notification|null $oldNotification */
         $oldNotification = $this->findOneBy([
             'user' => $notification->getUser(),
             'target' => $notification->getTarget(),
         ]);
 
         if ($oldNotification) {
-            $oldNotification->setCreatedAt($notification->getCreatedAt());
+            $oldNotification->setCreatedAt($notification->getCreatedAt() ?? new \DateTimeImmutable());
             $oldNotification->setUpdatedAt($notification->getCreatedAt());
             $oldNotification->setMessage($notification->getMessage());
 
@@ -50,7 +51,7 @@ final class NotificationRepository extends AbstractRepository implements Notific
     public function findRecentForUser(User $user, array $channels = ['public']): array
     {
         /** @var Notification[] $result */
-        $result = array_map(fn ($n) => (clone $n)->setUser($user), $this->createQueryBuilder('n')
+        $result = $this->createQueryBuilder('n')
             ->orderBy('n.created_at', 'DESC')
             ->setMaxResults(10)
             ->where('n.user = :user')
@@ -58,18 +59,18 @@ final class NotificationRepository extends AbstractRepository implements Notific
             ->setParameter('user', $user)
             ->setParameter('channels', $channels)
             ->getQuery()
-            ->getResult());
+            ->getResult();
 
         return $result;
     }
 
     public function clean(): int
     {
-        return $this->createQueryBuilder('n')
+        return intval($this->createQueryBuilder('n')
             ->where('n.created_at < :date')
             ->setParameter('date', new \DateTime('-3 month'))
             ->delete(Notification::class, 'n')
             ->getQuery()
-            ->execute();
+            ->execute());
     }
 }
