@@ -54,8 +54,9 @@ services:
     restart: unless-stopped
     environment:
       SERVER_NAME: ':80'
-      MERCURE_PUBLISHER_JWT_KEY: mercure_publisher
-      MERCURE_SUBSCRIBER_JWT_KEY: mercure_subscriber
+      MERCURE_PUBLISHER_JWT_KEY: mercure_jwt
+      MERCURE_SUBSCRIBER_JWT_KEY: mercure_jwt
+      MERCURE_JWT_KEY: mercure_jwt
       MERCURE_EXTRA_DIRECTIVES: |
         cors_origins http://127.0.0.1:8000
 
