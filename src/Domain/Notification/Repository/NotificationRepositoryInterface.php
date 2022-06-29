@@ -19,4 +19,6 @@ interface NotificationRepositoryInterface extends DataRepositoryInterface, Clean
     public function saveOrUpdate(Notification $notification): Notification;
 
     public function findRecentForUser(User $user, array $channels = ['public']): array;
+
+    public function countUnreadForUser(User $user): int;
 }

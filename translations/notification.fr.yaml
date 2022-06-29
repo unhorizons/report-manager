@@ -1,3 +1,5 @@
 notification:
     actions:
         mark_as_read: Marquer tout comme lu
+    flashes:
+        set_as_read_successfully: 'Toutes les notifications sont marquées comme lues'

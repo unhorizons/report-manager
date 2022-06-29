@@ -26,6 +26,7 @@ final class NotificationRepository extends AbstractRepository implements Notific
     {
         if (null === $notification->getUser()) {
             $this->getEntityManager()->persist($notification);
+            $this->getEntityManager()->flush();
 
             return $notification;
         }
@@ -44,6 +45,7 @@ final class NotificationRepository extends AbstractRepository implements Notific
             return $oldNotification;
         }
         $this->getEntityManager()->persist($notification);
+        $this->getEntityManager()->flush();
 
         return $notification;
     }
@@ -64,11 +66,27 @@ final class NotificationRepository extends AbstractRepository implements Notific
         return $result;
     }
 
+    public function countUnreadForUser(User $user): int
+    {
+        $qb = $this->createQueryBuilder('n')
+            ->select('COUNT(n.id) AS count');
+
+        if (null === $user->getNotificationsReadAt()) {
+            $qb->where('n.created_at > :last_read')
+                ->setParameter('last_read', $user->getNotificationsReadAt());
+        } else {
+            $qb->where('n.created_at <= :last_read')
+                ->setParameter('last_read', new \DateTimeImmutable());
+        }
+
+        return intval($qb->getQuery()->getSingleColumnResult());
+    }
+
     public function clean(): int
     {
         return intval($this->createQueryBuilder('n')
             ->where('n.created_at < :date')
-            ->setParameter('date', new \DateTime('-3 month'))
+            ->setParameter('date', new \DateTimeImmutable('-3 month'))
             ->delete(Notification::class, 'n')
             ->getQuery()
             ->execute());

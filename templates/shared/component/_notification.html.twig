@@ -1,22 +1,44 @@
+{% set count_notifications = count_notifications() %}
+
 <li class="dropdown notification-dropdown">
     <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown">
-        <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em></div>
+        {% if count_notifications > 0 %}
+            <div class="icon-status icon-status-info">{{ 'bell' | icon }}</div>
+        {% else %}
+            {{ 'bell' | icon }}
+        {% endif %}
     </a>
     <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right">
         <div class="dropdown-head">
             <span class="sub-title nk-dropdown-title">Notifications</span>
-            <a href="#">marquer tout comme lu</a>
+            {% if count_notifications > 0 %}
+                <form action="{{ path('notification_read') }}" method="post" class="d-inline-block">
+                    <button class="btn btn-link">{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}</button>
+                </form>
+            {% endif %}
         </div>
         <div class="dropdown-body">
             <div class="nk-notification">
-                {% for i in 1..10 %}
+                {% for notification in recent_notifications() %}
                     <div class="nk-notification-item dropdown-inner">
                         <div class="nk-notification-icon">
-                            <em class="icon icon-circle bg-primary-dim ni ni-comments"></em>
+                            <em class="icon icon-circle bg-primary-dim ni ni-info"></em>
                         </div>
                         <div class="nk-notification-content">
-                            <div class="nk-notification-text">You have requested to <span>Widthdrawl</span></div>
-                            <div class="nk-notification-time">2 hrs ago</div>
+                            <div class="nk-notification-text">{{ notification.message }}</div>
+                            <div class="nk-notification-time">{{ notification.createdAt | date }}</div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="nk-notification">
+                        <div class="nk-notification-item dropdown-inner">
+                            <div class="nk-notification-icon">
+                                <em class="icon icon-circle bg-danger-dim ni ni-alert"></em>
+                            </div>
+                            <div class="nk-notification-content">
+                                <div class="nk-notification-text">Aucune notification pour l'instant</div>
+                                <div class="nk-notification-time">{{ 'now' | date('d F - h:m') }}</div>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

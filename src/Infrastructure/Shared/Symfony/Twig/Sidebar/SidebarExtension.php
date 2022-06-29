@@ -8,6 +8,7 @@ use Infrastructure\Report\Symfony\Twig\Sidebar\EmployeeSidebar;
 use Infrastructure\Shared\Symfony\Twig\Sidebar\Type\SidebarGroup;
 use Infrastructure\Shared\Symfony\Twig\Sidebar\Type\SidebarHeader;
 use Infrastructure\Shared\Symfony\Twig\Sidebar\Type\SidebarLink;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +31,8 @@ class SidebarExtension extends AbstractExtension
         readonly RequestStack $stack,
         private readonly SidebarBuilderInterface $builder,
         private readonly TranslatorInterface $translator,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
+        private readonly ContainerInterface $container
     ) {
         $this->path = strval($stack->getCurrentRequest()?->getPathInfo());
         $this->route = strval($stack->getCurrentRequest()?->attributes?->get('_route'));
@@ -91,7 +93,7 @@ class SidebarExtension extends AbstractExtension
 
     public function renderSidebar(?string $sidebarClass = null): string
     {
-        $sidebar = null === $sidebarClass ? new $this->defaultSidebarClass() : new $sidebarClass();
+        $sidebar = $this->container->get(null === $sidebarClass ? $this->defaultSidebarClass : $sidebarClass);
 
         if ($sidebar instanceof AbstractSidebar) {
             $collection = $sidebar->build($this->builder);
@@ -169,7 +171,7 @@ class SidebarExtension extends AbstractExtension
                 <a ${current} aria-label="${label}" title="${label}" href="${url}" class="nk-menu-link">
                     ${icon}
                     <span class="nk-menu-text">${label}</span>
-                    <span class="nk-menu-badge">${badge}</span>
+                    <span class="nk-menu-badge bg-primary">${badge}</span>
                 </a>
             </li>
         HTML;

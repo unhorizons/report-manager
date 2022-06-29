@@ -6,12 +6,37 @@
         {% block header_title 'Mes Notifications' %}
         {% block header_action_list %}
             <li>
-                <a href="{{ path('report_employee_report_new') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}" title="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}">
-                    {{ 'check-circle' | icon }}
-                    <span>{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}</span>
-                </a>
+                <form action="{{ path('notification_read') }}" method="post" class="d-inline-block">
+                    <button class="btn btn-white btn-dim btn-outline-light"
+                            aria-label="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}"
+                            title="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}">
+                        {{ 'check-circle' | icon }}
+                        <span>{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}</span>
+                    </button>
+                </form>
             </li>
         {% endblock %}
     {% endembed %}
 {% endblock %}
 
+{% block content %}
+    {% embed "shared/component/card/_list.html.twig" %}
+        {% block list_card_table_body %}
+            <div class="nk-notification">
+                {% for row in notifications %}
+                    <div class="dropdown-inner">
+                        <a href="{{ row.url }}" class="nk-notification-item">
+                            <div class="nk-notification-icon">
+                                <em class="icon icon-circle bg-primary-dim ni ni-info"></em>
+                            </div>
+                            <div class="nk-notification-content">
+                                <div class="nk-notification-text">{{ row.message }}</div>
+                                <div class="nk-notification-time">{{ row.createdAt | date('d F - h:m') }}</div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

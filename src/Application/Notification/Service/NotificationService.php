@@ -10,10 +10,11 @@ use Domain\Notification\Entity\Notification;
 use Domain\Notification\Event\NotificationCreatedEvent;
 use Domain\Notification\Event\NotificationReadEvent;
 use Domain\Notification\Repository\NotificationRepositoryInterface;
-use Infrastructure\Notification\Symfony\Encoder\PathEncoder;
+use Domain\Report\Entity\Evaluation;
+use Domain\Report\Entity\Report;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class NotificationService.
@@ -23,18 +24,18 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class NotificationService
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
         private readonly NotificationRepositoryInterface $notificationRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly Security $security
+        private readonly Security $security,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {
     }
 
     public function notifyChannel(string $channel, string $message, ?object $entity = null): Notification
     {
         /** @var string|null $url */
-        $url = $entity ? $this->serializer->serialize($entity, PathEncoder::FORMAT) : null;
+        $url = $entity ? $this->getUrlForEntityChannel($entity) : null;
         $notification = (new Notification())
             ->setMessage($message)
             ->setUrl($url)
@@ -50,7 +51,7 @@ final class NotificationService
 
     public function notifyUser(User $user, string $message, object $entity): Notification
     {
-        $url = $this->serializer->serialize($entity, PathEncoder::FORMAT);
+        $url = $this->getUrlForEntityUser($entity, $user);
         $notification = (new Notification())
             ->setMessage($message)
             ->setUrl($url)
@@ -70,6 +71,11 @@ final class NotificationService
             user: $user,
             channels: $this->getChannelsForUser($user)
         );
+    }
+
+    public function countForUser(User $user): int
+    {
+        return $this->notificationRepository->countUnreadForUser($user);
     }
 
     public function readAll(User $user): void
@@ -100,9 +106,28 @@ final class NotificationService
     {
         $hash = $entity::class;
         if (method_exists($entity, 'getId')) {
-            $hash .= sprintf('::%s', (string) $entity->getId());
+            $hash .= sprintf('::%s', (string)$entity->getId());
         }
 
         return $hash;
+    }
+
+    private function getUrlForEntityChannel(object $entity): ?string
+    {
+        return null;
+    }
+
+    private function getUrlForEntityUser(object $entity, User $user): string
+    {
+        $route = $this->security->isGranted('ROLE_REPORT_MANAGER') ?
+            'report_manager_report_show' :
+            'report_employee_report_show';
+        $parameters = match (true) {
+            $entity instanceof Evaluation => ['uuid' => $entity->getReport()->getUuid()],
+            $entity instanceof Report => ['uuid' => $entity->getUuid()],
+            default => []
+        };
+
+        return $this->urlGenerator->generate($route, $parameters);
     }
 }

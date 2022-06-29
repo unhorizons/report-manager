@@ -30,6 +30,7 @@ report:
                 dashboard: Tableau de bord
                 index: Mes Rapports
                 evaluation: Mes Évaluations
+                notification: Notifications
         managers:
             headers:
                 index: Gestions des rapports
@@ -41,6 +42,7 @@ report:
                 dashboard: Statistiques
                 employee: Employées
                 search: Recherche
+                notification: Notifications
 
 
     flashes:

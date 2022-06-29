@@ -457,4 +457,18 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             SUM(MONTH({$date}) = 12) AS 'Dec'
         SQL;
     }
+
+    /**
+     * @todo cache result for optimization
+     */
+    public function countUnseenForManager(User $manager): int
+    {
+        $sql = <<<SQL
+            SELECT COUNT(id) AS count FROM report 
+            LEFT JOIN manager_assigned_report ON report.id = manager_assigned_report.report_id
+            WHERE manager_assigned_report.manager_id = :user AND report.status = 'unseen'
+        SQL;
+
+        return $this->execute($sql, ['user' => $manager->getId()], false)['count'];
+    }
 }

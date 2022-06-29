@@ -7,6 +7,8 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    container.dumper.inline_factories: true
+    container.dumper.inline_class_loader: true
 
 services:
     # default configuration for services in *this* file
@@ -36,3 +38,12 @@ services:
     Application\Report\Handler\CreateReportHandler:
         arguments: [ '%kernel.project_dir%' ]
 
+    Symfony\Component\DependencyInjection\ContainerInterface:
+        alias: 'service_container'
+
+    Infrastructure\Report\Symfony\Twig\Sidebar\ManagerSidebar:
+        public: true
+    Infrastructure\Report\Symfony\Twig\Sidebar\EmployeeSidebar:
+        public: true
+    Infrastructure\Report\Symfony\Twig\Sidebar\AdminSidebar:
+        public: true
