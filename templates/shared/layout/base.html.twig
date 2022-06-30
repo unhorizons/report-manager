@@ -7,6 +7,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="shortcut icon" href="{{ asset('/images/logo_icon.png') }}">
         <title>{% block title %}{% endblock %} | UNH Rapports</title>
+
+        {# PWA support #}
+        <meta name="theme-color" content="#6576ff">
+        <link rel="manifest" href="{{ asset('manifest.json') }}">
+
+        {# PWA Support IOS #}
+        <link rel="apple-touch-icon" sizes="128x128" href="{{ asset('images/icons/maskable_icon_x128.png') }}">
+        <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('images/icons/maskable_icon_x192.png') }}">
+        <link rel="apple-touch-startup-image" href="{{ asset('images/icons/maskable_icon.png') }}">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
         {% block meta %}{% endblock %}
         {{ encore_entry_link_tags('app') }}
         {% block stylesheets %}{% endblock %}
@@ -47,6 +59,16 @@
         </div>
     </div>
 
+    <script>
+        window.unh_report = {
+            ...(window.unh_report || {}),
+            ADMIN: {{ is_granted('ROLE_ADMIN') ? 'true' : 'false' }},
+            USER: {{ app.user ? app.user.id : 'null' }},
+            MERCURE_URL: "{{ mercure_subscribe_url }}",
+            BASE_URL: "{{ app.request.schemeAndHttpHost }}",
+            NOTIFICATION: new Date({{ (app.user and app.user.notificationsReadAt) ? app.user.notificationsReadAt.timestamp * 1000 : 0 }})
+        }
+    </script>
     {% block javascripts %}{% endblock %}
     </body>
     </html>

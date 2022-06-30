@@ -35,9 +35,9 @@ export const installServiceWorker = async (onConfirm) => {
             showDenyButton: false,
             buttonsStyling: false,
             customClass: {
-                confirmButton: 'w-max mr-2 bg-green-500 border-2 border-green-500 text-sm text-gray-800 font-semibold hover:bg-green-600 hover:border-green-600 focus:bg-green-700 focus:border-green-700 active:bg-green-800 active:text-white active:border-green-800 transition-all duration-100 lg:shadow-xl block py-3 px-6 rounded',
-                cancelButton: 'w-max ml-2 bg-gray-300 border-2 border-gray-300 text-gray-600 font-semibold hover:bg-gray-600 hover:border-gray-600 focus:bg-gray-700 focus:border-gray-700 active:bg-gray-800 transition-all duration-100 lg:shadow-xl block py-3 px-6 rounded'
-            }
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-dim btn-secondary'
+            },
         })
         .then((result) => {
             if (result.isConfirmed) {

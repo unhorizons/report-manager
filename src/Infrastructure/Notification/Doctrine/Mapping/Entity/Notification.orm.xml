@@ -28,6 +28,11 @@
         <field name="target" type="string" nullable="true"/>
         <field name="url" type="string" nullable="true"/>
         <field name="message" type="string" nullable="false"/>
+        <field name="is_read" type="boolean" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
 
 
         <!-- Timestamp -->

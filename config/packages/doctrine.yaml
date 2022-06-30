@@ -34,6 +34,11 @@ doctrine:
                 prefix: 'Domain\Report\Entity'
                 is_bundle: false
 
+            Domain\Notification\ValueObject:
+                type: xml
+                dir: '%kernel.project_dir%/src/Infrastructure/Notification/Doctrine/Mapping/ValueObject'
+                prefix: 'Domain\Notification\ValueObject'
+                is_bundle: false
             Domain\Notification\Entity:
                 type: xml
                 dir: '%kernel.project_dir%/src/Infrastructure/Notification/Doctrine/Mapping/Entity'

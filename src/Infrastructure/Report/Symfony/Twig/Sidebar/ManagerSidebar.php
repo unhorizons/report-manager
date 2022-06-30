@@ -33,14 +33,14 @@ final class ManagerSidebar extends AbstractSidebar
     {
         /** @var User $manager */
         $manager = $this->security->getUser();
-        $notifications = $this->notificationRepository->countUnreadForUser($manager);
-        $reports = $this->reportRepository->countUnseenForManager($manager);
+        $n = $this->notificationRepository->countUnreadForUser($manager);
+        $r = $this->reportRepository->countUnseenForManager($manager);
 
         return $builder
             ->add(new SidebarHeader('report.sidebars.managers.headers.index'))
             ->add(new SidebarLink('report_manager_dashboard_index', 'report.sidebars.users.links.dashboard', 'growth-fill'))
-            ->add(new SidebarLink('notification_index', 'report.sidebars.managers.links.notification', 'bell', $notifications > 0 ? (string) $notifications : null))
-            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.all', 'folder-list', (string) $reports))
+            ->add(new SidebarLink('notification_index', 'report.sidebars.managers.links.notification', 'bell', $n > 0 ? (string) $n : null))
+            ->add(new SidebarLink('report_manager_report_index', 'report.sidebars.managers.links.all', 'folder-list', $r > 0 ? (string) $r : null))
             ->add(new SidebarLink('report_manager_employee_index', 'report.sidebars.managers.links.employee', 'users'))
             ->add(new SidebarLink('report_manager_report_search_index', 'report.sidebars.managers.links.search', 'search'))
 

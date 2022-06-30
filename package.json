@@ -12,7 +12,15 @@
         "node-sass": "^7.0.0",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^12.1.0",
-        "webpack-notifier": "^1.6.0"
+        "webpack-notifier": "^1.6.0",
+        "workbox-cacheable-response": "^6.5.3",
+        "workbox-expiration": "^6.5.3",
+        "workbox-navigation-preload": "^6.5.3",
+        "workbox-precaching": "^6.5.3",
+        "workbox-routing": "^6.5.3",
+        "workbox-strategies": "^6.5.3",
+        "workbox-webpack-plugin": "^6.5.3",
+        "workbox-window": "^6.5.3"
     },
     "license": "UNLICENSED",
     "private": true,

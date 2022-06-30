@@ -7,12 +7,10 @@ namespace Application\Notification\Service;
 use Domain\Authentication\Entity\User;
 use Domain\Authentication\Repository\UserRepositoryInterface;
 use Domain\Notification\Entity\Notification;
-use Domain\Notification\Event\NotificationCreatedEvent;
-use Domain\Notification\Event\NotificationReadEvent;
 use Domain\Notification\Repository\NotificationRepositoryInterface;
 use Domain\Report\Entity\Evaluation;
 use Domain\Report\Entity\Report;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Infrastructure\Notification\WebPushService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -26,9 +24,9 @@ final class NotificationService
     public function __construct(
         private readonly NotificationRepositoryInterface $notificationRepository,
         private readonly UserRepositoryInterface $userRepository,
-        private readonly EventDispatcherInterface $dispatcher,
         private readonly Security $security,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly WebPushService $pushService
     ) {
     }
 
@@ -44,7 +42,9 @@ final class NotificationService
             ->setChannel($channel);
 
         $this->notificationRepository->save($notification);
-        $this->dispatcher->dispatch(new NotificationCreatedEvent($notification));
+
+        $this->pushService->notifyChannel($notification);
+        //$this->dispatcher->dispatch(new NotificationCreatedEvent($notification));
 
         return $notification;
     }
@@ -60,7 +60,8 @@ final class NotificationService
             ->setUser($user);
 
         $this->notificationRepository->saveOrUpdate($notification);
-        $this->dispatcher->dispatch(new NotificationCreatedEvent($notification));
+        $this->pushService->notifyUser($notification, $user);
+        //$this->dispatcher->dispatch(new NotificationCreatedEvent($notification));
 
         return $notification;
     }
@@ -81,8 +82,16 @@ final class NotificationService
     public function readAll(User $user): void
     {
         $user->setNotificationsReadAt(new \DateTimeImmutable());
+        $this->notificationRepository->setAllReadForUser($user);
         $this->userRepository->save($user);
-        $this->dispatcher->dispatch(new NotificationReadEvent($user));
+        //$this->dispatcher->dispatch(new NotificationReadEvent($user));
+    }
+
+    public function read(Notification $notification): void
+    {
+        $notification->setIsRead(true);
+        $this->notificationRepository->save($notification);
+        //$this->dispatcher->dispatch(new NotificationReadEvent($user));
     }
 
     public function getChannelsForUser(User $user): array
@@ -119,9 +128,9 @@ final class NotificationService
 
     private function getUrlForEntityUser(object $entity, User $user): string
     {
-        $route = $this->security->isGranted('ROLE_REPORT_MANAGER') ?
-            'report_manager_report_show' :
-            'report_employee_report_show';
+        $route = $this->security->isGranted('ROLE_REPORT_MANAGER', $user) ?
+            'report_employee_report_show' :
+            'report_manager_report_show';
         $parameters = match (true) {
             $entity instanceof Evaluation => ['uuid' => $entity->getReport()->getUuid()],
             $entity instanceof Report => ['uuid' => $entity->getUuid()],

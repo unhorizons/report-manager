@@ -4,6 +4,8 @@ twig:
         format: d F Y
         interval_format: '%%d days'
     form_themes: ['shared/layout/form_theme.html.twig']
+    globals:
+        mercure_subscribe_url: '%env(resolve:MERCURE_PUBLIC_URL)%'
 
 when@test:
     twig:

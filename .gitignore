@@ -12,6 +12,7 @@
 /.idea/
 /.vscode/
 /public/uploads
+/public/sw.js
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache

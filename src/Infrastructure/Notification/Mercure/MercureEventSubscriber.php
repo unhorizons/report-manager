@@ -7,6 +7,7 @@ namespace Infrastructure\Notification\Mercure;
 use Domain\Authentication\Entity\User;
 use Domain\Notification\Event\NotificationCreatedEvent;
 use Domain\Notification\Event\NotificationReadEvent;
+use Infrastructure\Notification\WebPushService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -19,7 +20,8 @@ use Symfony\Component\Mercure\Update;
 final class MercureEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly HubInterface $hub
+        private readonly HubInterface $hub,
+        private readonly WebPushService $push
     ) {
     }
 

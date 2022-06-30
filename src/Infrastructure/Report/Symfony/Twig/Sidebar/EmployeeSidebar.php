@@ -30,12 +30,12 @@ final class EmployeeSidebar extends AbstractSidebar
     {
         /** @var User $manager */
         $manager = $this->security->getUser();
-        $notifications = $this->notificationRepository->countUnreadForUser($manager);
+        $n = $this->notificationRepository->countUnreadForUser($manager);
 
         return $builder
             ->add(new SidebarHeader('report.sidebars.users.headers.index'))
             ->add(new SidebarLink('report_employee_dashboard_index', 'report.sidebars.users.links.dashboard', 'growth-fill'))
-            ->add(new SidebarLink('notification_index', 'report.sidebars.managers.links.notification', 'bell', (string) $notifications))
+            ->add(new SidebarLink('notification_index', 'report.sidebars.managers.links.notification', 'bell', $n > 0 ? (string) $n : null))
             ->add(new SidebarLink('report_employee_report_index', 'report.sidebars.users.links.index', 'folder-list'))
             ->add(new SidebarLink('report_employee_evaluation_index', 'report.sidebars.users.links.evaluation', 'comments'))
 

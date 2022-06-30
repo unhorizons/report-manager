@@ -40,7 +40,7 @@ abstract class AbstractRepository extends ServiceEntityRepository implements Dat
     {
         $entity = $this->find($id, null, null);
         if (null === $entity) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier($this->_entityName, [(string) $id]);
+            throw EntityNotFoundException::fromClassNameAndIdentifier($this->getEntityName(), [(string) $id]);
         }
 
         return $entity;
@@ -71,8 +71,8 @@ abstract class AbstractRepository extends ServiceEntityRepository implements Dat
      */
     public function save(object $entity): void
     {
-        $this->_em->persist($entity);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -80,8 +80,8 @@ abstract class AbstractRepository extends ServiceEntityRepository implements Dat
      */
     public function delete(object $entity): void
     {
-        $this->_em->remove($entity);
-        $this->_em->flush();
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
     }
 
     protected function findByCaseInsensitiveQuery(array $conditions): Query

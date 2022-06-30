@@ -68,26 +68,38 @@ final class NotificationRepository extends AbstractRepository implements Notific
 
     public function countUnreadForUser(User $user): int
     {
-        $qb = $this->createQueryBuilder('n')
-            ->select('COUNT(n.id) AS count');
-
-        if (null === $user->getNotificationsReadAt()) {
-            $qb->where('n.created_at > :last_read')
-                ->setParameter('last_read', $user->getNotificationsReadAt());
-        } else {
-            $qb->where('n.created_at <= :last_read')
-                ->setParameter('last_read', new \DateTimeImmutable());
+        try {
+            return intval($this->createQueryBuilder('n')
+                ->select('COUNT(n.id) AS count')
+                ->where('n.is_read = :read')
+                ->andWhere('n.user = :user')
+                ->setParameter('user', $user)
+                ->setParameter('read', false)
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch (\Throwable) {
+            return 0;
         }
+    }
 
-        return intval($qb->getQuery()->getSingleColumnResult());
+    public function setAllReadForUser(User $user): int
+    {
+        return intval($this->createQueryBuilder('n')
+            ->update(Notification::class, 'n')
+            ->where('n.user = :user')
+            ->set('n.is_read', ':read')
+            ->setParameter('user', $user)
+            ->setParameter('read', true)
+            ->getQuery()
+            ->execute());
     }
 
     public function clean(): int
     {
         return intval($this->createQueryBuilder('n')
+            ->delete(Notification::class, 'n')
             ->where('n.created_at < :date')
             ->setParameter('date', new \DateTimeImmutable('-3 month'))
-            ->delete(Notification::class, 'n')
             ->getQuery()
             ->execute());
     }

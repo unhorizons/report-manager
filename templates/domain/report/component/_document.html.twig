@@ -27,7 +27,7 @@
         </ul>
     </div>
 
-    {% if is_granted('DOCUMENT_DELETE', data) %}
+    {% if is_granted('DOCUMENT_DELETE', data) and report.mutable %}
         <div class="nk-file-actions">
             <form action="{{ path('report_document_delete', {uuid: data.uuid}) }}" method="post" class="d-inline-block">
                 <input type="hidden" name="_method" value="DELETE">

@@ -5,16 +5,18 @@
     {% embed 'shared/component/_header.html.twig' %}
         {% block header_title 'Mes Notifications' %}
         {% block header_action_list %}
-            <li>
-                <form action="{{ path('notification_read') }}" method="post" class="d-inline-block">
-                    <button class="btn btn-white btn-dim btn-outline-light"
-                            aria-label="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}"
-                            title="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}">
-                        {{ 'check-circle' | icon }}
-                        <span>{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}</span>
-                    </button>
-                </form>
-            </li>
+            {% if count_notifications() > 0 %}
+                <li>
+                    <form action="{{ path('notification_read') }}" method="post" class="d-inline-block">
+                        <button class="btn btn-white btn-dim btn-outline-light"
+                                aria-label="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}"
+                                title="{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}">
+                            {{ 'check-circle' | icon }}
+                            <span>{{ 'notification.actions.mark_as_read' | trans([], 'notification') }}</span>
+                        </button>
+                    </form>
+                </li>
+            {% endif %}
         {% endblock %}
     {% endembed %}
 {% endblock %}
@@ -23,17 +25,32 @@
     {% embed "shared/component/card/_list.html.twig" %}
         {% block list_card_table_body %}
             <div class="nk-notification">
-                {% for row in notifications %}
+                {% for row in data %}
                     <div class="dropdown-inner">
-                        <a href="{{ row.url }}" class="nk-notification-item">
+                        <a href="{{ path('notification_show', {id: row.id}) }}" class="nk-notification-item">
                             <div class="nk-notification-icon">
                                 <em class="icon icon-circle bg-primary-dim ni ni-info"></em>
                             </div>
                             <div class="nk-notification-content">
+                                {% if not row.isRead %}
+                                    <span class="badge badge-dot badge-primary">Nouveau</span>
+                                {% endif %}
                                 <div class="nk-notification-text">{{ row.message }}</div>
                                 <div class="nk-notification-time">{{ row.createdAt | date('d F - h:m') }}</div>
                             </div>
                         </a>
+                    </div>
+                {% else %}
+                    <div class="nk-notification">
+                        <div class="nk-notification-item dropdown-inner">
+                            <div class="nk-notification-icon">
+                                <em class="icon icon-circle bg-danger-dim ni ni-alert"></em>
+                            </div>
+                            <div class="nk-notification-content">
+                                <div class="nk-notification-text">Aucune notification pour l'instant</div>
+                                <div class="nk-notification-time">{{ 'now' | date('d F - h:m') }}</div>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

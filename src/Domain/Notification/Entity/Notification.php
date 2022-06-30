@@ -32,6 +32,8 @@ class Notification implements \Stringable
 
     private ?string $message = null;
 
+    private bool $is_read = false;
+
     public function __construct()
     {
         $this->uuid = Uuid::v4();
@@ -51,12 +53,7 @@ class Notification implements \Stringable
 
     public function isRead(): bool
     {
-        if (null === $this->user) {
-            return false;
-        }
-        $notificationsReadAt = $this->user->getNotificationsReadAt();
-
-        return $notificationsReadAt && $this->created_at > $notificationsReadAt;
+        return $this->getIsRead();
     }
 
     public function getUuid(): UuidV4|Uuid
@@ -127,6 +124,18 @@ class Notification implements \Stringable
     public function setMessage(?string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getIsRead(): bool
+    {
+        return $this->is_read;
+    }
+
+    public function setIsRead(?bool $is_read): self
+    {
+        $this->is_read = $is_read;
 
         return $this;
     }

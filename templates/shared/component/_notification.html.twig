@@ -1,7 +1,7 @@
 {% set count_notifications = count_notifications() %}
 
 <li class="dropdown notification-dropdown">
-    <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown">
+    <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown" id="push-permission">
         {% if count_notifications > 0 %}
             <div class="icon-status icon-status-info">{{ 'bell' | icon }}</div>
         {% else %}
@@ -25,8 +25,15 @@
                             <em class="icon icon-circle bg-primary-dim ni ni-info"></em>
                         </div>
                         <div class="nk-notification-content">
-                            <div class="nk-notification-text">{{ notification.message }}</div>
-                            <div class="nk-notification-time">{{ notification.createdAt | date }}</div>
+                            <a href="{{ path('notification_show', {id: notification.id}) }}">
+                                {% if not notification.isRead %}
+                                    <span class="badge badge-dot badge-primary">Nouveau</span>
+                                {% endif %}
+                                <div class="nk-notification-text">{{ notification.message }}</div>
+                                <div class="nk-notification-time">
+                                    {{ notification.createdAt | date }}
+                                </div>
+                            </a>
                         </div>
                     </div>
                 {% else %}
