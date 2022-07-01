@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Infrastructure\Report\Symfony\Twig\Sidebar;
 
-use Application\Notification\Service\NotificationService;
 use Domain\Authentication\Entity\User;
 use Domain\Notification\Repository\NotificationRepositoryInterface;
 use Domain\Report\Repository\ReportRepositoryInterface;

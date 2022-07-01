@@ -22,5 +22,5 @@ interface NotificationRepositoryInterface extends DataRepositoryInterface, Clean
 
     public function countUnreadForUser(User $user): int;
 
-    public function setAllReadForUser(User $user);
+    public function setAllReadForUser(User $user): int;
 }

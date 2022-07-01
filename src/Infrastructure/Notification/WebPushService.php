@@ -7,7 +7,7 @@ namespace Infrastructure\Notification;
 use Domain\Authentication\Entity\User;
 use Domain\Notification\Entity\Notification;
 use Domain\Notification\Entity\PushSubscription;
-use Domain\Notification\Repository\PushSubscriptionRepositoryInterface;
+use Infrastructure\Notification\Doctrine\Repository\PushSubscriptionRepository;
 use Minishlink\WebPush\Subscription;
 use Minishlink\WebPush\WebPush;
 use Psr\Log\LoggerInterface;
@@ -24,7 +24,7 @@ final class WebPushService
     private ?string $icon;
 
     public function __construct(
-        private readonly PushSubscriptionRepositoryInterface $repository,
+        private readonly PushSubscriptionRepository $repository,
         private readonly LoggerInterface $logger,
         RequestStack $stack
     ) {
@@ -32,15 +32,15 @@ final class WebPushService
             'VAPID' => [
                 'subject' => 'mailto:rapport@unhorizons.org',
                 'publicKey' => $_ENV['VAPID_PUBLIC_KEY'],
-                'privateKey' => $_ENV['VAPID_PRIVATE_KEY']
-            ]
+                'privateKey' => $_ENV['VAPID_PRIVATE_KEY'],
+            ],
         ]);
         $this->icon = $stack->getCurrentRequest()?->getUriForPath('/images/logo_icon.png');
     }
 
     public function notifyChannel(Notification $notification): void
     {
-        /** @var PushSubscription[] $subscription */
+        /** @var PushSubscription[] $subscriptions */
         $subscriptions = $this->repository->findAll();
 
         try {
@@ -49,11 +49,8 @@ final class WebPushService
             }
 
             foreach ($this->webPush->flush() as $report) {
-                if (!$report->isSuccess()) {
-                    $this->repository->delete($subscription);
-                    dd($report);
-                } else {
-                    dd($report);
+                if (! $report->isSuccess()) {
+                    $this->repository->deleteSubscriptionByEndpoint($report->getEndpoint());
                 }
             }
         } catch (\Throwable $e) {
@@ -64,8 +61,10 @@ final class WebPushService
 
     public function notifyUser(Notification $notification, User $user): void
     {
-        /** @var PushSubscription[] $subscription */
-        $subscriptions = $this->repository->findBy(['user' => $user]);
+        /** @var PushSubscription[] $subscriptions */
+        $subscriptions = $this->repository->findBy([
+            'user' => $user,
+        ]);
 
         try {
             foreach ($subscriptions as $subscription) {
@@ -73,8 +72,8 @@ final class WebPushService
             }
 
             foreach ($this->webPush->flush() as $report) {
-                if (!$report->isSuccess()) {
-                    $this->repository->delete($subscription);
+                if (! $report->isSuccess()) {
+                    $this->repository->deleteSubscriptionByEndpoint($report->getEndpoint());
                 }
             }
         } catch (\Throwable $e) {
@@ -90,25 +89,28 @@ final class WebPushService
         $this->webPush->queueNotification(
             subscription: Subscription::create([
                 'endpoint' => $subscription->getEndpoint(),
-                'publicKey' => $subscription->getKeys()->p256dh,
-                'authToken' => $subscription->getKeys()->auth
+                'publicKey' => $subscription->getKeys()?->p256dh,
+                'authToken' => $subscription->getKeys()?->auth,
             ]),
             payload: json_encode([
                 'title' => 'UNH Rapport',
                 'options' => [
                     'body' => $notification->getMessage(),
                     'data' => [
-                        "url" => $notification->getUrl(),
+                        'url' => $notification->getUrl(),
                     ],
                     'actions' => [
-                        ["action" => "show", "title" => "Voir les détails"]
+                        [
+                            'action' => 'show',
+                            'title' => 'Voir les détails',
+                        ],
                     ],
-                    "icon" => $this->icon,
+                    'icon' => $this->icon,
                     'requireInteraction' => true,
-                    'timestamp' => $notification->getCreatedAt()->format('u'),
-                    'lang' => 'FR'
+                    'timestamp' => $notification->getCreatedAt()?->format('u'),
+                    'lang' => 'FR',
                 ],
-            ])
+            ]) ?: null
         );
     }
 }

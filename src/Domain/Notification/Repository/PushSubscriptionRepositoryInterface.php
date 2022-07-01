@@ -13,4 +13,5 @@ use Domain\Shared\Repository\DataRepositoryInterface;
  */
 interface PushSubscriptionRepositoryInterface extends DataRepositoryInterface
 {
+    public function deleteSubscriptionByEndpoint(string $endpoint): int;
 }

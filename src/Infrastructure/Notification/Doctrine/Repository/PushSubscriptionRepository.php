@@ -21,24 +21,35 @@ final class PushSubscriptionRepository extends AbstractRepository implements Pus
         parent::__construct($registry, PushSubscription::class);
     }
 
-    /**
-     * @param PushSubscription $entity
-     * @return void
-     */
     public function save(object $entity): void
     {
-        $subscription = $this->findOneBy(['endpoint' => $entity->getEndpoint()]);
+        if ($entity instanceof PushSubscription) {
+            /** @var PushSubscription|null $subscription */
+            $subscription = $this->findOneBy([
+                'endpoint' => $entity->getEndpoint(),
+            ]);
 
-        if ($subscription) {
-            $subscription
-                ->setExpirationTime($entity->getExpirationTime())
-                ->setKeys($entity->getKeys())
-                ->setUpdatedAt($entity->getCreatedAt());
-        } else {
-            $subscription = $entity;
+            if ($subscription) {
+                $subscription
+                    ->setExpirationTime($entity->getExpirationTime())
+                    ->setKeys($entity->getKeys())
+                    ->setUpdatedAt($entity->getCreatedAt());
+            } else {
+                $subscription = $entity;
+            }
+
+            $this->getEntityManager()->persist($subscription);
+            $this->getEntityManager()->flush();
         }
+    }
 
-        $this->getEntityManager()->persist($subscription);
-        $this->getEntityManager()->flush();
+    public function deleteSubscriptionByEndpoint(string $endpoint): int
+    {
+        return intval($this->createQueryBuilder('ps')
+            ->delete(PushSubscription::class, 'ps')
+            ->where('ps.endpoint = :endpoint')
+            ->setParameter('endpoint', $endpoint)
+            ->getQuery()
+            ->execute());
     }
 }

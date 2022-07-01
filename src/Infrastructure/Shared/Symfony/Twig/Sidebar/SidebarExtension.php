@@ -140,7 +140,7 @@ class SidebarExtension extends AbstractExtension
             return $s;
         }
 
-        throw new \RuntimeException(sprintf('The %s must be an instance of %s', $sidebar::class, AbstractSidebar::class));
+        throw new \RuntimeException(sprintf('The sidebar must be an instance of %s', AbstractSidebar::class));
     }
 
     /**

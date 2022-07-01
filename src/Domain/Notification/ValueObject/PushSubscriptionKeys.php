@@ -16,7 +16,7 @@ class PushSubscriptionKeys
     public readonly string $p256dh;
     public readonly string $auth;
 
-    private function __construct($p256dh, $auth)
+    private function __construct(string $p256dh, string $auth)
     {
         Assert::notEmpty($p256dh);
         Assert::notEmpty($auth);
@@ -37,7 +37,7 @@ class PushSubscriptionKeys
     {
         return [
             'auth' => $this->auth,
-            'p256dh' => $this->p256dh
+            'p256dh' => $this->p256dh,
         ];
     }
 }

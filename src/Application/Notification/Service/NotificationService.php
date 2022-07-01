@@ -115,15 +115,15 @@ final class NotificationService
     {
         $hash = $entity::class;
         if (method_exists($entity, 'getId')) {
-            $hash .= sprintf('::%s', (string)$entity->getId());
+            $hash .= sprintf('::%s', (string) $entity->getId());
         }
 
         return $hash;
     }
 
-    private function getUrlForEntityChannel(object $entity): ?string
+    private function getUrlForEntityChannel(object $entity): string
     {
-        return null;
+        return '';
     }
 
     private function getUrlForEntityUser(object $entity, User $user): string
@@ -132,8 +132,12 @@ final class NotificationService
             'report_employee_report_show' :
             'report_manager_report_show';
         $parameters = match (true) {
-            $entity instanceof Evaluation => ['uuid' => $entity->getReport()->getUuid()],
-            $entity instanceof Report => ['uuid' => $entity->getUuid()],
+            $entity instanceof Evaluation => [
+                'uuid' => $entity->getReport()?->getUuid(),
+            ],
+            $entity instanceof Report => [
+                'uuid' => $entity->getUuid(),
+            ],
             default => []
         };
 

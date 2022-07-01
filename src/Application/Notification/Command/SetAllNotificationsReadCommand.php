@@ -15,7 +15,6 @@ final class SetAllNotificationsReadCommand
 {
     public function __construct(
         public readonly User $user
-    )
-    {
+    ) {
     }
 }

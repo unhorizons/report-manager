@@ -7,3 +7,4 @@ services:
 
     # Doctrine Repositories
     Domain\Notification\Repository\NotificationRepositoryInterface: '@Infrastructure\Notification\Doctrine\Repository\NotificationRepository'
+    Domain\Notification\Repository\PushSubscriptionRepositoryInterface: '@Infrastructure\Notification\Doctrine\Repository\PushSubscriptionRepository'

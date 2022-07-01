@@ -20,16 +20,15 @@ final class NotificationExtension extends AbstractExtension
 {
     public function __construct(
         private readonly NotificationService $notificationService,
-        private readonly Security            $security
-    )
-    {
+        private readonly Security $security
+    ) {
     }
 
     public function getFunctions(): array
     {
         return [
             new TwigFunction('recent_notifications', [$this, 'notifications']),
-            new TwigFunction('count_notifications', [$this, 'count'])
+            new TwigFunction('count_notifications', [$this, 'count']),
         ];
     }
 
@@ -48,6 +47,7 @@ final class NotificationExtension extends AbstractExtension
     {
         /** @var User $user */
         $user = $this->security->getUser();
+
         return $this->notificationService->countForUser($user);
     }
 }

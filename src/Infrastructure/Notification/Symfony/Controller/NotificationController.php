@@ -39,7 +39,7 @@ final class NotificationController extends AbstractController
                     target: $repository->findRecentForUser($user),
                     page: $request->query->getInt('page', 1),
                     limit: 20
-                )
+                ),
             ]
         );
     }
@@ -60,7 +60,7 @@ final class NotificationController extends AbstractController
             $this->handleUnexpectedException($e);
         }
 
-        return $this->redirect($notification->getUrl(), status: Response::HTTP_PERMANENTLY_REDIRECT);
+        return $this->redirect((string) $notification->getUrl(), status: Response::HTTP_PERMANENTLY_REDIRECT);
     }
 
     #[Route('/set_as_read', name: 'read', methods: ['POST'])]

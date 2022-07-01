@@ -133,7 +133,7 @@ class Notification implements \Stringable
         return $this->is_read;
     }
 
-    public function setIsRead(?bool $is_read): self
+    public function setIsRead(bool $is_read): self
     {
         $this->is_read = $is_read;
 
