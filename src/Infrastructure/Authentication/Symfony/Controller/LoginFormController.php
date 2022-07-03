@@ -44,8 +44,9 @@ final class LoginFormController extends AbstractController
         return $this->renderForm(
             view: 'domain/authentication/login.html.twig',
             parameters: [
-                'form' => $form,
-            ]
+                'form' => $form->createView(),
+            ],
+            response: $this->getResponseBasedOnFormValidationStatus($form)
         );
     }
 

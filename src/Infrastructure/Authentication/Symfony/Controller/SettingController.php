@@ -107,6 +107,7 @@ final class SettingController extends AbstractController
                 return $this->redirectSeeOther('authentication_settings_2fa');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -118,7 +119,7 @@ final class SettingController extends AbstractController
                 'qrcode_content' => $qrcode,
                 'form' => $form->createView(),
             ],
-            response: $this->getResponseBasedOnFormValidationStatus($form)
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );
     }
 }

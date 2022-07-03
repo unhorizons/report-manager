@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * Class LoginLinkController.
@@ -43,14 +42,9 @@ final class LoginLinkController extends AbstractController
                 ));
 
                 return $this->redirectSeeOther('authentication_login');
-            } catch (AuthenticationException) {
-                $this->addFlash('error', $this->translator->trans(
-                    id: 'authentication.flashes.something_went_wrong',
-                    parameters: [],
-                    domain: 'authentication'
-                ));
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -59,7 +53,7 @@ final class LoginLinkController extends AbstractController
             parameters: [
                 'form' => $form->createView(),
             ],
-            response: $this->getResponseBasedOnFormValidationStatus($form)
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );
     }
 

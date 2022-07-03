@@ -29,7 +29,7 @@ final class Login2FAController extends AbstractController
 
             if (null !== $user) {
                 $this->dispatchSync(new Resend2FACodeCommand((string) $request->getClientIp(), $user));
-                $this->addFlash('error', $this->translator->trans(
+                $this->addFlash('success', $this->translator->trans(
                     id: 'authentication.flashes.resend_code_requested_successfully',
                     parameters: [],
                     domain: 'authentication'
@@ -45,6 +45,6 @@ final class Login2FAController extends AbstractController
             $this->handleUnexpectedException($e);
         }
 
-        return $this->redirectSeeOther('app_index');
+        return $this->redirectSeeOther('authentication_2fa_login');
     }
 }

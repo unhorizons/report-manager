@@ -46,6 +46,7 @@ final class TwoFactorController extends AbstractController
                 ));
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -54,7 +55,8 @@ final class TwoFactorController extends AbstractController
             parameters: [
                 'form' => $form->createView(),
                 'qrcode_content' => $qrcode,
-            ]
+            ],
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );
     }
 
