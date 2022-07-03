@@ -6,7 +6,7 @@
         {% block header_title  'Rechercher un rapport' | title %}
         {% block header_action_list %}
             <li>
-                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                <a href="{{ is_granted('ROLE_ADMIN') ? path('report_admin_report_index') :  path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
                     {{ 'folder-list' | icon }}
                     <span>Tous les rapports</span>
                 </a>
@@ -35,6 +35,3 @@
         {% endblock %}
     {% endembed %}
 {% endblock %}
-
-
-

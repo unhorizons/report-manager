@@ -1,0 +1,69 @@
+{% extends 'domain/report/layout/base.html.twig' %}
+{% block title "##{data.id} #{data.name}" %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title %}
+            {{ 'reports' | trans([], 'messages') | title }} / <strong class="text-primary small">#{{ data.id }}</strong>
+        {% endblock %}
+        {% block header_description %}
+            <ul class="list-inline">
+                <li>{{ 'created_at' | trans([], 'messages') }} : <span class="text-base">{{ data.createdAt | date }}</span></li>
+            </ul>
+        {% endblock %}
+        {% block header_action_list %}
+            <li>
+                <a href="{{ path('report_admin_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                    {{ 'arrow-long-left' | icon }}
+                    <span>Tous les rapports</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% embed "shared/component/card/_detail.html.twig" %}
+        {% import 'shared/component/_macros.html.twig' as component %}
+        {% block detail_card_body %}
+            <div class="nk-block">
+                <div class="nk-block-head">
+                    <h5 class="title">{{ data.name }}</h5>
+                    <p>{{ data.description }}</p>
+                </div>
+            </div>
+
+            {% if data.documents | length > 0 %}
+                <div class="nk-divider divider md"></div>
+                <div class="nk-block">
+                    <div class="nk-block-head nk-block-head-sm nk-block-between">
+                        <h5 class="title">{{ 'global.documents' | trans([], 'messages') }}</h5>
+                    </div>
+                    <div class="nk-files nk-files-view-grid">
+                        <div class="nk-files-list">
+                            {% for document in data.documents %}
+                                {% include 'domain/report/component/_document.html.twig' with {data: document, report: data} %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if data.evaluations | length > 0 %}
+                <div class="nk-divider divider md"></div>
+                <div class="nk-block">
+                    <div class="nk-block-head nk-block-head-sm nk-block-between">
+                        <h5 class="title">{{ 'evaluations' | trans([], 'messages') }}</h5>
+                    </div>
+                        <div class="bq-note">
+                            {% for evaluation in data.evaluations %}
+                                {% include 'domain/report/component/_evaluation.html.twig' with {data: evaluation, report: data} %}
+                            {% endfor %}
+                        </div>
+                </div>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+
+    {% include 'domain/report/component/_employee_sidebar.html.twig' with {employee: data.employee} %}
+{% endblock %}

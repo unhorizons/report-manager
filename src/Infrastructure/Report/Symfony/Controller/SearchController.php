@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Report\Symfony\Controller\Manager;
+namespace Infrastructure\Report\Symfony\Controller;
 
 use Application\Report\Command\SearchReportCommand;
 use Domain\Authentication\Entity\User;
@@ -12,7 +12,7 @@ use Infrastructure\Report\Symfony\Form\SearchReportForm;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Infrastructure\Shared\Symfony\Controller\PaginationAssertionTrait;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -20,10 +20,10 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_REPORT_MANAGER')]
-#[Route('/profile/manager/search', name: 'report_manager_report_search_')]
+#[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_REPORT_MANAGER')")]
+#[Route('/profile/search', name: 'report_search_')]
 #[AsController]
-final class ManagerSearchController extends AbstractController
+final class SearchController extends AbstractController
 {
     use PaginationAssertionTrait;
 
@@ -51,7 +51,7 @@ final class ManagerSearchController extends AbstractController
                 $result = $stamp->getResult();
                 $request->getSession()->set('report_search_result', $result);
 
-                return $this->redirectSeeOther('report_manager_report_search_result');
+                return $this->redirectSeeOther('report_search_result');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
                 $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -59,7 +59,7 @@ final class ManagerSearchController extends AbstractController
         }
 
         return $this->render(
-            view: 'domain/report/manager/search.html.twig',
+            view: 'domain/report/search.html.twig',
             parameters: [
                 'form' => $form->createView(),
             ],
@@ -81,7 +81,7 @@ final class ManagerSearchController extends AbstractController
         );
 
         return $this->render(
-            view: 'domain/report/manager/search_result.html.twig',
+            view: 'domain/report/search_result.html.twig',
             parameters: [
                 'data' => $data,
             ]

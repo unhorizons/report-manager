@@ -6,13 +6,13 @@
         {% block header_title  'Résultat de recherche' | title %}
         {% block header_action_list %}
             <li>
-                <a href="{{ path('report_manager_report_search_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.search' | trans([], 'report') }}" title="{{ 'report.actions.search' | trans([], 'report') }}">
+                <a href="{{ path('report_search_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.search' | trans([], 'report') }}" title="{{ 'report.actions.search' | trans([], 'report') }}">
                     {{ 'search' | icon }}
                     <span>{{ 'report.actions.search' | trans([], 'report') }}</span>
                 </a>
             </li>
             <li>
-                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                <a href="{{ path(is_granted('ROLE_ADMIN') ? 'report_admin_report_index' : 'report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
                     {{ 'folder-list' | icon }}
                     <span>Tous les rapports</span>
                 </a>
@@ -41,7 +41,7 @@
                     <td>{{ row.period }}</td>
                     <td class="tb-odr-action">
                         <div class="tb-odr-btns d-none d-md-inline">
-                            <a href="{{ path('report_manager_report_show', {uuid: row.uuid}) }}" class="btn btn-sm btn-primary" title="{{ 'global.show' | trans([], 'messages') }}">
+                            <a href="{{ path(is_granted('ROLE_ADMIN') ? 'report_admin_report_show' : 'report_manager_report_show', {uuid: row.uuid}) }}" class="btn btn-sm btn-primary" title="{{ 'global.show' | trans([], 'messages') }}">
                                 {{ 'eye-alt-fill' | icon }}
                                 <span>{{ 'global.show' | trans([], 'messages') }}</span>
                             </a>
@@ -52,6 +52,3 @@
         {% endblock %}
     {% endembed %}
 {% endblock %}
-
-
-

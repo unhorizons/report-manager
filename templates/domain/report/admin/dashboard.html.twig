@@ -6,13 +6,13 @@
         {% block header_title  'report.titles.dashboard_named' | trans({"%name%": app.user.username}, 'report') | title %}
         {% block header_action_list %}
             <li>
-                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                <a href="{{ path('report_admin_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
                     {{ 'folder-list' | icon }}
                     <span>Tous les rapports</span>
                 </a>
             </li>
             <li>
-                <a href="{{ path('report_manager_report_search_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.search' | trans([], 'report') }}" title="{{ 'report.actions.search' | trans([], 'report') }}">
+                <a href="{{ path('report_search_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.search' | trans([], 'report') }}" title="{{ 'report.actions.search' | trans([], 'report') }}">
                     {{ 'search' | icon }}
                     <span>{{ 'report.actions.search' | trans([], 'report') }}</span>
                 </a>
@@ -22,4 +22,39 @@
 {% endblock %}
 
 {% block content %}
+<div class="row g-gs">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-inner">
+                <div class="card-title-group align-start mb-2">
+                    <div class="card-title">
+                        <h6 class="title">Statistiques</h6>
+                        <p>Rapports reçus les 30 derniers jours</p>
+                    </div>
+                </div>
+                <div class="align-end gy-3 gx-5 flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                    <div class="nk-sale-data-group flex-md-nowrap g-4">
+                        <div class="nk-sale-data"><span class="amount">5490 <span class="change down text-danger"><em
+                                            class="icon ni ni-arrow-long-down"></em>16.93%</span></span><span
+                                    class="sub-title">This Month</span></div>
+                        <div class="nk-sale-data"><span class="amount">1480<span class="change up text-success"><em
+                                            class="icon ni ni-arrow-long-up"></em>4.26%</span></span><span
+                                    class="sub-title">This Week</span></div>
+                    </div>
+                    <div class="nk-sales-ck sales-revenue">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
+                        </div>
+                        <canvas class="student-enrole chartjs-render-monitor" id="enrolement" style="display: block; width: 490px; height: 64px;" width="490" height="64"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

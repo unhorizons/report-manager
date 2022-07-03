@@ -32,10 +32,12 @@ final class AdminSidebar extends AbstractSidebar
         $admin = $this->security->getUser();
         $n = $this->notificationRepository->countUnreadForUser($admin);
 
-        return $builder->add(new SidebarHeader('report.sidebars.admin'))
+        return $builder->add(new SidebarHeader('report.sidebars.admins.headers.index'))
             ->add(new SidebarLink('report_admin_dashboard_index', 'report.sidebars.users.links.dashboard', 'growth-fill'))
             ->add(new SidebarLink('notification_index', 'report.sidebars.admins.links.notification', 'bell', $n > 0 ? (string) $n : null))
             ->add(new SidebarLink('administration_user_index', 'report.sidebars.admins.links.user', 'users'))
+            ->add(new SidebarLink('report_admin_report_index', 'report.sidebars.managers.links.all', 'folder-list'))
+            ->add(new SidebarLink('report_search_index', 'report.sidebars.managers.links.search', 'search'))
 
             ->setTranslationDomain('report')
             ->create();
