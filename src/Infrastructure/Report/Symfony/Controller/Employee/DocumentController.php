@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Report\Symfony\Controller;
+namespace Infrastructure\Report\Symfony\Controller\Employee;
 
 use Application\Report\Command\DeleteDocumentCommand;
 use Domain\Report\Entity\Document;
@@ -15,12 +15,13 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_USER')]
+#[Route('/profile/employee/documents', name: 'report_document_')]
 #[AsController]
 final class DocumentController extends AbstractController
 {
     use DeleteCsrfTrait;
 
-    #[Route('/profile/employee/documents/{uuid}', name: 'report_document_delete', methods: ['DELETE'])]
+    #[Route('/{uuid}', name: 'delete', methods: ['DELETE'])]
     public function delete(Document $document, Request $request): Response
     {
         $this->denyAccessUnlessGranted('DOCUMENT_DELETE', $document);

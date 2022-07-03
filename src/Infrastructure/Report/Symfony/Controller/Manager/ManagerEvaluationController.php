@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Report\Symfony\Controller;
+namespace Infrastructure\Report\Symfony\Controller\Manager;
 
 use Application\Report\Command\CreateEvaluationCommand;
 use Application\Report\Command\DeleteEvaluationCommand;
@@ -18,10 +18,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_REPORT_MANAGER')]
 #[Route('/profile/manager/evaluation', name: 'report_manager_evaluation_')]
+#[AsController]
 final class ManagerEvaluationController extends AbstractController
 {
     use DeleteCsrfTrait;

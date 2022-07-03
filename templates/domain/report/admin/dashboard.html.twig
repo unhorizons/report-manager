@@ -1,0 +1,25 @@
+{% extends 'domain/report/layout/base.html.twig' %}
+{% block title 'report.titles.index' | trans([], 'report') %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title  'report.titles.dashboard_named' | trans({"%name%": app.user.username}, 'report') | title %}
+        {% block header_action_list %}
+            <li>
+                <a href="{{ path('report_manager_report_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'global.back' | trans([], 'messages') }}" title="{{ 'global.back' | trans([], 'messages') }}">
+                    {{ 'folder-list' | icon }}
+                    <span>Tous les rapports</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('report_manager_report_search_index') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="{{ 'report.actions.search' | trans([], 'report') }}" title="{{ 'report.actions.search' | trans([], 'report') }}">
+                    {{ 'search' | icon }}
+                    <span>{{ 'report.actions.search' | trans([], 'report') }}</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}

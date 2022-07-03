@@ -1,0 +1,54 @@
+{% extends 'domain/report/layout/base.html.twig' %}
+{% block title 'Utilisateurs' %}
+
+{% block header %}
+    {% embed 'shared/component/_header.html.twig' %}
+        {% block header_title 'Utilisateurs' %}
+        {% block header_action_list %}
+            <li>
+                <a href="{{ path('administration_user_new') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="Ajouter un utilisateur" title="Ajouter un utilisateur">
+                    {{ 'plus' | icon }}
+                    <span>Ajouter un utilisateur</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('administration_user_new') }}" class="btn btn-white btn-dim btn-outline-light" aria-label="Ajouter un utilisateur" title="Ajouter un utilisateur">
+                    {{ 'file' | icon }}
+                    <span>Importer des utilisateurs</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% embed "shared/component/card/_list.html.twig" %}
+        {% block list_card_table_head %}
+            <th>#</th>
+            <th>Nom complet</th>
+            <th>Poste</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>&nbsp;</th>
+        {% endblock %}
+        {% block list_card_table_body %}
+            {% for row in data %}
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.username | u.truncate(60, '...') }}</td>
+                    <td>{{ row.jobTitle }}</td>
+                    <td>{{ row.email }}</td>
+                    <td>{{ row.roles | last | badge }}</td>
+                    <td class="tb-odr-action">
+                        <div class="tb-odr-btns d-none d-md-inline">
+                            <a href="{{ path('administration_user_show', {id: row.id}) }}" class="btn btn-sm btn-primary" title="{{ 'global.show' | trans([], 'messages') }}">
+                                {{ 'eye-alt-fill' | icon }}
+                                <span>{{ 'global.show' | trans([], 'messages') }}</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

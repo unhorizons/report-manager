@@ -87,7 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, GoogleT
             ->setUsername($username)
             ->setEmail($email)
             ->setPassword($password)
-            ->setRoles($is_admin ? Roles::superAdmin() : Roles::employee());
+            ->setRoles($is_admin ? Roles::admin() : Roles::employee());
     }
 
     public function getUsername(): ?string

@@ -13,11 +13,10 @@ use Webmozart\Assert\Assert;
  */
 class Roles implements \Stringable
 {
-    public const ROLES = ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_ADMIN', 'ROLE_REPORT_MANAGER'];
+    public const ROLES = ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_REPORT_MANAGER'];
     public const ROLES_CHOICES = [
         'ROLE_ADMIN' => 'ROLE_ADMIN',
         'ROLE_USER' => 'ROLE_USER',
-        'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
         'ROLE_REPORT_MANAGER' => 'ROLE_REPORT_MANAGER',
     ];
 
@@ -49,9 +48,9 @@ class Roles implements \Stringable
         return new self($roles);
     }
 
-    public static function superAdmin(): self
+    public static function admin(): self
     {
-        return new self(['ROLE_SUPER_ADMIN']);
+        return new self(['ROLE_ADMIN']);
     }
 
     public static function employee(): self

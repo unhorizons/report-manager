@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Report\Symfony\Controller;
+namespace Infrastructure\Report\Symfony\Controller\Manager;
 
 use Domain\Authentication\Entity\User;
 use Domain\Authentication\Repository\UserRepositoryInterface;
@@ -13,10 +13,12 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_REPORT_MANAGER')]
 #[Route('/profile/manager/employee', name: 'report_manager_employee_')]
+#[AsController]
 final class ManagerEmployeeController extends AbstractController
 {
     use PaginationAssertionTrait;

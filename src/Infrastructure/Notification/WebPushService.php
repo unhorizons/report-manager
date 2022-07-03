@@ -93,7 +93,7 @@ final class WebPushService
                 'authToken' => $subscription->getKeys()?->auth,
             ]),
             payload: json_encode([
-                'title' => 'UNH Rapport',
+                'title' => '[UNH Rapports] Nouvelle activité',
                 'options' => [
                     'body' => $notification->getMessage(),
                     'data' => [

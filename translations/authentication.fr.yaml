@@ -26,6 +26,9 @@ authentication:
             password: Mot de passe
             password_confirm: Confirmer le mot de passe
             email: Adresse Email
+            job_title: Poste au travail
+            gender: Genre
+            roles: Rôles
             2fa_email_provider: 2FA avec votre adresse email
             2fa_google_authenticator_provider: 2FA avec Google Authenticator
         placeholders:
@@ -39,6 +42,9 @@ authentication:
         reset_password_requested_successfully: Les instructions de récupération de mot de passe vous ont été envoyées par email.
         reset_password_confirmed_successfully: Votre mot de passe à bien été mise à jour.
         resend_code_requested_successfully: Le code d'authentification a été renvoyé avec succès
+        user_deleted_successfully: "L'utilisateur (%name%) a été supprimé avec succès !"
+        user_updated_successfully: "L'utilisateur (%name% a bien été modifié !)"
+        user_registered_successfully: "L'utilisateur (%name%) à bien été crée"
     validations:
         password_must_match: Les deux mots de passe ne sont pas identiques !
         empty_role: Veuillez définir au moins un rôle
@@ -50,11 +56,16 @@ authentication:
             Désolé une demande de réinitialisation de mot de passe est déjà en cours,
             Veuillez poursuivre avec les instructions qui vous ont été envoyées par email.
         reset_password_token_expired: Désolé le lien que vous avez utilisé n'est plus valide.
+        email_already_used: Cette adresse email est déjà utilisée par un autre compte.
+        invalid_current_password: le mot de passe courant est incorrecte.
     mails:
         subjects:
             login_link_requested: "[UNH Rapports] %name%, voici le lien d'accès à votre compte UNH Rapports"
             reset_password_requested: "[UNH Rapports] Instruction de réinitialisation de mot de passe UNH Rapports"
-            reset_password_confirmed: "[UNH Rapports] %name%, votre mot de passe sur UNH Rapports a été mise à jour"
+            reset_password_confirmed: "[UNH Rapports] votre mot de passe sur UNH Rapports a été mise à jour"
             2fa_enabled: "[UNH Rapports] Authentification à facteur double activée"
             2fa_disabled: "[UNH Rapports] Authentification à facteur double désactivée"
             2fa_auth_code: "[UNH Rapports] Code d'authentification"
+            password_updated: "[UNH Rapports] Votre mot de passe vient d'être modifié"
+            login_with_another_ip_address: "[UNH Rapports] Nouvelle connexion à votre compte"
+            default_password_created: "[UNH Rapports] Connectez-vous à votre compte avec ce mot de passe par défaut"

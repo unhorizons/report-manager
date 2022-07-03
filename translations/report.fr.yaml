@@ -22,7 +22,9 @@ report:
         admins:
             headers:
                 index:  Administration
-            links: ~
+            links:
+                notification: Notifications
+                user: Utilisateurs
         users:
             headers:
                 index: Activités

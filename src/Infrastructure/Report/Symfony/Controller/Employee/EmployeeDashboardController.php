@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Report\Symfony\Controller;
+namespace Infrastructure\Report\Symfony\Controller\Employee;
 
 use Domain\Authentication\Entity\User;
 use Domain\Report\Repository\EvaluationRepositoryInterface;
@@ -12,11 +12,13 @@ use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Infrastructure\Shared\Symfony\Controller\ChartTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/profile/employee/dashboard', name: 'report_employee_dashboard_', methods: ['GET'])]
+#[AsController]
 final class EmployeeDashboardController extends AbstractController
 {
     use ChartTrait;
@@ -41,7 +43,7 @@ final class EmployeeDashboardController extends AbstractController
         $evaluation_frequency_chart = $this->createFrequencyChart($builder, $evaluation_frequency);
 
         return $this->render(
-            view: 'domain/report/user/dashboard.html.twig',
+            view: 'domain/report/employee/dashboard.html.twig',
             parameters: [
                 'chart' => $chart,
                 'report_frequency_chart' => $report_frequency_chart,

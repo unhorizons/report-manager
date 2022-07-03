@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Report\Symfony\Controller;
+namespace Infrastructure\Report\Symfony\Controller\Manager;
 
 use Domain\Authentication\Entity\User;
 use Domain\Report\Repository\EvaluationRepositoryInterface;
@@ -12,11 +12,13 @@ use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Infrastructure\Shared\Symfony\Controller\ChartTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 
 #[IsGranted('ROLE_REPORT_MANAGER')]
 #[Route('/profile/manager/dashboard', name: 'report_manager_dashboard_')]
+#[AsController]
 final class ManagerDashboardController extends AbstractController
 {
     use ChartTrait;

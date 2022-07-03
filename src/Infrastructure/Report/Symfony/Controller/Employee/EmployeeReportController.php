@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Report\Symfony\Controller;
+namespace Infrastructure\Report\Symfony\Controller\Employee;
 
 use Application\Report\Command\CreateReportCommand;
 use Application\Report\Command\DeleteReportCommand;
@@ -21,10 +21,12 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/profile/employee/reports', name: 'report_employee_report_')]
+#[AsController]
 final class EmployeeReportController extends AbstractController
 {
     use DeleteCsrfTrait;
@@ -47,7 +49,7 @@ final class EmployeeReportController extends AbstractController
         $this->assertNonEmptyData($page, $data);
 
         return $this->render(
-            view: 'domain/report/user/index.html.twig',
+            view: 'domain/report/employee/index.html.twig',
             parameters: [
                 'data' => $data,
             ]
@@ -84,7 +86,7 @@ final class EmployeeReportController extends AbstractController
         }
 
         return $this->render(
-            view: 'domain/report/user/new.html.twig',
+            view: 'domain/report/employee/new.html.twig',
             parameters: [
                 'form' => $form->createView(),
             ],
@@ -98,7 +100,7 @@ final class EmployeeReportController extends AbstractController
         $this->denyAccessUnlessGranted('REPORT_VIEW', $report);
 
         return $this->render(
-            view: 'domain/report/user/show.html.twig',
+            view: 'domain/report/employee/show.html.twig',
             parameters: [
                 'data' => $report,
             ]
@@ -167,7 +169,7 @@ final class EmployeeReportController extends AbstractController
         }
 
         return $this->render(
-            view: 'domain/report/user/edit.html.twig',
+            view: 'domain/report/employee/edit.html.twig',
             parameters: [
                 'form' => $form->createView(),
             ],

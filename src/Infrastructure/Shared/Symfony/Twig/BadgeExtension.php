@@ -22,6 +22,15 @@ class BadgeExtension extends AbstractExtension
     {
         $this->translator = $translator;
         $this->badges = [
+            'ROLE_ADMIN' => [
+                'state' => 'danger',
+            ],
+            'ROLE_REPORT_MANAGER' => [
+                'state' => 'warning'
+            ],
+            'ROLE_USER' => [
+                'state' => 'success'
+            ],
             'seen' => [
                 'state' => 'success',
                 'style' => 'dim',
@@ -73,8 +82,8 @@ class BadgeExtension extends AbstractExtension
     public function badge(string $label): string
     {
         if (array_key_exists($label, $this->badges)) {
-            $style = $this->badges[$label]['style'];
-            $state = $this->badges[$label]['state'];
+            $style = $this->badges[$label]['style'] ?? 'dim';
+            $state = $this->badges[$label]['state'] ?? 'primary';
             $label = $this->translator->trans($label);
 
             return <<< HTML

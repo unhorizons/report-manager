@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Authentication\Symfony\Form\ValueObject;
 
-use Domain\Authentication\ValueObject\Roles;
+use Domain\Authentication\ValueObject\Gender;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -13,22 +13,21 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class RolesType.
+ * Class GenderType.
  *
  * @author bernard-ng <bernard@devscast.tech>
  */
-final class RolesType extends AbstractType implements DataMapperInterface
+final class GenderType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('roles', ChoiceType::class, [
+        $builder->add('gender', ChoiceType::class, [
             'label' => false,
-            'multiple' => true,
+            'multiple' => false,
             'attr' => [
                 'is' => 'app-select-choices',
             ],
-            'choices' => Roles::ROLES_CHOICES,
-            'translation_domain' => 'messages'
+            'choices' => Gender::GENDERS_CHOICES,
         ])->setDataMapper($this);
     }
 
@@ -36,7 +35,7 @@ final class RolesType extends AbstractType implements DataMapperInterface
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults([
-            'data_class' => Roles::class,
+            'data_class' => Gender::class,
             'empty_data' => null,
         ]);
 
@@ -44,24 +43,24 @@ final class RolesType extends AbstractType implements DataMapperInterface
     }
 
     /**
-     * @param Roles $viewData
+     * @param Gender $viewData
      */
     public function mapDataToForms(mixed $viewData, \Traversable $forms): void
     {
         $forms = iterator_to_array($forms);
-        $forms['roles']->setData($viewData->toArray());
+        $forms['gender']->setData((string) $viewData);
     }
 
     /**
-     * @param Roles $viewData
+     * @param Gender $viewData
      */
     public function mapFormsToData(\Traversable $forms, mixed &$viewData): void
     {
         $forms = iterator_to_array($forms);
         try {
-            $viewData = Roles::fromArray((array) $forms['roles']->getData());
+            $viewData = Gender::fromString(strval($forms['gender']->getData()));
         } catch (\InvalidArgumentException $e) {
-            $forms['roles']->addError(new FormError($e->getMessage()));
+            $forms['gender']->addError(new FormError($e->getMessage()));
         }
     }
 }
