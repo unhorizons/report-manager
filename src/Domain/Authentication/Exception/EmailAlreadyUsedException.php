@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Authentication\Exception;
 
 use Domain\Shared\Exception\SafeMessageException;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 /**
  * Class EmailAlreadyUsedException.

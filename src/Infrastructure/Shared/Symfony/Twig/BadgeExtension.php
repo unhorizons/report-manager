@@ -26,10 +26,10 @@ class BadgeExtension extends AbstractExtension
                 'state' => 'danger',
             ],
             'ROLE_REPORT_MANAGER' => [
-                'state' => 'warning'
+                'state' => 'warning',
             ],
             'ROLE_USER' => [
-                'state' => 'success'
+                'state' => 'success',
             ],
             'seen' => [
                 'state' => 'success',

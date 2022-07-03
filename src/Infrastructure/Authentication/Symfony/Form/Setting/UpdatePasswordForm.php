@@ -22,18 +22,18 @@ final class UpdatePasswordForm extends AbstractType
     {
         $builder
             ->add('current', PasswordType::class, [
-                'label' => 'authentication.forms.labels.current_password'
+                'label' => 'authentication.forms.labels.current_password',
             ])
             ->add('new', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'les deux mot de passe doivent correspondre',
                 'required' => true,
                 'first_options' => [
-                    'label' => 'authentication.forms.labels.password'
+                    'label' => 'authentication.forms.labels.password',
                 ],
                 'second_options' => [
-                    'label' => 'authentication.forms.labels.password_confirm'
-                ]
+                    'label' => 'authentication.forms.labels.password_confirm',
+                ],
             ]);
     }
 

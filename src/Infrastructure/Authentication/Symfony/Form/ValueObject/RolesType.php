@@ -28,7 +28,7 @@ final class RolesType extends AbstractType implements DataMapperInterface
                 'is' => 'app-select-choices',
             ],
             'choices' => Roles::ROLES_CHOICES,
-            'translation_domain' => 'messages'
+            'translation_domain' => 'messages',
         ])->setDataMapper($this);
     }
 

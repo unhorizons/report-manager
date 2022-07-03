@@ -17,7 +17,7 @@ trait UserNotificationEmailTrait
 {
     private function createEmail(object $event, string $template, string $subject, string $domain = 'messages'): Email
     {
-        if (!property_exists($event, 'user')) {
+        if (! property_exists($event, 'user')) {
             throw new \RuntimeException('Event must have a reference to the user !');
         }
 
@@ -29,7 +29,7 @@ trait UserNotificationEmailTrait
                 template: $template,
                 data: [
                     'user' => $user,
-                    'event' => $event
+                    'event' => $event,
                 ]
             )->subject($this->translator->trans(
                 id: $subject,

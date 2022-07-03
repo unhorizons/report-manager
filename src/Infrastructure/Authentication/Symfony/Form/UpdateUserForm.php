@@ -23,11 +23,21 @@ final class UpdateUserForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, ['label' => 'authentication.forms.labels.email'])
-            ->add('username', TextType::class, ['label' => 'authentication.forms.labels.username'])
-            ->add('job_title', TextType::class, ['label' => 'authentication.forms.labels.job_title'])
-            ->add('gender', GenderType::class, ['label' => 'authentication.forms.labels.gender'])
-            ->add('roles', RolesType::class, ['label' => 'authentication.forms.labels.roles'])
+            ->add('email', EmailType::class, [
+                'label' => 'authentication.forms.labels.email',
+            ])
+            ->add('username', TextType::class, [
+                'label' => 'authentication.forms.labels.username',
+            ])
+            ->add('job_title', TextType::class, [
+                'label' => 'authentication.forms.labels.job_title',
+            ])
+            ->add('gender', GenderType::class, [
+                'label' => 'authentication.forms.labels.gender',
+            ])
+            ->add('roles', RolesType::class, [
+                'label' => 'authentication.forms.labels.roles',
+            ])
         ;
     }
 

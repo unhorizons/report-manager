@@ -64,7 +64,7 @@ final class UserController extends AbstractController
                 $this->addFlash('success', $this->translator->trans(
                     id: 'authentication.flashes.user_registered_successfully',
                     parameters: [
-                        '%name%' => $command->username
+                        '%name%' => $command->username,
                     ],
                     domain: 'authentication'
                 ));
@@ -154,7 +154,7 @@ final class UserController extends AbstractController
             view: 'domain/administration/user/edit.html.twig',
             parameters: [
                 'form' => $form->createView(),
-                'data' => $user
+                'data' => $user,
             ],
             response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );

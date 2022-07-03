@@ -51,6 +51,7 @@ final class SettingController extends AbstractController
                     parameters: [],
                     domain: 'authentication'
                 ));
+
                 return $this->redirectSeeOther('authentication_setting_security');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
@@ -61,7 +62,7 @@ final class SettingController extends AbstractController
         return $this->render(
             view: 'domain/authentication/setting/password.html.twig',
             parameters: [
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ],
             response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );

@@ -97,6 +97,7 @@ final class ResetPasswordController extends AbstractController
                     parameters: [],
                     domain: 'authentication'
                 ));
+
                 return $this->redirectSeeOther('authentication_login');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);

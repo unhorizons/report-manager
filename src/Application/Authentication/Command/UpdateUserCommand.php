@@ -21,14 +21,11 @@ final class UpdateUserCommand
 
     public function __construct(
         public User $user,
-
         #[Assert\NotBlank]
         #[Assert\Email]
         public ?string $email = null,
-
         #[Assert\NotBlank]
         public ?string $username = null,
-
         #[Assert\NotBlank]
         public ?string $job_title = null,
     ) {

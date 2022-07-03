@@ -25,7 +25,7 @@ final class UpdatePasswordHandler
     public function __invoke(UpdatePasswordCommand $command): void
     {
         $user = $command->user;
-        if (!$this->hasher->isPasswordValid($user, $command->current)) {
+        if (! $this->hasher->isPasswordValid($user, $command->current)) {
             throw new InvalidCurrentPasswordException();
         }
 

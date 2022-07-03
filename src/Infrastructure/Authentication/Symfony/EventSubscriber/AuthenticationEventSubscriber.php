@@ -44,7 +44,7 @@ final class AuthenticationEventSubscriber implements EventSubscriberInterface
             DefaultPasswordCreatedEvent::class => 'onDefaultPasswordCreated',
             TwoFactorAuthEnabledEvent::class => 'onTwoFactorAuthEnabled',
             TwoFactorAuthDisabledEvent::class => 'onTwoFactorAuthDisabled',
-            LoginWithAnotherIpAddressEvent::class => 'onLoginWithAnotherIpAddressEvent'
+            LoginWithAnotherIpAddressEvent::class => 'onLoginWithAnotherIpAddressEvent',
         ];
     }
 
