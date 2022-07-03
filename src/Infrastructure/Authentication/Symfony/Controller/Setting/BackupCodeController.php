@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author bernard-ng <bernard@devscast.tech>
  */
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-#[Route('/profile/settings/authentication/backup_codes', name: 'authentication_setting_backup_codes_')]
+#[Route('/profile/settings/security/backup_codes', name: 'authentication_setting_security_backup_codes_')]
 final class BackupCodeController extends AbstractController
 {
     #[Route('/regenerate', name: 'regenerate', methods: ['POST'])]
@@ -36,7 +36,7 @@ final class BackupCodeController extends AbstractController
             $this->handleUnexpectedException($e);
         }
 
-        return $this->redirectSeeOther('authentication_settings_index');
+        return $this->redirectSeeOther('authentication_setting_security');
     }
 
     #[Route('/export', name: 'export', methods: ['GET', 'POST'])]
@@ -62,6 +62,6 @@ final class BackupCodeController extends AbstractController
             $this->handleUnexpectedException($e);
         }
 
-        return $this->redirectSeeOther('authentication_settings_index');
+        return $this->redirectSeeOther('authentication_setting_security');
     }
 }

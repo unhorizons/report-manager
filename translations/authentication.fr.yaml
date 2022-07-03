@@ -25,6 +25,7 @@ authentication:
             username: Nom d'utilisateur
             password: Mot de passe
             password_confirm: Confirmer le mot de passe
+            current_password: Mot de passe actuel
             email: Adresse Email
             job_title: Poste au travail
             gender: Genre
@@ -57,7 +58,7 @@ authentication:
             Veuillez poursuivre avec les instructions qui vous ont été envoyées par email.
         reset_password_token_expired: Désolé le lien que vous avez utilisé n'est plus valide.
         email_already_used: Cette adresse email est déjà utilisée par un autre compte.
-        invalid_current_password: le mot de passe courant est incorrecte.
+        invalid_current_password: le mot de passe actuel est incorrecte.
     mails:
         subjects:
             login_link_requested: "[UNH Rapports] %name%, voici le lien d'accès à votre compte UNH Rapports"

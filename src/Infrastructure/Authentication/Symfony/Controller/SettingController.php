@@ -7,8 +7,10 @@ namespace Infrastructure\Authentication\Symfony\Controller;
 use Application\Authentication\Command\GenerateGoogleAuthenticatorSecretCommand;
 use Application\Authentication\Command\RegenerateBackupCodeCommand;
 use Application\Authentication\Command\Toggle2FACommand;
+use Application\Authentication\Command\UpdatePasswordCommand;
 use Domain\Authentication\Entity\User;
 use Infrastructure\Authentication\Symfony\Form\Setting\Toggle2FaForm;
+use Infrastructure\Authentication\Symfony\Form\Setting\UpdatePasswordForm;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -17,16 +19,55 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-#[Route('/profile/settings/authentication', name: 'authentication_settings_')]
+#[Route('/profile/settings', name: 'authentication_setting_')]
 final class SettingController extends AbstractController
 {
-    #[Route('', name: 'index', methods: ['GET', 'POST'])]
-    public function index(): Response
+    #[Route('/profile', name: 'profile', methods: ['GET', 'POST'])]
+    public function profile(): Response
     {
-        return $this->render('domain/authentication/setting/index.html.twig');
+        return $this->render('domain/authentication/setting/profile.html.twig');
     }
 
-    #[Route('/2fa', name: '2fa', methods: ['GET', 'POST'])]
+    #[Route('/security', name: 'security', methods: ['GET', 'POST'])]
+    public function security(): Response
+    {
+        return $this->render('domain/authentication/setting/security.html.twig');
+    }
+
+    #[Route('/security/password', name: 'security_password', methods: ['GET', 'POST'])]
+    public function password(Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $command = new UpdatePasswordCommand($user);
+        $form = $this->createForm(UpdatePasswordForm::class, $command)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->dispatchSync($command);
+                $this->addFlash('success', $this->translator->trans(
+                    id: 'authentication.flashes.reset_password_confirmed_successfully',
+                    parameters: [],
+                    domain: 'authentication'
+                ));
+                return $this->redirectSeeOther('authentication_setting_security');
+            } catch (\Throwable $e) {
+                $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        }
+
+        return $this->render(
+            view: 'domain/authentication/setting/password.html.twig',
+            parameters: [
+                'form' => $form->createView()
+            ],
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
+        );
+    }
+
+    #[Route('/security/2fa', name: 'security_2fa', methods: ['GET', 'POST'])]
     public function twoFactorAuthentication(GoogleAuthenticatorInterface $authenticator, Request $request): Response
     {
         /** @var User $user */
@@ -75,7 +116,8 @@ final class SettingController extends AbstractController
             parameters: [
                 'qrcode_content' => $qrcode,
                 'form' => $form->createView(),
-            ]
+            ],
+            response: $this->getResponseBasedOnFormValidationStatus($form)
         );
     }
 }

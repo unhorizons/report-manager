@@ -16,11 +16,11 @@ final class UpdatePasswordCommand
 {
     public function __construct(
         public readonly User $user,
-        public readonly string $current,
+        public ?string $current = null,
 
         #[Assert\NotBlank]
         #[Assert\Length(min: 6, max: 4096)]
-        public readonly string $new
+        public ?string $new = null
     ) {
     }
 }
