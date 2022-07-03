@@ -27,7 +27,7 @@ final class RegisterUserHandler
 
     public function __invoke(RegisterUserCommand $command): void
     {
-        $user = $this->repository->findOneByEmail($command->email);
+        $user = $this->repository->findOneByEmail((string) $command->email);
         if ($user) {
             throw new EmailAlreadyUsedException();
         }

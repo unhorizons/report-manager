@@ -8,7 +8,7 @@ use Application\Authentication\Command\DeleteUserCommand;
 use Application\Authentication\Command\RegisterUserCommand;
 use Application\Authentication\Command\UpdateUserCommand;
 use Domain\Authentication\Entity\User;
-use Domain\Authentication\Repository\UserRepositoryInterface;
+use Infrastructure\Authentication\Doctrine\Repository\UserRepository;
 use Infrastructure\Authentication\Symfony\Form\RegisterUserForm;
 use Infrastructure\Authentication\Symfony\Form\UpdateUserForm;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
@@ -35,7 +35,7 @@ final class UserController extends AbstractController
     use PaginationAssertionTrait;
 
     #[Route('', name: 'index', methods: ['GET'])]
-    public function index(Request $request, PaginatorInterface $paginator, UserRepositoryInterface $repository): Response
+    public function index(Request $request, PaginatorInterface $paginator, UserRepository $repository): Response
     {
         $page = $request->query->getInt('page', 1);
         $this->assertIsGreaterThanZero($page);
