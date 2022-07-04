@@ -9,10 +9,7 @@
 
 {% macro stats_infos(data, label) %}
     {% if data != 0.0 %}
-        <span class="change {{ data > 0 ? 'up text-success' : 'down text-danger' }}">
-            {{  (data > 0 ? 'arrow-long-up' : 'arrow-long-down') | icon }}
-            {{  data }} %
-        </span>
+        {{ this.ratio(data) }}
         <span> vs. le mois passé</span>
     {% else %}
         <span class="change down">
@@ -20,6 +17,13 @@
         </span>
         <span class="text-danger"> Aucun {{ label }} ce mois</span>
     {% endif %}
+{% endmacro %}
+
+{% macro ratio(data) %}
+    <span class="change {{ data > 0 ? 'up text-success' : 'down text-danger' }}">
+        {{  (data > 0 ? 'arrow-long-up' : 'arrow-long-down') | icon }}
+    {{  data }} %
+    </span>
 {% endmacro %}
 
 {% macro user_data_link(label, value, link, options) %}

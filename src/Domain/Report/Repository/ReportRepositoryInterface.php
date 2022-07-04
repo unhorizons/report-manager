@@ -34,6 +34,8 @@ interface ReportRepositoryInterface extends DataRepositoryInterface
 
     public function findCurrentYearStatsForEmployee(User $employee): array;
 
+    public function findStats(): array;
+
     public function statusCountForEmployee(User $employee): array;
 
     public function findAllSeenForManager(User $manager): array;

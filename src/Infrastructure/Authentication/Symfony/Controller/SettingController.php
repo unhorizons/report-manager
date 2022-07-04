@@ -30,7 +30,9 @@ final class SettingController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $command = new UpdateUserCommand($user);
-        $form = $this->createForm(UpdateUserForm::class, $command, ['update_as_admin' => false])
+        $form = $this->createForm(UpdateUserForm::class, $command, [
+            'update_as_admin' => false,
+        ])
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -41,6 +43,7 @@ final class SettingController extends AbstractController
                     parameters: [],
                     domain: 'authentication'
                 ));
+
                 return $this->redirectSeeOther('authentication_setting_profile');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
@@ -51,7 +54,7 @@ final class SettingController extends AbstractController
         return $this->render(
             view: 'domain/authentication/setting/profile.html.twig',
             parameters: [
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ],
             response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
         );

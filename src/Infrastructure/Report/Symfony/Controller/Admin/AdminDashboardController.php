@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Infrastructure\Report\Symfony\Controller\Admin;
 
-use Domain\Authentication\Entity\User;
-use Domain\Report\Repository\EvaluationRepositoryInterface;
 use Domain\Report\Repository\ReportRepositoryInterface;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Infrastructure\Shared\Symfony\Controller\ChartTrait;
@@ -23,17 +21,15 @@ final class AdminDashboardController extends AbstractController
     use ChartTrait;
 
     #[Route('', name: 'index')]
-    public function __invoke(
-        ReportRepositoryInterface $reportRepository,
-        EvaluationRepositoryInterface $evaluationRepository,
-        ChartBuilderInterface $builder
-    ): Response {
-        /** @var User $admin */
-        $admin = $this->getUser();
+    public function __invoke(ReportRepositoryInterface $repository, ChartBuilderInterface $builder): Response
+    {
+        $data = $repository->findStats();
 
         return $this->render(
             view: 'domain/report/admin/dashboard.html.twig',
-            parameters: []
+            parameters: [
+                'data' => $data,
+            ]
         );
     }
 }

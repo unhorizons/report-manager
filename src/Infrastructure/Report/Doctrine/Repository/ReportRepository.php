@@ -313,6 +313,37 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
         ], false)['count'];
     }
 
+    public function findStats(): array
+    {
+        $currentMonth = $this->createDateTimeInterval('first day of this month', 'last day of this month');
+        $previousMonth = $this->createDateTimeInterval('first day of previous month', 'last day of previous month');
+
+        $sql = <<< SQL
+            SELECT
+                    (SELECT COUNT(id) FROM report WHERE created_at BETWEEN :current_month_start AND :current_month_end) AS reports_current_month,
+                    (SELECT COUNT(id) FROM report WHERE created_at BETWEEN  :previous_month_start AND :previous_month_end) AS reports_previous_month,
+                    (SELECT COUNT(id) FROM evaluation WHERE created_at BETWEEN  :current_month_start AND :current_month_end) AS evaluations_current_month,
+                    (SELECT COUNT(id) FROM evaluation WHERE created_at BETWEEN  :previous_month_start AND :previous_month_end) AS evaluations_previous_month
+            FROM DUAL;
+        SQL;
+
+        $data = $this->execute($sql, [
+            'current_month_start' => $currentMonth[0],
+            'current_month_end' => $currentMonth[1],
+            'previous_month_start' => $previousMonth[0],
+            'previous_month_end' => $previousMonth[1],
+        ], false);
+
+        $reportMonthRatio = $this->calculateProgressionRatio($data['reports_previous_month'], $data['reports_current_month']);
+        $evaluationMonthRatio = $this->calculateProgressionRatio($data['evaluations_previous_month'], $data['evaluations_current_month']);
+
+        return [
+            ...$data,
+            'reports_month_ratio' => $reportMonthRatio,
+            'evaluations_month_ratio' => $evaluationMonthRatio,
+        ];
+    }
+
     private function findAllUnseenQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('r')
