@@ -22,6 +22,8 @@ final class UpdateUserForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $updateAsAdmin = $options['update_as_admin'];
+
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'authentication.forms.labels.email',
@@ -34,18 +36,22 @@ final class UpdateUserForm extends AbstractType
             ])
             ->add('gender', GenderType::class, [
                 'label' => 'authentication.forms.labels.gender',
-            ])
-            ->add('roles', RolesType::class, [
+            ]);
+
+        if ($updateAsAdmin) {
+            $builder->add('roles', RolesType::class, [
                 'label' => 'authentication.forms.labels.roles',
-            ])
-        ;
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'update_as_admin' => true,
             'data_class' => UpdateUserCommand::class,
             'translation_domain' => 'authentication',
         ]);
+        $resolver->setAllowedTypes('update_as_admin', ['bool']);
     }
 }

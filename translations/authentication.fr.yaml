@@ -46,6 +46,7 @@ authentication:
         user_deleted_successfully: "L'utilisateur (%name%) a été supprimé avec succès !"
         user_updated_successfully: "L'utilisateur (%name% a bien été modifié !)"
         user_registered_successfully: "L'utilisateur (%name%) à bien été crée"
+        profile_updated_successfully: "Vos informations ont bien été mise à jour"
     validations:
         password_must_match: Les deux mots de passe ne sont pas identiques !
         empty_role: Veuillez définir au moins un rôle

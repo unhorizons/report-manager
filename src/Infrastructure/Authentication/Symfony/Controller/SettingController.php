@@ -8,9 +8,11 @@ use Application\Authentication\Command\GenerateGoogleAuthenticatorSecretCommand;
 use Application\Authentication\Command\RegenerateBackupCodeCommand;
 use Application\Authentication\Command\Toggle2FACommand;
 use Application\Authentication\Command\UpdatePasswordCommand;
+use Application\Authentication\Command\UpdateUserCommand;
 use Domain\Authentication\Entity\User;
 use Infrastructure\Authentication\Symfony\Form\Setting\Toggle2FaForm;
 use Infrastructure\Authentication\Symfony\Form\Setting\UpdatePasswordForm;
+use Infrastructure\Authentication\Symfony\Form\UpdateUserForm;
 use Infrastructure\Shared\Symfony\Controller\AbstractController;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,9 +25,36 @@ use Symfony\Component\Routing\Annotation\Route;
 final class SettingController extends AbstractController
 {
     #[Route('/profile', name: 'profile', methods: ['GET', 'POST'])]
-    public function profile(): Response
+    public function profile(Request $request): Response
     {
-        return $this->render('domain/authentication/setting/profile.html.twig');
+        /** @var User $user */
+        $user = $this->getUser();
+        $command = new UpdateUserCommand($user);
+        $form = $this->createForm(UpdateUserForm::class, $command, ['update_as_admin' => false])
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->dispatchSync($command);
+                $this->addFlash('success', $this->translator->trans(
+                    id: 'authentication.flashes.profile_updated_successfully',
+                    parameters: [],
+                    domain: 'authentication'
+                ));
+                return $this->redirectSeeOther('authentication_setting_profile');
+            } catch (\Throwable $e) {
+                $this->handleUnexpectedException($e);
+                $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        }
+
+        return $this->render(
+            view: 'domain/authentication/setting/profile.html.twig',
+            parameters: [
+                'form' => $form->createView()
+            ],
+            response: $this->getResponseBasedOnFormValidationStatus($form, $response ?? null)
+        );
     }
 
     #[Route('/security', name: 'security', methods: ['GET', 'POST'])]

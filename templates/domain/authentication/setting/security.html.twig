@@ -27,9 +27,11 @@
                                     </div>
                                     <div class="nk-block-actions flex-shrink-sm-0">
                                         <ul class="align-center flex-wrap flex-sm-nowrap gx-3 gy-2">
-                                            <li class="order-md-last">
-                                                <em class="text-soft text-date fs-12px">Dernière mise à jour : {{ app.user.updatedAt ? app.user.updatedAt | date : '' }}</em>
-                                            </li>
+                                           {%  if app.user.updatedAt %}
+                                               <li class="order-md-last">
+                                                   <em class="text-soft text-date fs-12px">Dernière mise à jour : {{ app.user.updatedAt | date }}</em>
+                                               </li>
+                                            {% endif %}
                                             <li>
                                                 <a href="{{ path('authentication_setting_security_password') }}" class="btn btn-primary">Modifier le mot de passe</a>
                                             </li>
