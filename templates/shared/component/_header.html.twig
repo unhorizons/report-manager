@@ -10,7 +10,7 @@
             </h3>
             <div class="nk-block-des text-soft">
                 {% block header_description %}
-                    {% if data is defined and data.getTotalItemCount is defined %}
+                    {% if data is defined and data.getTotalItemCount is defined and data.getTotalItemCount > 0 %}
                         <span class="fw-bolder">{{ data.getTotalItemCount }}</span> {{ 'global.items' | trans([], 'messages') }},
                         {{ 'global.page' | trans([], 'messages')}} <span class="fw-bolder">{{ data.getCurrentPageNumber }}</span> {{ 'global.of' | trans([], 'messages') }} {{ data.getPageCount }}
                     {% endif %}
