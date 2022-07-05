@@ -16,11 +16,14 @@ trait ChartTrait
 {
     private function createReportChart(ChartBuilderInterface $builder, array $reports): Chart
     {
-        [$seen, $unseen] = $reports;
+        if (2 === count($reports)) {
+            [$seen, $unseen] = $reports;
+        }
 
-        return $builder
-            ->createChart(Chart::TYPE_BAR)
-            ->setData([
+        $chart = $builder->createChart(Chart::TYPE_BAR);
+
+        if (2 === count($reports) && isset($seen) && isset($unseen)) {
+            $chart->setData([
                 'labels' => array_keys($seen),
                 'datasets' => [
                     [
@@ -36,44 +39,60 @@ trait ChartTrait
                         'data' => array_values($unseen),
                     ],
                 ],
-            ])
-            ->setOptions([
-                'plugins' => [
-                    'tooltip' => [
-                        'displayColors' => false,
-                    ],
-                    'legend' => [
-                        'display' => true,
-                        'labels' => [
-                            'boxWidth' => 12,
-                            'padding' => 20,
-                            'fontColor' => '#6783b8',
-                        ],
-                    ],
-                ],
-                'scales' => [
-                    'y' => [
-                        'display' => true,
-                        'ticks' => [
-                            'beginAtZero' => true,
-                            'fontSize' => 11,
-                            'fontColor' => '#9eaecf',
-                            'padding' => 10,
-                            'min' => 0,
-                            'stepSize' => 1,
-                        ],
-                    ],
-                    'x' => [
-                        'display' => true,
-                        'ticks' => [
-                            'fontSize' => 9,
-                            'fontColor' => '#9eaecf',
-                            'source' => 'auto',
-                            'padding' => 10,
-                        ],
+            ]);
+        } else {
+            $chart->setData([
+                'labels' => array_keys($reports),
+                'datasets' => [
+                    [
+                        'label' => 'Rapports soumis',
+                        'borderColor' => '#9d72ff',
+                        'backgroundColor' => '#9d72ff',
+                        'data' => array_values($reports),
                     ],
                 ],
             ]);
+        }
+
+        $chart->setOptions([
+            'plugins' => [
+                'tooltip' => [
+                    'displayColors' => false,
+                ],
+                'legend' => [
+                    'display' => true,
+                    'labels' => [
+                        'boxWidth' => 12,
+                        'padding' => 20,
+                        'fontColor' => '#6783b8',
+                    ],
+                ],
+            ],
+            'scales' => [
+                'y' => [
+                    'display' => true,
+                    'ticks' => [
+                        'beginAtZero' => true,
+                        'fontSize' => 11,
+                        'fontColor' => '#9eaecf',
+                        'padding' => 10,
+                        'min' => 0,
+                        'stepSize' => 1,
+                    ],
+                ],
+                'x' => [
+                    'display' => true,
+                    'ticks' => [
+                        'fontSize' => 9,
+                        'fontColor' => '#9eaecf',
+                        'source' => 'auto',
+                        'padding' => 10,
+                    ],
+                ],
+            ],
+        ]);
+
+        return $chart;
     }
 
     private function createEvaluationChart(ChartBuilderInterface $builder, array $evaluations): Chart

@@ -32,9 +32,10 @@
                         <h6 class="title">Statistiques</h6>
                         <p>Rapports reçus les 30 derniers jours</p>
                     </div>
+                    <div class="card-tools"></div>
                 </div>
-                <div class="align-end gy-3 gx-5 flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
-                    <div class="nk-sale-data-group flex-md-nowrap g-4">
+                <div class="align-start gy-3 gx-5 flex-wrap">
+                    <div class="nk-sale-data-group g-4">
                         <div class="nk-sale-data">
                             <span class="amount">
                                 {{ data.reports_current_month }}
@@ -50,18 +51,8 @@
                             <span class="sub-title">Évaluations du mois</span>
                         </div>
                     </div>
-                    <div class="nk-sales-ck sales-revenue">
-                        <div class="chartjs-size-monitor">
-                            <div class="chartjs-size-monitor-expand">
-                                <div class=""></div>
-                            </div>
-                            <div class="chartjs-size-monitor-shrink">
-                                <div class=""></div>
-                            </div>
-                        </div>
-                        <canvas class="student-enrole chartjs-render-monitor" id="enrolement" style="display: block; width: 490px; height: 64px;" width="490" height="64"></canvas>
-                    </div>
                 </div>
+                {{ render_chart(chart) }}
             </div>
         </div>
     </div>

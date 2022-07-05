@@ -24,11 +24,13 @@ final class AdminDashboardController extends AbstractController
     public function __invoke(ReportRepositoryInterface $repository, ChartBuilderInterface $builder): Response
     {
         $data = $repository->findStats();
+        $chart = $this->createReportChart($builder, $repository->findCurrentYearFrequency());
 
         return $this->render(
             view: 'domain/report/admin/dashboard.html.twig',
             parameters: [
                 'data' => $data,
+                'chart' => $chart,
             ]
         );
     }

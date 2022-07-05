@@ -320,10 +320,10 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
 
         $sql = <<< SQL
             SELECT
-                    (SELECT COUNT(id) FROM report WHERE created_at BETWEEN :current_month_start AND :current_month_end) AS reports_current_month,
-                    (SELECT COUNT(id) FROM report WHERE created_at BETWEEN  :previous_month_start AND :previous_month_end) AS reports_previous_month,
-                    (SELECT COUNT(id) FROM evaluation WHERE created_at BETWEEN  :current_month_start AND :current_month_end) AS evaluations_current_month,
-                    (SELECT COUNT(id) FROM evaluation WHERE created_at BETWEEN  :previous_month_start AND :previous_month_end) AS evaluations_previous_month
+                (SELECT COUNT(id) FROM report WHERE created_at BETWEEN :current_month_start AND :current_month_end) AS reports_current_month,
+                (SELECT COUNT(id) FROM report WHERE created_at BETWEEN  :previous_month_start AND :previous_month_end) AS reports_previous_month,
+                (SELECT COUNT(id) FROM evaluation WHERE created_at BETWEEN  :current_month_start AND :current_month_end) AS evaluations_current_month,
+                (SELECT COUNT(id) FROM evaluation WHERE created_at BETWEEN  :previous_month_start AND :previous_month_end) AS evaluations_previous_month
             FROM DUAL;
         SQL;
 
@@ -342,6 +342,18 @@ final class ReportRepository extends AbstractRepository implements ReportReposit
             'reports_month_ratio' => $reportMonthRatio,
             'evaluations_month_ratio' => $evaluationMonthRatio,
         ];
+    }
+
+    public function findCurrentYearFrequency(): array
+    {
+        $interval = $this->createDateTimeInterval('first day of January this year', 'last day of December this year');
+
+        $sql = <<< SQL
+            SELECT {$this->createMonthSumSQL('created_at')} FROM report 
+            WHERE created_at BETWEEN "2022-01-01" AND "2022-12-31"
+        SQL;
+
+        return $this->execute($sql, [], false);
     }
 
     private function findAllUnseenQuery(): QueryBuilder
