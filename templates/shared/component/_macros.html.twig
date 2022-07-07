@@ -9,7 +9,7 @@
 
 {% macro stats_infos(data, label) %}
     {% if data != 0.0 %}
-        {{ this.ratio(data) }}
+        {{ _self.ratio(data) }}
         <span> vs. le mois passé</span>
     {% else %}
         <span class="change down">

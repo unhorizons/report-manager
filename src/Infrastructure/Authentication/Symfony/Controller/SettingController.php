@@ -136,7 +136,7 @@ final class SettingController extends AbstractController
                 $this->dispatchSync($command);
                 $this->addFlash('success', 'Paramètres 2FA modifiés');
 
-                return $this->redirectSeeOther('authentication_settings_2fa');
+                return $this->redirectSeeOther('authentication_setting_security_2fa');
             } catch (\Throwable $e) {
                 $this->handleUnexpectedException($e);
                 $response = new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY);
