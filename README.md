@@ -45,4 +45,4 @@ Avant toutes modifications rassurez-vous d'avoir effectué ces commandes, sinon 
 
 - [Bernard Ng](https://github.com/bernard-ng) (Project Lead)
 - [Wilfried Musanzi](https://github.com/willfried-musanzi)
-
+- [Robert MAKILA] (https://github.com/romhack1) (Info. Sec. Adviser)
