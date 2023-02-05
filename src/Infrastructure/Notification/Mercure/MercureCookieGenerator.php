@@ -26,21 +26,25 @@ final class MercureCookieGenerator
 
     public function generate(User $user): Cookie
     {
-        $channels = array_map(
-            fn (string $channel) => "/notifications/${channel}",
-            $this->service->getChannelsForUser($user)
-        );
-        $config = Configuration::forSymmetricSigner(
-            new Sha256(),
-            InMemory::plainText($this->secret)
-        );
-        $token = $config->builder()
-            ->withClaim('mercure', [
-                'subscribe' => $channels,
-            ])
-            ->getToken($config->signer(), $config->signingKey())
-            ->toString();
+        if (strlen($this->secret) > 0) {
+            $channels = array_map(
+                fn (string $channel) => "/notifications/${channel}",
+                $this->service->getChannelsForUser($user)
+            );
+            $config = Configuration::forSymmetricSigner(
+                new Sha256(),
+                InMemory::plainText($this->secret)
+            );
+            $token = $config->builder()
+                ->withClaim('mercure', [
+                    'subscribe' => $channels,
+                ])
+                ->getToken($config->signer(), $config->signingKey())
+                ->toString();
 
-        return Cookie::create('mercureAuthorization', $token, 0, '/.well-known/mercure');
+            return Cookie::create('mercureAuthorization', $token, 0, '/.well-known/mercure');
+        }
+
+        throw new \RuntimeException('empty secret token given !');
     }
 }
