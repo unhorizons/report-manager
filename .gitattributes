@@ -1,6 +1,11 @@
 public/* linguist-vendored
 assets/* linguist-vendored
 
+linguist-detectable=false
+
+*.css linguist-detectable=false
+*.scss linguist-detectable=false
+
 # Enforce Unix newlines
 *.css   text eol=lf
 *.html  text eol=lf
@@ -15,6 +20,6 @@ assets/* linguist-vendored
 *.yml   text eol=lf
 *.php   text eol=lf
 *.twig  text eol=lf
-
 # Don't diff or textually merge source maps
 *.map   binary
+.mmdb filter=lfs diff=lfs merge=lfs -text
